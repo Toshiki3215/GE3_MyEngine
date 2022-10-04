@@ -57,33 +57,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DXInit.createDX(winApp.hwndSub);*/
 
 	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
+	/*IDirectInput8* directInput = nullptr;
 	DXInit.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	assert(SUCCEEDED(DXInit.result));
+	assert(SUCCEEDED(DXInit.result));*/
 
 	/*IDirectInput8* directInput2 = nullptr;
 	DXInit2.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput2, nullptr);
 	assert(SUCCEEDED(DXInit2.result));*/
 
 	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
+	/*IDirectInputDevice8* keyboard = nullptr;
 	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	assert(SUCCEEDED(DXInit.result));
+	assert(SUCCEEDED(DXInit.result));*/
 
 	/*IDirectInputDevice8* keyboard2 = nullptr;
 	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard2, NULL);
 	assert(SUCCEEDED(DXInit.result));*/
 
 	//入力データ形式のセット
-	DXInit.result = keyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
-	assert(SUCCEEDED(DXInit.result));
+	//DXInit.result = keyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
+	//assert(SUCCEEDED(DXInit.result));
 
 	//DXInit2.result = keyboard2->SetDataFormat(&c_dfDIKeyboard); //標準形式
 	//assert(SUCCEEDED(DXInit2.result));
 
 	//排他制御レベルのセット
-	DXInit.result = keyboard->SetCooperativeLevel(winApp.hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(DXInit.result));
+	/*DXInit.result = keyboard->SetCooperativeLevel(winApp.hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(DXInit.result));*/
 
 	/*DXInit2.result = keyboard2->SetCooperativeLevel(winApp.hwndSub, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(DXInit2.result));*/
@@ -917,12 +917,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// --- DirectX毎フレーム処理　ここから --- //
 
 		//キーボード情報の取得開始
-		keyboard->Acquire();
+		//keyboard->Acquire();
+		
 		//keyboard2->Acquire();
 
 		//全キーの入力状態を取得する
 		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
+		//keyboard->GetDeviceState(sizeof(key), key);
 
 		//keyboard2->GetDeviceState(sizeof(key), key);
 
