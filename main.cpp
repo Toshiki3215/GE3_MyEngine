@@ -1,5 +1,6 @@
 ﻿#include "WindowsApp.h"
-#include"DirectXInitialize.h"
+#include "DirectXInitialize.h"
+#include "Input.h"
 #include<DirectXMath.h>
 #include<DirectXTex.h>
 
@@ -9,10 +10,11 @@ using namespace DirectX;
 
 #pragma comment(lib,"dxgi.lib")
 
-#define DIRECTINPUT_VERSION 0x0800
-#include<dinput.h>
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
+// --- Input --- //
+//#define DIRECTINPUT_VERSION 0x0800
+//#include<dinput.h>
+//#pragma comment(lib,"dinput8.lib")
+//#pragma comment(lib,"dxguid.lib")
 
 //#pragma comment(lib, "d3d9.lib")
 //#include"DebugText.h"
@@ -25,6 +27,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	winApp.createWin();
 
+	//サブウィンドウ
 	//winApp.createSubWin();
 
 	// --- DirectX初期化処理　ここから --- //
@@ -44,6 +47,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	DXInit.createDX(winApp.hwnd);
 
+	//サブウィンドウ
 	/*DirectXInitialize DXInit2;
 
 	DXInit2.createDX(winApp.hwndSub);*/
@@ -57,10 +61,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DXInit.createDX(winApp.hwndSub);*/
 
 	//DirectInputの初期化
+	Input* input = nullptr;
+
+	input = new Input();
+	input->Initialize(DXInit.result, winApp.w);
+
 	/*IDirectInput8* directInput = nullptr;
 	DXInit.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(DXInit.result));*/
 
+	//サブウィンドウ
 	/*IDirectInput8* directInput2 = nullptr;
 	DXInit2.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput2, nullptr);
 	assert(SUCCEEDED(DXInit2.result));*/
@@ -70,6 +80,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	assert(SUCCEEDED(DXInit.result));*/
 
+	//サブウィンドウ
 	/*IDirectInputDevice8* keyboard2 = nullptr;
 	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard2, NULL);
 	assert(SUCCEEDED(DXInit.result));*/
@@ -78,6 +89,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//DXInit.result = keyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
 	//assert(SUCCEEDED(DXInit.result));
 
+	//サブウィンドウ
 	//DXInit2.result = keyboard2->SetDataFormat(&c_dfDIKeyboard); //標準形式
 	//assert(SUCCEEDED(DXInit2.result));
 
@@ -85,6 +97,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	/*DXInit.result = keyboard->SetCooperativeLevel(winApp.hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(DXInit.result));*/
 
+	//サブウィンドウ
 	/*DXInit2.result = keyboard2->SetCooperativeLevel(winApp.hwndSub, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(DXInit2.result));*/
 
@@ -916,19 +929,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// --- DirectX毎フレーム処理　ここから --- //
 
-		//キーボード情報の取得開始
+		input->Update(DXInit.result);
+
+		////キーボード情報の取得開始
 		//keyboard->Acquire();
-		
+		//
 		//keyboard2->Acquire();
 
-		//全キーの入力状態を取得する
-		BYTE key[256] = {};
+		////全キーの入力状態を取得する
+		//BYTE key[256] = {};
 		//keyboard->GetDeviceState(sizeof(key), key);
 
 		//keyboard2->GetDeviceState(sizeof(key), key);
 
 		//数字の0キーが押されていたら
-		if (key[DIK_0])
+		//if (input->PushKey(DIK_0))
+		//{
+		//	OutputDebugStringA("Hit 0\n"); //出力ウィンドウに「Hit 0」と表示
+		//}
+
+		if (input->TriggerKey(DIK_0))
 		{
 			OutputDebugStringA("Hit 0\n"); //出力ウィンドウに「Hit 0」と表示
 		}
@@ -936,50 +956,51 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = DXInit.swapChain->GetCurrentBackBufferIndex();
 
+		//サブウィンドウ
 		//UINT bbIndex2 = DXInit2.swapChain->GetCurrentBackBufferIndex();
 
 		//回転
-		if (key[DIK_D] || key[DIK_A])
-		{
-			if (key[DIK_D])
-			{
-				angle += XMConvertToRadians(1.0f);
-			}
-			else if (key[DIK_A])
-			{
-				angle -= XMConvertToRadians(1.0f);
-			}
+		//if (key[DIK_D] || key[DIK_A])
+		//{
+		//	if (key[DIK_D])
+		//	{
+		//		angle += XMConvertToRadians(1.0f);
+		//	}
+		//	else if (key[DIK_A])
+		//	{
+		//		angle -= XMConvertToRadians(1.0f);
+		//	}
 
-			//angleラジアンだけY軸まわりに回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
+		//	//angleラジアンだけY軸まわりに回転。半径は-100
+		//	eye.x = -100 * sinf(angle);
+		//	eye.z = -100 * cosf(angle);
 
-			//ビュー変換行列を作り直す
-			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+		//	//ビュー変換行列を作り直す
+		//	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
-		}
+		//}
 
 		//移動
-		if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT])
-		{
-			//座標を移動する処理(Z座標)
-			if (key[DIK_UP])
-			{
-				position.z += 1.0f;
-			}
-			else if (key[DIK_DOWN])
-			{
-				position.z -= 1.0f;
-			}
-			else if (key[DIK_RIGHT])
-			{
-				position.x += 1.0f;
-			}
-			else if (key[DIK_LEFT])
-			{
-				position.x -= 1.0f;
-			}
-		}
+		//if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT])
+		//{
+		//	//座標を移動する処理(Z座標)
+		//	if (key[DIK_UP])
+		//	{
+		//		position.z += 1.0f;
+		//	}
+		//	else if (key[DIK_DOWN])
+		//	{
+		//		position.z -= 1.0f;
+		//	}
+		//	else if (key[DIK_RIGHT])
+		//	{
+		//		position.x += 1.0f;
+		//	}
+		//	else if (key[DIK_LEFT])
+		//	{
+		//		position.x -= 1.0f;
+		//	}
+		//}
 
 		//平行移動行列
 		XMMATRIX matTrans;
@@ -1027,6 +1048,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
 		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
 
+		//サブウィンドウ
 		//D3D12_RESOURCE_BARRIER barrierDesc2{};
 		//barrierDesc2.Transition.pResource = DXInit2.backBuffers[bbIndex2]; // バックバッファを指定
 		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
@@ -1039,6 +1061,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		rtvHandle.ptr += bbIndex * DXInit.device->GetDescriptorHandleIncrementSize(DXInit.rtvHeapDesc.Type);
 		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
+		//サブウィンドウ
 		/*D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle2 = DXInit2.rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle2.ptr += bbIndex2 * DXInit2.device->GetDescriptorHandleIncrementSize(DXInit2.rtvHeapDesc.Type);
 		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, nullptr);*/
@@ -1047,6 +1070,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
+		//サブウィンドウ
 		/*D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle2 = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, &dsvHandle2);*/
 
@@ -1055,10 +1079,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 		DXInit.commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
+		//サブウィンドウ
 		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
 
 		//スペースキーが押されていたら
-		if (key[DIK_SPACE])
+		/*if (key[DIK_SPACE])
 		{
 			FLOAT clearColor[] = { 0.1f,0.8f,0.8f,0.0f };
 			DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
@@ -1098,7 +1123,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				constMapMaterial->color.z -= 0.01;
 			}
-		}
+		}*/
 
 		//4.描画コマンド　ここから
 
@@ -1197,6 +1222,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
 		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
 
+		//サブウィンドウ
 		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
 		//barrierDesc2.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
 		//DXInit2.commandList->ResourceBarrier(1, &barrierDesc2);
@@ -1205,6 +1231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.result = DXInit.commandList->Close();
 		assert(SUCCEEDED(DXInit.result));
 
+		//サブウィンドウ
 		/*DXInit2.result = DXInit2.commandList->Close();
 		assert(SUCCEEDED(DXInit2.result));*/
 
@@ -1212,6 +1239,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		ID3D12CommandList* commandLists[] = { DXInit.commandList };
 		DXInit.commandQueue->ExecuteCommandLists(1, commandLists);
 
+		//サブウィンドウ
 		/*ID3D12CommandList* commandLists2[] = { DXInit2.commandList };
 		DXInit2.commandQueue->ExecuteCommandLists(1, commandLists2);*/
 
@@ -1219,6 +1247,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.result = DXInit.swapChain->Present(1, 0);
 		assert(SUCCEEDED(DXInit.result));
 
+		//サブウィンドウ
 		/*DXInit2.result = DXInit2.swapChain->Present(1, 0);
 		assert(SUCCEEDED(DXInit2.result));*/
 
@@ -1232,6 +1261,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			CloseHandle(event);
 		}
 
+		//サブウィンドウ
 		/*DXInit2.commandQueue->Signal(DXInit2.fence, ++DXInit2.fenceVal);
 		if (DXInit2.fence->GetCompletedValue() != DXInit2.fenceVal)
 		{
@@ -1245,6 +1275,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.result = DXInit.commandAllocator->Reset();
 		assert(SUCCEEDED(DXInit.result));
 
+		//サブウィンドウ
 		/*DXInit2.result = DXInit2.commandAllocator->Reset();
 		assert(SUCCEEDED(DXInit2.result));*/
 
@@ -1252,6 +1283,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.result = DXInit.commandList->Reset(DXInit.commandAllocator, nullptr);
 		assert(SUCCEEDED(DXInit.result));
 
+		//サブウィンドウ
 		/*DXInit2.result = DXInit2.commandList->Reset(DXInit2.commandAllocator, nullptr);
 		assert(SUCCEEDED(DXInit2.result));*/
 
@@ -1261,6 +1293,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//ウィンドウクラスを登録解除
 	UnregisterClass(winApp.w.lpszClassName, winApp.w.hInstance);
+
+	delete input;
 
 	//UnregisterClass(subWinApp.w.lpszClassName, subWinApp.w.hInstance);
 
