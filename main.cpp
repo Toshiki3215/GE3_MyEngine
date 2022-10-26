@@ -1148,23 +1148,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		XMFLOAT3 BP4 = BP1;
 
-		if (input->PushKey(DIK_SPACE))
+		if (sceneNo_ == SceneNo::Game)
 		{
-			bezierMode = TRUE;
-		}
-		if (bezierMode == TRUE)
-		{
-			timer++;
-			t = (1.0 / splitNum) * timer;
-			//boomerangRotation.y++;
-			if (timer >= splitNum)
+			if (input->TriggerKey(DIK_SPACE))
 			{
-				boomerangRotation.y = 0;
-				timer = 0;
-				bezierMode = FALSE;
+				bezierMode = TRUE;
+			}
+			if (bezierMode == TRUE)
+			{
+				timer++;
+				t = (1.0 / splitNum) * timer;
+				//boomerangRotation.y++;
+				if (timer >= splitNum)
+				{
+					boomerangRotation.y = 0;
+					timer = 0;
+					bezierMode = FALSE;
+				}
 			}
 		}
-
 		//ベジェ関数
 		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
 
@@ -1530,45 +1532,47 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 		DXInit.commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-		//0番定数バッファビュー(CBV)の設定コマンド
-		DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
-
-		//インデックスバッファビューの設定コマンド
-		DXInit.commandList->IASetIndexBuffer(&ibView);
-
-		// 描画コマンド
-		DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-		if (Hit == FALSE)
+		if (sceneNo_ == SceneNo::Game)
 		{
-			//1番定数バッファビュー(CBV)の設定コマンド
-			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+			//0番定数バッファビュー(CBV)の設定コマンド
+			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
+
+			//インデックスバッファビューの設定コマンド
+			DXInit.commandList->IASetIndexBuffer(&ibView);
 
 			// 描画コマンド
 			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
+			if (Hit == FALSE)
+			{
+				//1番定数バッファビュー(CBV)の設定コマンド
+				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+
+				// 描画コマンド
+				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+			}
+
+			if (Hit2 == FALSE)
+			{
+				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform2->GetGPUVirtualAddress());
+
+				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+			}
+
+			if (Hit3 == FALSE)
+			{
+				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform3->GetGPUVirtualAddress());
+
+				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+			}
+
+			if (Hit4 == FALSE)
+			{
+				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform4->GetGPUVirtualAddress());
+
+				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+			}
 		}
-
-		if (Hit2 == FALSE)
-		{
-			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform2->GetGPUVirtualAddress());
-
-			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-		}
-
-		if (Hit3 == FALSE)
-		{
-			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform3->GetGPUVirtualAddress());
-
-			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-		}
-
-		if (Hit4 == FALSE)
-		{
-			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform4->GetGPUVirtualAddress());
-
-			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-		}
-
 		////1番定数バッファビュー(CBV)の設定コマンド
 		//DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
 
