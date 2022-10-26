@@ -76,6 +76,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// --- 描画初期化処理　ここから --- //
 
+	//シーン切り替え
+	enum class SceneNo {
+		Title, //タイトル
+		Game,  //射撃
+		//Clear, //ゲームクリア
+		//Over   //ゲメオーバー
+	};
+
+	SceneNo sceneNo_ = SceneNo::Title;
+
 	//OX::DebugFont::initialize(g_pD3DDev, 2500, 1024);
 
 	//頂点データ構造体
@@ -1401,6 +1411,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
+
+		switch (sceneNo_) {
+		case SceneNo::Title: //タイトル
+			if (input->PushKey(DIK_E) && sceneNo_ == SceneNo::Title) {
+				sceneNo_ = SceneNo::Game;
+			}
+
+			break;
+
+		case SceneNo::Game: //射撃
+			break;
+		}
 
 		//スペースキーが押されていたら背景色変化
 		/*if (input->PushKey(DIK_SPACE))
