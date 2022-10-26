@@ -1,7 +1,11 @@
 ﻿#include "WindowsApp.h"
-#include"DirectXInitialize.h"
+#include "DirectXInitialize.h"
+#include "Input.h"
 #include<DirectXMath.h>
 #include<DirectXTex.h>
+#include "Vector3.h"
+#include "Matrix4.h"
+#include "FPS.h"
 
 using namespace DirectX;
 
@@ -9,13 +13,12 @@ using namespace DirectX;
 
 #pragma comment(lib,"dxgi.lib")
 
-#define DIRECTINPUT_VERSION 0x0800
-#include<dinput.h>
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
-
-//#pragma comment(lib, "d3d9.lib")
-//#include"DebugText.h"
+XMMATRIX ScaleMatrix4(XMMATRIX matWorld, XMFLOAT3 scale);
+XMMATRIX RotationXMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation);
+XMMATRIX RotationYMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation);
+XMMATRIX RotationZMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation);
+XMMATRIX MoveMatrix4(XMMATRIX matWorld, XMFLOAT3 translation);
+XMFLOAT3 HalfwayPoint(XMFLOAT3 A, XMFLOAT3 B, XMFLOAT3 C, XMFLOAT3 D, float t);
 
 //Widowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -57,36 +60,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DXInit.createDX(winApp.hwndSub);*/
 
 	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	DXInit.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	assert(SUCCEEDED(DXInit.result));
+	Input* input = nullptr;
 
-	/*IDirectInput8* directInput2 = nullptr;
-	DXInit2.result = DirectInput8Create(winApp.w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput2, nullptr);
-	assert(SUCCEEDED(DXInit2.result));*/
+	input = new Input();
+	input->Initialize(DXInit.result, winApp.w);
 
-	//キーボードデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	assert(SUCCEEDED(DXInit.result));
+	//Matrix4クラスの初期化
+	Matrix4* matrix4 = nullptr;
 
-	/*IDirectInputDevice8* keyboard2 = nullptr;
-	DXInit.result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard2, NULL);
-	assert(SUCCEEDED(DXInit.result));*/
-
-	//入力データ形式のセット
-	DXInit.result = keyboard->SetDataFormat(&c_dfDIKeyboard); //標準形式
-	assert(SUCCEEDED(DXInit.result));
-
-	//DXInit2.result = keyboard2->SetDataFormat(&c_dfDIKeyboard); //標準形式
-	//assert(SUCCEEDED(DXInit2.result));
-
-	//排他制御レベルのセット
-	DXInit.result = keyboard->SetCooperativeLevel(winApp.hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(DXInit.result));
-
-	/*DXInit2.result = keyboard2->SetCooperativeLevel(winApp.hwndSub, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(DXInit2.result));*/
+	//FPSクラスの初期化
+	FPS* fps = new FPS;
 
 	// --- DirectX初期化処理　ここまで --- //
 
@@ -616,6 +599,131 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(DXInit.result));
 	}
 
+	//2番の行列用定数バッファ
+
+	ID3D12Resource* constBuffTransform2 = nullptr;
+	ConstBufferDataTransform* constMapTransform2 = nullptr;
+
+	//2番_定数バッファの生成(設定)
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+
+		//GPUへの転送用
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+
+		//256バイトアラインメント
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		DXInit.result = DXInit.device->CreateCommittedResource
+		(
+			//ヒープ設定
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			//リソース設定
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform2)
+		);
+
+		DXInit.result = constBuffTransform2->Map(0, nullptr, (void**)&constMapTransform2);
+		assert(SUCCEEDED(DXInit.result));
+	}
+
+
+	//3番の行列用定数バッファ
+
+	ID3D12Resource* constBuffTransform3 = nullptr;
+	ConstBufferDataTransform* constMapTransform3 = nullptr;
+
+	//3番_定数バッファの生成(設定)
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+
+		//GPUへの転送用
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+
+		//256バイトアラインメント
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		DXInit.result = DXInit.device->CreateCommittedResource
+		(
+			//ヒープ設定
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			//リソース設定
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform3)
+		);
+
+		DXInit.result = constBuffTransform3->Map(0, nullptr, (void**)&constMapTransform3);
+		assert(SUCCEEDED(DXInit.result));
+	}
+
+
+	//4番の行列用定数バッファ
+
+	ID3D12Resource* constBuffTransform4 = nullptr;
+	ConstBufferDataTransform* constMapTransform4 = nullptr;
+
+	//4番_定数バッファの生成(設定)
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+
+		//GPUへの転送用
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+
+		//256バイトアラインメント
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		DXInit.result = DXInit.device->CreateCommittedResource
+		(
+			//ヒープ設定
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			//リソース設定
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform4)
+		);
+
+		DXInit.result = constBuffTransform4->Map(0, nullptr, (void**)&constMapTransform4);
+		assert(SUCCEEDED(DXInit.result));
+	}
+
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 
@@ -692,7 +800,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMMATRIX matView;
 
 	//視点座標
-	XMFLOAT3 eye(0, 0, -100);
+	XMFLOAT3 eye(0, 0, -300);
 
 	//注視点座標
 	XMFLOAT3 target(0, 0, 0);
@@ -701,6 +809,56 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 up(0, 1, 0);
 
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+	//ブーメラン
+	XMFLOAT3 boomerangRotation = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 boomerangPosition = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 boomerangScale = { 1.0f,0.3f,0.3f };
+	/*XMMATRIX matBoomerang;
+	matBoomerang = XMMatrixIdentity();*/
+
+	XMFLOAT3 EnemyRotation = { 0.0f, 0.0f,  0.0f };
+	XMFLOAT3 EnemyPosition = { 0.0f, 0.3f,  -84.0f }; //-84~-66
+	XMFLOAT3 EnemyScale = { 1.0f, 1.0f, 1.0f };
+
+	XMFLOAT3 EnemyRotation2 = { 0.0f, 0.0f,  0.0f };
+	XMFLOAT3 EnemyPosition2 = { 0.0f, 0.3f,  -66.0f }; //-84~-66
+	XMFLOAT3 EnemyScale2 = { 1.0f, 1.0f, 1.0f };
+
+	XMFLOAT3 EnemyRotation3 = { 0.0f, 0.0f,  0.0f };
+	XMFLOAT3 EnemyPosition3 = { 5.0f, 0.3f, 84.0f }; //-84~-66
+	XMFLOAT3 EnemyScale3 = { 1.0f, 1.0f, 1.0f };
+
+	XMFLOAT3 EnemyRotation4 = { 0.0f, 0.0f,  0.0f };
+	XMFLOAT3 EnemyPosition4 = { 0.0f, 0.3f,  66.0f }; //-84~-66
+	XMFLOAT3 EnemyScale4 = { 1.0f, 1.0f, 1.0f };
+
+	XMFLOAT3 targetSideRotation = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 targetSideTranslation = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 targetSideScale = { 1.0f,1.0f,1.0f };
+	XMMATRIX matTarget1;
+	matTarget1 = XMMatrixIdentity();
+
+	XMFLOAT3 targetSideRotation2 = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 targetSideTranslation2 = { 0.0f,0.0f,0.0f };
+	XMFLOAT3 targetSideScale2 = { 1.0f,1.0f,1.0f };
+	XMMATRIX matTarget2;
+	matTarget2 = XMMatrixIdentity();
+
+	bool bezierMode = FALSE;
+
+	//ベジェタイマー
+	int timer = 0;
+
+	//ベジェに必要な変数
+	int splitNum = 100;
+	float t = 0;
+
+	bool Hit = FALSE;
+	bool Hit2 = FALSE;
+	bool Hit3 = FALSE;
+	bool Hit4 = FALSE;
+
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -896,6 +1054,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// --- 描画初期化処理　ここまで --- //
 
+	//FPS固定
+	fps->SetFrameRate(60);
+
 	//ゲームループ
 	while (true)
 	{
@@ -914,76 +1075,121 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			break;
 		}
 
+		//FPS
+		fps->FpsControlBegin();
+
 		// --- DirectX毎フレーム処理　ここから --- //
 
-		//キーボード情報の取得開始
-		keyboard->Acquire();
-		//keyboard2->Acquire();
-
-		//全キーの入力状態を取得する
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
-
-		//keyboard2->GetDeviceState(sizeof(key), key);
-
-		//数字の0キーが押されていたら
-		if (key[DIK_0])
-		{
-			OutputDebugStringA("Hit 0\n"); //出力ウィンドウに「Hit 0」と表示
-		}
+		input->Update(DXInit.result);
 
 		// バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = DXInit.swapChain->GetCurrentBackBufferIndex();
 
 		//UINT bbIndex2 = DXInit2.swapChain->GetCurrentBackBufferIndex();
 
+		//ブーメラン横幅調整用変数
+		float boomerangWidth = 0.8f;
+
+		// ----- ベクトル ----- //
+		XMFLOAT3 frontV = { eye.x - target.x,eye.y - target.y,eye.z - target.z };
+
+		XMFLOAT3 sideV = { boomerangWidth * frontV.z, 0, -boomerangWidth * frontV.x };
+
 		//回転
-		if (key[DIK_D] || key[DIK_A])
+		if (input->PushKey(DIK_D) || input->PushKey(DIK_A))
 		{
-			if (key[DIK_D])
-			{
-				angle += XMConvertToRadians(1.0f);
-			}
-			else if (key[DIK_A])
+			if (input->PushKey(DIK_D))
 			{
 				angle -= XMConvertToRadians(1.0f);
 			}
+			else if (input->PushKey(DIK_A))
+			{
+				angle += XMConvertToRadians(1.0f);
+			}
 
 			//angleラジアンだけY軸まわりに回転。半径は-100
-			eye.x = -100 * sinf(angle);
-			eye.z = -100 * cosf(angle);
+			eye.x = -300 * sinf(angle);
+			eye.z = -300 * cosf(angle);
 
 			//ビュー変換行列を作り直す
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		}
 
+		//ブーメラン横幅
+		targetSideTranslation = { -sideV.x, target.y + 3,-sideV.z };
+		targetSideTranslation2 = { sideV.x ,target.y + 3, sideV.z };
+
+		matTarget1 = XMMatrixIdentity();
+		matTarget1 = MoveMatrix4(matTarget1, targetSideTranslation);
+
+		matTarget2 = XMMatrixIdentity();
+		matTarget2 = MoveMatrix4(matTarget2, targetSideTranslation2);
+
+		XMFLOAT3 BP1 = { eye.x, eye.y,eye.z };
+
+		//通常ブーメラン
+		XMFLOAT3 BP2 = targetSideTranslation;
+		XMFLOAT3 BP3 = targetSideTranslation2;
+
+		//戻りブメ
+		/*XMFLOAT3 BP2 = { target.x, target.y + 3, target.z };
+		XMFLOAT3 BP3 = BP2;*/
+
+		XMFLOAT3 BP4 = BP1;
+
+		if (input->PushKey(DIK_SPACE))
+		{
+			bezierMode = TRUE;
+		}
+		if (bezierMode == TRUE)
+		{
+			timer++;
+			t = (1.0 / splitNum) * timer;
+			//boomerangRotation.y++;
+			if (timer >= splitNum)
+			{
+				boomerangRotation.y = 0;
+				timer = 0;
+				bezierMode = FALSE;
+			}
+		}
+
+		//ベジェ関数
+		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
+
+		/*BoomerangCollision(boomerangPosition, EnemyPosition, Hit);*/
+
 		//移動
-		if (key[DIK_UP] || key[DIK_DOWN] || key[DIK_RIGHT] || key[DIK_LEFT])
+		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 		{
 			//座標を移動する処理(Z座標)
-			if (key[DIK_UP])
+			if (input->PushKey(DIK_UP))
 			{
 				position.z += 1.0f;
 			}
-			else if (key[DIK_DOWN])
+			else if (input->PushKey(DIK_DOWN))
 			{
 				position.z -= 1.0f;
 			}
-			else if (key[DIK_RIGHT])
+			else if (input->PushKey(DIK_RIGHT))
 			{
 				position.x += 1.0f;
 			}
-			else if (key[DIK_LEFT])
+			else if (input->PushKey(DIK_LEFT))
 			{
 				position.x -= 1.0f;
 			}
 		}
 
+		XMMATRIX matScale = XMMatrixScaling(boomerangScale.x, boomerangScale.y, boomerangScale.z);
+
+		XMMATRIX matRot = XMMatrixRotationY(boomerangRotation.y);
+
 		//平行移動行列
 		XMMATRIX matTrans;
 
-		matTrans = XMMatrixTranslation(position.x, position.y, position.z);
+		matTrans = XMMatrixTranslation(boomerangPosition.x, boomerangPosition.y, boomerangPosition.z);
 
 		matWorld = XMMatrixIdentity();
 
@@ -1005,18 +1211,158 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		matWorld1 = XMMatrixIdentity();
 
-		//各種変形行列を計算
-		XMMATRIX matScale1 = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+		XMMATRIX matScale1 = XMMatrixScaling(EnemyScale.x, EnemyScale.y, EnemyScale.z);
 
-		XMMATRIX matRot1 = XMMatrixRotationY(XM_PI / 4.0f);
+		XMMATRIX matRot1 = XMMatrixRotationY(EnemyRotation.y);
 
-		XMMATRIX matTrans1 = XMMatrixTranslation(-20.0f, 0, 0);
+		//平行移動行列
+		XMMATRIX matTrans1;
+
+		matTrans1 = XMMatrixTranslation(EnemyPosition.x, EnemyPosition.y, EnemyPosition.z);
 
 		//ワールド行列を合成
 		matWorld1 = matScale1 * matRot1 * matTrans1;
 
 		//ワールド、ビュー、射影行列を合成してシェーダーに転送
 		constMapTransform1->mat = matWorld1 * matView * matProjection;
+
+
+		//ワールド変換行列
+		XMMATRIX matWorld2;
+
+		matWorld2 = XMMatrixIdentity();
+
+		XMMATRIX matScale2 = XMMatrixScaling(EnemyScale2.x, EnemyScale2.y, EnemyScale2.z);
+
+		XMMATRIX matRot2 = XMMatrixRotationY(EnemyRotation2.y);
+
+		//平行移動行列
+		XMMATRIX matTrans2;
+
+		matTrans2 = XMMatrixTranslation(EnemyPosition2.x, EnemyPosition2.y, EnemyPosition2.z);
+
+		//ワールド行列を合成
+		matWorld2 = matScale2 * matRot2 * matTrans2;
+
+		//ワールド、ビュー、射影行列を合成してシェーダーに転送
+		constMapTransform2->mat = matWorld2 * matView * matProjection;
+
+
+		//ワールド変換行列
+		XMMATRIX matWorld3;
+
+		matWorld3 = XMMatrixIdentity();
+
+		XMMATRIX matScale3 = XMMatrixScaling(EnemyScale3.x, EnemyScale3.y, EnemyScale3.z);
+
+		XMMATRIX matRot3 = XMMatrixRotationY(EnemyRotation3.y);
+
+		//平行移動行列
+		XMMATRIX matTrans3;
+
+		matTrans3 = XMMatrixTranslation(EnemyPosition3.x, EnemyPosition3.y, EnemyPosition3.z);
+
+		//ワールド行列を合成
+		matWorld3 = matScale3 * matRot3 * matTrans3;
+
+		//ワールド、ビュー、射影行列を合成してシェーダーに転送
+		constMapTransform3->mat = matWorld3 * matView * matProjection;
+
+
+		//ワールド変換行列
+		XMMATRIX matWorld4;
+
+		matWorld4 = XMMatrixIdentity();
+
+		XMMATRIX matScale4 = XMMatrixScaling(EnemyScale4.x, EnemyScale4.y, EnemyScale4.z);
+
+		XMMATRIX matRot4 = XMMatrixRotationY(EnemyRotation4.y);
+
+		//平行移動行列
+		XMMATRIX matTrans4;
+
+		matTrans4 = XMMatrixTranslation(EnemyPosition4.x, EnemyPosition4.y, EnemyPosition4.z);
+
+		//ワールド行列を合成
+		matWorld4 = matScale4 * matRot4 * matTrans4;
+
+		//ワールド、ビュー、射影行列を合成してシェーダーに転送
+		constMapTransform4->mat = matWorld4 * matView * matProjection;
+
+
+		//判定対象AとBの座標
+		XMFLOAT3 posA, posB;
+
+		posA = EnemyPosition;
+
+		posB = boomerangPosition;
+
+		//敵キャラの座標
+
+		float x = posB.x - posA.x;
+		float y = posB.y - posA.y;
+		float z = posB.z - posA.z;
+
+		float cd = sqrt(x * x + y * y + z * z);
+
+		if (cd <= 10)
+		{
+			Hit = TRUE;
+		}
+
+		//判定対象AとBの座標
+		XMFLOAT3 posA2;
+
+		posA2 = EnemyPosition2;
+
+		//敵キャラの座標
+
+		float x2 = posB.x - posA2.x;
+		float y2 = posB.y - posA2.y;
+		float z2 = posB.z - posA2.z;
+
+		float cd2 = sqrt(x2 * x2 + y2 * y2 + z2 * z2);
+
+		if (cd2 <= 10)
+		{
+			Hit2 = TRUE;
+		}
+
+		//判定対象AとBの座標
+		XMFLOAT3 posA3;
+
+		posA3 = EnemyPosition3;
+
+		//敵キャラの座標
+
+		float x3 = posB.x - posA3.x;
+		float y3 = posB.y - posA3.y;
+		float z3 = posB.z - posA3.z;
+
+		float cd3 = sqrt(x3 * x3 + y3 * y3 + z3 * z3);
+
+		if (cd3 <= 10)
+		{
+			Hit3 = TRUE;
+		}
+
+		//判定対象AとBの座標
+		XMFLOAT3 posA4;
+
+		posA4 = EnemyPosition4;
+
+		//敵キャラの座標
+
+		float x4 = posB.x - posA4.x;
+		float y4 = posB.y - posA4.y;
+		float z4 = posB.z - posA4.z;
+
+		float cd4 = sqrt(x4 * x4 + y4 * y4 + z4 * z4);
+
+		if (cd2 <= 10)
+		{
+			Hit4 = TRUE;
+		}
 
 
 		// 1.リソースバリアで書き込み可能に変更
@@ -1056,44 +1402,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
 
-		//スペースキーが押されていたら
-		if (key[DIK_SPACE])
+		//スペースキーが押されていたら背景色変化
+		/*if (input->PushKey(DIK_SPACE))
 		{
 			FLOAT clearColor[] = { 0.1f,0.8f,0.8f,0.0f };
 			DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		}
+		}*/
 
-		if (key[DIK_R] || key[DIK_T])
+		//色変え
+		if (input->PushKey(DIK_R) || input->PushKey(DIK_T))
 		{
-			if (key[DIK_R] && constMapMaterial->color.x < 1)
+			if (input->PushKey(DIK_R) && constMapMaterial->color.x < 1)
 			{
 				constMapMaterial->color.x += 0.01;
 			}
-			else if (key[DIK_T] && constMapMaterial->color.x > 0)
+			else if (input->PushKey(DIK_T) && constMapMaterial->color.x > 0)
 			{
 				constMapMaterial->color.x -= 0.01;
 			}
 		}
 
-		if (key[DIK_G] || key[DIK_H])
+		if (input->PushKey(DIK_G) || input->PushKey(DIK_H))
 		{
-			if (key[DIK_G] && constMapMaterial->color.y < 1)
+			if (input->PushKey(DIK_G) && constMapMaterial->color.y < 1)
 			{
 				constMapMaterial->color.y += 0.01;
 			}
-			else if (key[DIK_H] && constMapMaterial->color.y > 0)
+			else if (input->PushKey(DIK_H) && constMapMaterial->color.y > 0)
 			{
 				constMapMaterial->color.y -= 0.01;
 			}
 		}
 
-		if (key[DIK_B] || key[DIK_N])
+		if (input->PushKey(DIK_B) || input->PushKey(DIK_N))
 		{
-			if (key[DIK_B] && constMapMaterial->color.z < 1)
+			if (input->PushKey(DIK_B) && constMapMaterial->color.z < 1)
 			{
 				constMapMaterial->color.z += 0.01;
 			}
-			else if (key[DIK_N] && constMapMaterial->color.z > 0)
+			else if (input->PushKey(DIK_N) && constMapMaterial->color.z > 0)
 			{
 				constMapMaterial->color.z -= 0.01;
 			}
@@ -1170,11 +1517,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 描画コマンド
 		DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
-		//1番定数バッファビュー(CBV)の設定コマンド
-		DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+		if (Hit == FALSE)
+		{
+			//1番定数バッファビュー(CBV)の設定コマンド
+			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
 
-		// 描画コマンド
-		DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+			// 描画コマンド
+			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		}
+
+		if (Hit2 == FALSE)
+		{
+			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform2->GetGPUVirtualAddress());
+
+			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		}
+
+		if (Hit3 == FALSE)
+		{
+			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform3->GetGPUVirtualAddress());
+
+			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		}
+
+		if (Hit4 == FALSE)
+		{
+			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform4->GetGPUVirtualAddress());
+
+			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		}
+
+		////1番定数バッファビュー(CBV)の設定コマンド
+		//DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+
+		//// 描画コマンド
+		//DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+
 
 		//ブレンドを有効にする
 		blenddesc.BlendEnable = true;
@@ -1256,12 +1634,142 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// --- DirectX毎フレーム処理　ここまで --- //
 
+		//FPS
+		fps->FpsControlEnd();
+
 	}
 
 	//ウィンドウクラスを登録解除
 	UnregisterClass(winApp.w.lpszClassName, winApp.w.hInstance);
 
+	delete fps;
+
 	//UnregisterClass(subWinApp.w.lpszClassName, subWinApp.w.hInstance);
 
 	return 0;
+}
+
+//行列計算用関数
+XMMATRIX ScaleMatrix4(XMMATRIX matWorld, XMFLOAT3 scale)
+{
+	XMMATRIX matScale = XMMatrixIdentity();
+
+	matScale =
+	{
+		scale.x,   0.0f,   0.0f, 0.0f,
+		   0.0f,scale.y,   0.0f, 0.0f,
+		   0.0f,   0.0f,scale.z, 0.0f,
+		   0.0f,   0.0f,   0.0f, 1.0f,
+	};
+
+	return matWorld *= matScale;
+}
+
+XMMATRIX RotationXMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation)
+{
+	XMMATRIX matRotX = XMMatrixIdentity();
+
+	matRotX =
+	{
+		1.0f,             0.0f,            0.0f, 0.0f,
+		0.0f, cosf(rotation.x),sinf(rotation.x), 0.0f,
+		0.0f,-sinf(rotation.x),cosf(rotation.x), 0.0f,
+		0.0f,             0.0f,            0.0f, 1.0f,
+	};
+
+	return matWorld *= matRotX;
+}
+
+XMMATRIX RotationYMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation)
+{
+	XMMATRIX matRotY = XMMatrixIdentity();
+
+	matRotY =
+	{
+		cosf(rotation.y), 0.0f,-sinf(rotation.y), 0.0f,
+					0.0f, 1.0f,             0.0f, 0.0f,
+		sinf(rotation.y), 0.0f, cosf(rotation.y), 0.0f,
+					0.0f, 0.0f,             0.0f, 1.0f,
+	};
+
+	return matWorld *= matRotY;
+}
+
+XMMATRIX RotationZMatrix4(XMMATRIX matWorld, XMFLOAT3 rotation)
+{
+	XMMATRIX matRotZ = XMMatrixIdentity();
+
+	matRotZ =
+	{
+		 cosf(rotation.z),sinf(rotation.z), 0.0f, 0.0f,
+		-sinf(rotation.z),cosf(rotation.z), 0.0f, 0.0f,
+					 0.0f,            0.0f, 1.0f, 0.0f,
+					 0.0f,            0.0f, 0.0f, 1.0f,
+	};
+
+	return matWorld *= matRotZ;
+}
+
+XMMATRIX MoveMatrix4(XMMATRIX matWorld, XMFLOAT3 translation)
+{
+	XMMATRIX matTrans = XMMatrixIdentity();
+
+	matTrans =
+	{
+				 1.0f,         0.0f,         0.0f, 0.0f,
+				 0.0f,         1.0f,         0.0f, 0.0f,
+				 0.0f,         0.0f,         1.0f, 0.0f,
+		translation.x,translation.y,translation.z, 1.0f,
+	};
+
+	return matWorld *= matTrans;
+}
+
+//ベジェ計算用関数
+XMFLOAT3 HalfwayPoint(XMFLOAT3 A, XMFLOAT3 B, XMFLOAT3 C, XMFLOAT3 D, float t)
+{
+	// ----- 第1中間点 ----- //
+
+	XMFLOAT3 AB = { 0, 0, 0 };
+
+	AB.x = ((1 - t) * A.x + t * B.x);
+	AB.y = ((1 - t) * A.y + t * B.y);
+	AB.z = ((1 - t) * A.z + t * B.z);
+
+	XMFLOAT3 BC = { 0, 0, 0 };
+
+	BC.x = ((1 - t) * B.x + t * C.x);
+	BC.y = ((1 - t) * B.y + t * C.y);
+	BC.z = ((1 - t) * B.z + t * C.z);
+
+	XMFLOAT3 CD = { 0, 0, 0 };
+
+	CD.x = ((1 - t) * C.x + t * D.x);
+	CD.y = ((1 - t) * C.y + t * D.y);
+	CD.z = ((1 - t) * C.z + t * D.z);
+
+	// ----- 第2中間点 ----- //
+
+	XMFLOAT3 AC = { 0, 0, 0 };
+
+	AC.x = ((1 - t) * AB.x + t * BC.x);
+	AC.y = ((1 - t) * AB.y + t * BC.y);
+	AC.z = ((1 - t) * AB.z + t * BC.z);
+
+	XMFLOAT3 BD = { 0, 0, 0 };
+
+	BD.x = ((1 - t) * BC.x + t * CD.x);
+	BD.y = ((1 - t) * BC.y + t * CD.y);
+	BD.z = ((1 - t) * BC.z + t * CD.z);
+
+	// ----- ベジエ本体座標 ----- //
+
+	XMFLOAT3 AD = { 0, 0, 0 };
+
+	AD.x = ((1 - t) * AC.x + t * BD.x);
+	AD.y = ((1 - t) * AC.y + t * BD.y);
+	AD.z = ((1 - t) * AC.z + t * BD.z);
+
+	return AD;
+
 }

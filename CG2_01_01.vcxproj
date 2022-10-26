@@ -159,11 +159,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXInitialize.cpp" />
+    <ClCompile Include="FPS.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowsApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXInitialize.h" />
+    <ClInclude Include="FPS.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="Vector3.h" />
     <ClInclude Include="WindowsApp.h" />
   </ItemGroup>
   <ItemGroup>
