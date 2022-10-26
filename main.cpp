@@ -83,7 +83,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	enum class SceneNo {
 		Title, //タイトル
 		Game,  //射撃
-		//Clear, //ゲームクリア
+		Clear, //ゲームクリア
 		//Over   //ゲメオーバー
 	};
 
@@ -831,19 +831,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	matBoomerang = XMMatrixIdentity();*/
 
 	XMFLOAT3 EnemyRotation = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition = { 0.0f, 0.3f,  -84.0f }; //-84~-66
+	XMFLOAT3 EnemyPosition = { 0.0f, 0.3f,  84.0f }; //-84~-66
 	XMFLOAT3 EnemyScale = { 1.0f, 1.0f, 1.0f };
 
 	XMFLOAT3 EnemyRotation2 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition2 = { 0.0f, 0.3f,  -66.0f }; //-84~-66
+	XMFLOAT3 EnemyPosition2 = { 0.0f, 0.3f,  -84.0f }; //-84~-66
 	XMFLOAT3 EnemyScale2 = { 1.0f, 1.0f, 1.0f };
 
 	XMFLOAT3 EnemyRotation3 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition3 = { 5.0f, 0.3f, 84.0f }; //-84~-66
+	XMFLOAT3 EnemyPosition3 = { 84.0f, 0.3f, 0.0f }; //-84~-66
 	XMFLOAT3 EnemyScale3 = { 1.0f, 1.0f, 1.0f };
 
 	XMFLOAT3 EnemyRotation4 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition4 = { 0.0f, 0.3f,  66.0f }; //-84~-66
+	XMFLOAT3 EnemyPosition4 = { -84.0f, 0.3f,  0.0f }; //-84~-66
 	XMFLOAT3 EnemyScale4 = { 1.0f, 1.0f, 1.0f };
 
 	XMFLOAT3 targetSideRotation = { 0.0f,0.0f,0.0f };
@@ -1078,6 +1078,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Title = Sprite::Create(1, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Title->SetSize({ 1280.0f, 720.0f });
 
+	Sprite* Clear = nullptr;
+	Sprite::LoadTexture(2, L"Resources/tinko.jpg");
+	Clear = Sprite::Create(2, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
+	Clear->SetSize({ 1280.0f, 720.0f });
+
 	//ゲームループ
 	while (true)
 	{
@@ -1159,6 +1164,52 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		XMFLOAT3 BP4 = BP1;
 
+		if (sceneNo_ == SceneNo::Title)
+		{
+			boomerangRotation = { 0.0f,0.0f,0.0f };
+			boomerangPosition = { 0.0f,0.0f,0.0f };
+			boomerangScale = { 1.0f,0.3f,0.3f };
+
+			EnemyRotation = { 0.0f, 0.0f,  0.0f };
+			EnemyPosition = { 0.0f, 0.3f,  84.0f }; //-84~-66
+			EnemyScale = { 1.0f, 1.0f, 1.0f };
+
+			EnemyRotation2 = { 0.0f, 0.0f,  0.0f };
+			EnemyPosition2 = { 0.0f, 0.3f,  -84.0f }; //-84~-66
+			EnemyScale2 = { 1.0f, 1.0f, 1.0f };
+
+			EnemyRotation3 = { 0.0f, 0.0f,  0.0f };
+			EnemyPosition3 = { 84.0f, 0.3f, 0.0f }; //-84~-66
+			EnemyScale3 = { 1.0f, 1.0f, 1.0f };
+
+			EnemyRotation4 = { 0.0f, 0.0f,  0.0f };
+			EnemyPosition4 = { -84.0f, 0.3f,  0.0f }; //-84~-66
+			EnemyScale4 = { 1.0f, 1.0f, 1.0f };
+
+			targetSideRotation = { 0.0f,0.0f,0.0f };
+			targetSideTranslation = { 0.0f,0.0f,0.0f };
+			targetSideScale = { 1.0f,1.0f,1.0f };
+			matTarget1;
+			matTarget1 = XMMatrixIdentity();
+
+			targetSideRotation2 = { 0.0f,0.0f,0.0f };
+			targetSideTranslation2 = { 0.0f,0.0f,0.0f };
+			targetSideScale2 = { 1.0f,1.0f,1.0f };
+			matTarget2;
+			matTarget2 = XMMatrixIdentity();
+
+			bezierMode = FALSE;
+
+			timer = 0;
+
+			splitNum = 100;
+			t = 0;
+			if (input->TriggerKey(DIK_SPACE))
+			{
+				sceneNo_ = SceneNo::Game;
+			}
+		}
+
 		if (sceneNo_ == SceneNo::Game)
 		{
 			if (input->TriggerKey(DIK_SPACE))
@@ -1169,13 +1220,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				timer++;
 				t = (1.0 / splitNum) * timer;
-				//boomerangRotation.y++;
+				boomerangRotation.y++;
 				if (timer >= splitNum)
 				{
 					boomerangRotation.y = 0;
 					timer = 0;
 					bezierMode = FALSE;
 				}
+			}
+
+			if (Hit == TRUE)
+			{
+				if (Hit2 == TRUE)
+				{
+					if (Hit3 == TRUE)
+					{
+						if (Hit4 == TRUE)
+						{
+							sceneNo_ = SceneNo::Clear;
+						}
+					}
+				}
+			}
+		}
+
+		if (sceneNo_ == SceneNo::Clear)
+		{
+			if (input->TriggerKey(DIK_SPACE) && sceneNo_ == SceneNo::Clear)
+			{
+				sceneNo_ = SceneNo::Title;
+				Hit = FALSE;
+				Hit2 = FALSE;
+				Hit3 = FALSE;
+				Hit4 = FALSE;
 			}
 		}
 		//ベジェ関数
@@ -1382,7 +1459,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		float cd4 = sqrt(x4 * x4 + y4 * y4 + z4 * z4);
 
-		if (cd2 <= 10)
+		if (cd4 <= 10)
 		{
 			Hit4 = TRUE;
 		}
@@ -1424,18 +1501,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		DXInit.commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 
 		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
-
-		switch (sceneNo_) {
-		case SceneNo::Title: //タイトル
-			if (input->PushKey(DIK_SPACE) && sceneNo_ == SceneNo::Title) {
-				sceneNo_ = SceneNo::Game;
-			}
-
-			break;
-
-		case SceneNo::Game: //射撃
-			break;
-		}
 
 		//スペースキーが押されていたら背景色変化
 		/*if (input->PushKey(DIK_SPACE))
@@ -1594,6 +1659,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 			}
 		}
+
+		if (sceneNo_ == SceneNo::Clear)
+		{
+			Sprite::PreDraw(DXInit.commandList.Get());
+
+			Clear->Draw();
+
+			Sprite::PostDraw();
+		}
+
 		////1番定数バッファビュー(CBV)の設定コマンド
 		//DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
 
