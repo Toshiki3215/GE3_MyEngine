@@ -82,6 +82,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//シーン切り替え
 	enum class SceneNo {
 		Title, //タイトル
+		Tuto,
 		Game,  //射撃
 		Clear, //ゲームクリア
 		//Over   //ゲメオーバー
@@ -877,6 +878,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool move3 = TRUE;
 	bool move4 = FALSE;
 
+	int TutoTimer = 0;
+
 	//カメラの回転角
 	float angle = 0.0f;
 
@@ -1078,12 +1081,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//スプライト
 	Sprite* Title = nullptr;
-	Sprite::LoadTexture(1, L"Resources/bb.png");
+	Sprite::LoadTexture(1, L"Resources/gameStart1.png");
 	Title = Sprite::Create(1, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Title->SetSize({ 1280.0f, 720.0f });
 
+	Sprite* Tuto = nullptr;
+	Sprite::LoadTexture(3, L"Resources/control.png");
+	Tuto = Sprite::Create(3, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
+	Tuto->SetSize({ 1280.0f, 720.0f });
+
 	Sprite* Clear = nullptr;
-	Sprite::LoadTexture(2, L"Resources/tinko.jpg");
+	Sprite::LoadTexture(2, L"Resources/gameClear.png");
 	Clear = Sprite::Create(2, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Clear->SetSize({ 1280.0f, 720.0f });
 
@@ -1210,12 +1218,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			t = 0;
 			if (input->TriggerKey(DIK_SPACE))
 			{
+				sceneNo_ = SceneNo::Tuto;
+			}
+		}
+
+		if (sceneNo_ == SceneNo::Tuto)
+		{
+			TutoTimer++;
+			if (input->TriggerKey(DIK_SPACE) && TutoTimer >= 5)
+			{
 				sceneNo_ = SceneNo::Game;
 			}
 		}
 
 		if (sceneNo_ == SceneNo::Game)
 		{
+			TutoTimer = 0;
 			if (input->TriggerKey(DIK_SPACE))
 			{
 				bezierMode = TRUE;
@@ -1747,6 +1765,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 			}
+		}
+
+		if (sceneNo_ == SceneNo::Tuto)
+		{
+			Sprite::PreDraw(DXInit.commandList.Get());
+
+			Tuto->Draw();
+
+			Sprite::PostDraw();
 		}
 
 		if (sceneNo_ == SceneNo::Clear)
