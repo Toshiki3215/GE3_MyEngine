@@ -6,8 +6,11 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 #include "FPS.h"
+#include "Sprite.h"
 
 using namespace DirectX;
+using namespace std;
+using namespace Microsoft::WRL;
 
 #include<d3dcompiler.h>
 
@@ -1067,6 +1070,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//FPS固定
 	fps->SetFrameRate(60);
 
+	Sprite::StaticInitialize(DXInit.device.Get(), WindowsApp::window_width, WindowsApp::window_height);
+
+	//スプライト
+	Sprite* Title = nullptr;
+	Sprite::LoadTexture(1, L"Resources/bb.png");
+	Title = Sprite::Create(1, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
+	Title->SetSize({ 1280.0f, 720.0f });
+
 	//ゲームループ
 	while (true)
 	{
@@ -1470,6 +1481,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 		}
 
+
 		//4.描画コマンド　ここから
 
 		// --- グラフィックスコマンド --- //
@@ -1531,6 +1543,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 		DXInit.commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+		if (sceneNo_ == SceneNo::Title)
+		{
+			Sprite::PreDraw(DXInit.commandList.Get());
+
+			Title->Draw();
+
+			Sprite::PostDraw();
+		}
 
 		if (sceneNo_ == SceneNo::Game)
 		{
@@ -1612,7 +1633,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(DXInit2.result));*/
 
 		// コマンドリストの実行
-		ID3D12CommandList* commandLists[] = { DXInit.commandList };
+		ID3D12CommandList* commandLists[] = { DXInit.commandList.Get() };
 		DXInit.commandQueue->ExecuteCommandLists(1, commandLists);
 
 		/*ID3D12CommandList* commandLists2[] = { DXInit2.commandList };
@@ -1652,7 +1673,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(DXInit2.result));*/
 
 		//再びコマンドリストにためる準備
-		DXInit.result = DXInit.commandList->Reset(DXInit.commandAllocator, nullptr);
+		DXInit.result = DXInit.commandList->Reset(DXInit.commandAllocator.Get(), nullptr);
 		assert(SUCCEEDED(DXInit.result));
 
 		/*DXInit2.result = DXInit2.commandList->Reset(DXInit2.commandAllocator, nullptr);
