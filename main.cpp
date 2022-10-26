@@ -1231,6 +1231,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 		}
 
+
 		if (sceneNo_ == SceneNo::Game)
 		{
 			TutoTimer = 0;
