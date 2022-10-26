@@ -872,6 +872,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	bool Hit3 = FALSE;
 	bool Hit4 = FALSE;
 
+	bool move  = TRUE;
+	bool move2 = FALSE;
+	bool move3 = TRUE;
+	bool move4 = FALSE;
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -1255,6 +1259,91 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				Hit4 = FALSE;
 			}
 		}
+
+		if (Hit == FALSE)
+		{
+			if (EnemyPosition.y > 30)
+			{
+				move = TRUE;
+			}
+			else if (EnemyPosition.y < -30)
+			{
+				move = FALSE;
+			}
+
+			if (move == TRUE)
+			{
+				EnemyPosition.y--;
+			}
+			else if (move == FALSE)
+			{
+				EnemyPosition.y++;
+			}
+		}
+
+		if (Hit2 == FALSE)
+		{
+			if (EnemyPosition2.y > 30)
+			{
+				move2 = TRUE;
+			}
+			else if(EnemyPosition2.y < -30)
+			{
+				move2 = FALSE;
+			}
+
+			if (move2 == TRUE)
+			{
+				EnemyPosition2.y--;
+			}
+			else if (move2 == FALSE)
+			{
+				EnemyPosition2.y++;
+			}
+		}
+
+		if (Hit3 == FALSE)
+		{
+			if (EnemyPosition3.y > 30)
+			{
+				move3 = TRUE;
+			}
+			else if (EnemyPosition3.y < -30)
+			{
+				move3 = FALSE;
+			}
+
+			if (move3 == TRUE)
+			{
+				EnemyPosition3.y -= 2;
+			}
+			else if (move3 == FALSE)
+			{
+				EnemyPosition3.y += 2;
+			}
+		}
+
+		if (Hit4 == FALSE)
+		{
+			if (EnemyPosition4.y > 30)
+			{
+				move4 = TRUE;
+			}
+			else if (EnemyPosition4.y < -30)
+			{
+				move4 = FALSE;
+			}
+
+			if (move4 == TRUE)
+			{
+				EnemyPosition4.y -= 2;
+			}
+			else if (move4 == FALSE)
+			{
+				EnemyPosition4.y += 2;
+			}
+		}
+
 		//ベジェ関数
 		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
 
