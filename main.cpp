@@ -1096,13 +1096,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 sideV = { boomerangWidth * frontV.z, 0, -boomerangWidth * frontV.x };
 
 		//回転
-		if (input->PushKey(DIK_D) || input->PushKey(DIK_A))
+		if (input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 		{
-			if (input->PushKey(DIK_D))
+			if (input->PushKey(DIK_RIGHT))
 			{
 				angle -= XMConvertToRadians(1.0f);
 			}
-			else if (input->PushKey(DIK_A))
+			else if (input->PushKey(DIK_LEFT))
 			{
 				angle += XMConvertToRadians(1.0f);
 			}
@@ -1161,26 +1161,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		/*BoomerangCollision(boomerangPosition, EnemyPosition, Hit);*/
 
 		//移動
-		if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-		{
-			//座標を移動する処理(Z座標)
-			if (input->PushKey(DIK_UP))
-			{
-				position.z += 1.0f;
-			}
-			else if (input->PushKey(DIK_DOWN))
-			{
-				position.z -= 1.0f;
-			}
-			else if (input->PushKey(DIK_RIGHT))
-			{
-				position.x += 1.0f;
-			}
-			else if (input->PushKey(DIK_LEFT))
-			{
-				position.x -= 1.0f;
-			}
-		}
+		//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
+		//{
+		//	//座標を移動する処理(Z座標)
+		//	if (input->PushKey(DIK_UP))
+		//	{
+		//		position.z += 1.0f;
+		//	}
+		//	else if (input->PushKey(DIK_DOWN))
+		//	{
+		//		position.z -= 1.0f;
+		//	}
+		//	else if (input->PushKey(DIK_RIGHT))
+		//	{
+		//		position.x += 1.0f;
+		//	}
+		//	else if (input->PushKey(DIK_LEFT))
+		//	{
+		//		position.x -= 1.0f;
+		//	}
+		//}
 
 		XMMATRIX matScale = XMMatrixScaling(boomerangScale.x, boomerangScale.y, boomerangScale.z);
 
