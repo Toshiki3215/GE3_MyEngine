@@ -1414,7 +1414,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		switch (sceneNo_) {
 		case SceneNo::Title: //タイトル
-			if (input->PushKey(DIK_E) && sceneNo_ == SceneNo::Title) {
+			if (input->PushKey(DIK_SPACE) && sceneNo_ == SceneNo::Title) {
 				sceneNo_ = SceneNo::Game;
 			}
 
