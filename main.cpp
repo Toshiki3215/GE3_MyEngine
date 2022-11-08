@@ -50,18 +50,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	DXInit.createDX(winApp.hwnd);
 
-	/*DirectXInitialize DXInit2;
-
-	DXInit2.createDX(winApp.hwndSub);*/
-
-	/*DirectXInitialize DXInit2;
-
-	DXInit2.createDX(winApp.hwnd);
-
-	DirectXInitialize DXInit;
-
-	DXInit.createDX(winApp.hwndSub);*/
-
 	//DirectInputの初期化
 	Input* input = nullptr;
 
@@ -89,8 +77,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	SceneNo sceneNo_ = SceneNo::Title;
-
-	//OX::DebugFont::initialize(g_pD3DDev, 2500, 1024);
 
 	//頂点データ構造体
 	struct Vertex
@@ -532,7 +518,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	//0番の行列用定数バッファ
-
 	ID3D12Resource* constBuffTransform0 = nullptr;
 	ConstBufferDataTransform* constMapTransform0 = nullptr;
 
@@ -738,6 +723,88 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(DXInit.result));
 	}
 
+	//5番の行列用定数バッファ
+	ID3D12Resource* constBuffTransform5 = nullptr;
+	ConstBufferDataTransform* constMapTransform5 = nullptr;
+	//5番_定数バッファの生成(設定)
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+
+		//GPUへの転送用
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+
+		//256バイトアラインメント
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		DXInit.result = DXInit.device->CreateCommittedResource
+		(
+			//ヒープ設定
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			//リソース設定
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform5)
+		);
+
+		DXInit.result = constBuffTransform5->Map(0, nullptr, (void**)&constMapTransform5);
+		assert(SUCCEEDED(DXInit.result));
+	}
+
+
+	//6番の行列用定数バッファ
+	ID3D12Resource* constBuffTransform6 = nullptr;
+	ConstBufferDataTransform* constMapTransform6 = nullptr;
+
+	//6番_定数バッファの生成(設定)
+	{
+		//ヒープ設定
+		D3D12_HEAP_PROPERTIES cbHeapProp{};
+
+		//GPUへの転送用
+		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		//リソース設定
+		D3D12_RESOURCE_DESC cbResourceDesc{};
+		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+
+		//256バイトアラインメント
+		cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;
+		cbResourceDesc.Height = 1;
+		cbResourceDesc.DepthOrArraySize = 1;
+		cbResourceDesc.MipLevels = 1;
+		cbResourceDesc.SampleDesc.Count = 1;
+		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+		DXInit.result = DXInit.device->CreateCommittedResource
+		(
+			//ヒープ設定
+			&cbHeapProp,
+			D3D12_HEAP_FLAG_NONE,
+			//リソース設定
+			&cbResourceDesc,
+			D3D12_RESOURCE_STATE_GENERIC_READ,
+			nullptr,
+			IID_PPV_ARGS(&constBuffTransform6)
+		);
+
+		DXInit.result = constBuffTransform6->Map(0, nullptr, (void**)&constMapTransform6);
+		assert(SUCCEEDED(DXInit.result));
+	}
+
+
+
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};
 
@@ -824,61 +891,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
-	//ブーメラン
-	XMFLOAT3 boomerangRotation = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 boomerangPosition = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 boomerangScale = { 1.0f,0.3f,0.3f };
-	/*XMMATRIX matBoomerang;
-	matBoomerang = XMMatrixIdentity();*/
-
-	XMFLOAT3 EnemyRotation = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition = { 0.0f, 0.3f,  84.0f }; //-84~-66
-	XMFLOAT3 EnemyScale = { 1.0f, 1.0f, 1.0f };
-
-	XMFLOAT3 EnemyRotation2 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition2 = { 0.0f, 0.3f,  -84.0f }; //-84~-66
-	XMFLOAT3 EnemyScale2 = { 1.0f, 1.0f, 1.0f };
-
-	XMFLOAT3 EnemyRotation3 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition3 = { 84.0f, 0.3f, 0.0f }; //-84~-66
-	XMFLOAT3 EnemyScale3 = { 1.0f, 1.0f, 1.0f };
-
-	XMFLOAT3 EnemyRotation4 = { 0.0f, 0.0f,  0.0f };
-	XMFLOAT3 EnemyPosition4 = { -84.0f, 0.3f,  0.0f }; //-84~-66
-	XMFLOAT3 EnemyScale4 = { 1.0f, 1.0f, 1.0f };
-
-	XMFLOAT3 targetSideRotation = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 targetSideTranslation = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 targetSideScale = { 1.0f,1.0f,1.0f };
-	XMMATRIX matTarget1;
-	matTarget1 = XMMatrixIdentity();
-
-	XMFLOAT3 targetSideRotation2 = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 targetSideTranslation2 = { 0.0f,0.0f,0.0f };
-	XMFLOAT3 targetSideScale2 = { 1.0f,1.0f,1.0f };
-	XMMATRIX matTarget2;
-	matTarget2 = XMMatrixIdentity();
-
-	bool bezierMode = FALSE;
-
-	//ベジェタイマー
-	int timer = 0;
-
-	//ベジェに必要な変数
-	int splitNum = 100;
-	float t = 0;
-
-	bool Hit = FALSE;
-	bool Hit2 = FALSE;
-	bool Hit3 = FALSE;
-	bool Hit4 = FALSE;
-
-	bool move  = TRUE;
-	bool move2 = FALSE;
-	bool move3 = TRUE;
-	bool move4 = FALSE;
-
-	int TutoTimer = 0;
 
 	//カメラの回転角
 	float angle = 0.0f;
@@ -1085,16 +1097,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	Title = Sprite::Create(1, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Title->SetSize({ 1280.0f, 720.0f });
 
-	Sprite* Tuto = nullptr;
-	Sprite::LoadTexture(3, L"Resources/control.png");
-	Tuto = Sprite::Create(3, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
-	Tuto->SetSize({ 1280.0f, 720.0f });
-
-	Sprite* Clear = nullptr;
-	Sprite::LoadTexture(2, L"Resources/gameClear.png");
-	Clear = Sprite::Create(2, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
-	Clear->SetSize({ 1280.0f, 720.0f });
-
 	//ゲームループ
 	while (true)
 	{
@@ -1154,425 +1156,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		}
 
-		//ブーメラン横幅
-		targetSideTranslation = { -sideV.x, target.y + 3,-sideV.z };
-		targetSideTranslation2 = { sideV.x ,target.y + 3, sideV.z };
-
-		matTarget1 = XMMatrixIdentity();
-		matTarget1 = MoveMatrix4(matTarget1, targetSideTranslation);
-
-		matTarget2 = XMMatrixIdentity();
-		matTarget2 = MoveMatrix4(matTarget2, targetSideTranslation2);
-
-		XMFLOAT3 BP1 = { eye.x, eye.y,eye.z };
-
-		//通常ブーメラン
-		XMFLOAT3 BP2 = targetSideTranslation;
-		XMFLOAT3 BP3 = targetSideTranslation2;
-
-		//戻りブメ
-		/*XMFLOAT3 BP2 = { target.x, target.y + 3, target.z };
-		XMFLOAT3 BP3 = BP2;*/
-
-		XMFLOAT3 BP4 = BP1;
-
-		if (sceneNo_ == SceneNo::Title)
-		{
-			boomerangRotation = { 0.0f,0.0f,0.0f };
-			boomerangPosition = { 0.0f,0.0f,0.0f };
-			boomerangScale = { 1.0f,0.3f,0.3f };
-
-			EnemyRotation = { 0.0f, 0.0f,  0.0f };
-			EnemyPosition = { 0.0f, 0.3f,  84.0f }; //-84~-66
-			EnemyScale = { 1.0f, 1.0f, 1.0f };
-
-			EnemyRotation2 = { 0.0f, 0.0f,  0.0f };
-			EnemyPosition2 = { 0.0f, 0.3f,  -84.0f }; //-84~-66
-			EnemyScale2 = { 1.0f, 1.0f, 1.0f };
-
-			EnemyRotation3 = { 0.0f, 0.0f,  0.0f };
-			EnemyPosition3 = { 84.0f, 0.3f, 0.0f }; //-84~-66
-			EnemyScale3 = { 1.0f, 1.0f, 1.0f };
-
-			EnemyRotation4 = { 0.0f, 0.0f,  0.0f };
-			EnemyPosition4 = { -84.0f, 0.3f,  0.0f }; //-84~-66
-			EnemyScale4 = { 1.0f, 1.0f, 1.0f };
-
-			targetSideRotation = { 0.0f,0.0f,0.0f };
-			targetSideTranslation = { 0.0f,0.0f,0.0f };
-			targetSideScale = { 1.0f,1.0f,1.0f };
-			matTarget1;
-			matTarget1 = XMMatrixIdentity();
-
-			targetSideRotation2 = { 0.0f,0.0f,0.0f };
-			targetSideTranslation2 = { 0.0f,0.0f,0.0f };
-			targetSideScale2 = { 1.0f,1.0f,1.0f };
-			matTarget2;
-			matTarget2 = XMMatrixIdentity();
-
-			bezierMode = FALSE;
-
-			timer = 0;
-
-			splitNum = 100;
-			t = 0;
-			if (input->TriggerKey(DIK_SPACE))
-			{
-				sceneNo_ = SceneNo::Tuto;
-			}
-		}
-
-		if (sceneNo_ == SceneNo::Tuto)
-		{
-			TutoTimer++;
-			if (input->TriggerKey(DIK_SPACE) && TutoTimer >= 5)
-			{
-				sceneNo_ = SceneNo::Game;
-			}
-		}
-
-
-		if (sceneNo_ == SceneNo::Game)
-		{
-			TutoTimer = 0;
-			if (input->TriggerKey(DIK_SPACE))
-			{
-				bezierMode = TRUE;
-			}
-			if (bezierMode == TRUE)
-			{
-				timer++;
-				t = (1.0 / splitNum) * timer;
-				boomerangRotation.y++;
-				if (timer >= splitNum)
-				{
-					boomerangRotation.y = 0;
-					timer = 0;
-					bezierMode = FALSE;
-				}
-			}
-
-			if (Hit == TRUE)
-			{
-				if (Hit2 == TRUE)
-				{
-					if (Hit3 == TRUE)
-					{
-						if (Hit4 == TRUE)
-						{
-							sceneNo_ = SceneNo::Clear;
-						}
-					}
-				}
-			}
-		}
-
-		if (sceneNo_ == SceneNo::Clear)
-		{
-			if (input->TriggerKey(DIK_SPACE) && sceneNo_ == SceneNo::Clear)
-			{
-				sceneNo_ = SceneNo::Title;
-				Hit = FALSE;
-				Hit2 = FALSE;
-				Hit3 = FALSE;
-				Hit4 = FALSE;
-			}
-		}
-
-		if (Hit == FALSE)
-		{
-			if (EnemyPosition.y > 30)
-			{
-				move = TRUE;
-			}
-			else if (EnemyPosition.y < -30)
-			{
-				move = FALSE;
-			}
-
-			if (move == TRUE)
-			{
-				EnemyPosition.y--;
-			}
-			else if (move == FALSE)
-			{
-				EnemyPosition.y++;
-			}
-		}
-
-		if (Hit2 == FALSE)
-		{
-			if (EnemyPosition2.y > 30)
-			{
-				move2 = TRUE;
-			}
-			else if(EnemyPosition2.y < -30)
-			{
-				move2 = FALSE;
-			}
-
-			if (move2 == TRUE)
-			{
-				EnemyPosition2.y--;
-			}
-			else if (move2 == FALSE)
-			{
-				EnemyPosition2.y++;
-			}
-		}
-
-		if (Hit3 == FALSE)
-		{
-			if (EnemyPosition3.y > 30)
-			{
-				move3 = TRUE;
-			}
-			else if (EnemyPosition3.y < -30)
-			{
-				move3 = FALSE;
-			}
-
-			if (move3 == TRUE)
-			{
-				EnemyPosition3.y -= 2;
-			}
-			else if (move3 == FALSE)
-			{
-				EnemyPosition3.y += 2;
-			}
-		}
-
-		if (Hit4 == FALSE)
-		{
-			if (EnemyPosition4.y > 30)
-			{
-				move4 = TRUE;
-			}
-			else if (EnemyPosition4.y < -30)
-			{
-				move4 = FALSE;
-			}
-
-			if (move4 == TRUE)
-			{
-				EnemyPosition4.y -= 2;
-			}
-			else if (move4 == FALSE)
-			{
-				EnemyPosition4.y += 2;
-			}
-		}
-
-		//ベジェ関数
-		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
-
-		/*BoomerangCollision(boomerangPosition, EnemyPosition, Hit);*/
-
-		//移動
-		//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-		//{
-		//	//座標を移動する処理(Z座標)
-		//	if (input->PushKey(DIK_UP))
-		//	{
-		//		position.z += 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_DOWN))
-		//	{
-		//		position.z -= 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_RIGHT))
-		//	{
-		//		position.x += 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_LEFT))
-		//	{
-		//		position.x -= 1.0f;
-		//	}
-		//}
-
-		XMMATRIX matScale = XMMatrixScaling(boomerangScale.x, boomerangScale.y, boomerangScale.z);
-
-		XMMATRIX matRot = XMMatrixRotationY(boomerangRotation.y);
-
-		//平行移動行列
-		XMMATRIX matTrans;
-
-		matTrans = XMMatrixTranslation(boomerangPosition.x, boomerangPosition.y, boomerangPosition.z);
-
-		matWorld = XMMatrixIdentity();
-
-		//ワールド行列にスケーリングを反映
-		matWorld *= matScale;
-
-		//ワールド行列に回転を反映
-		matWorld *= matRot;
-
-		//ワールド行列に平行移動を反映
-		matWorld *= matTrans;
-
-		//定数バッファに転送
-		constMapTransform0->mat = matWorld * matView * matProjection;
-
-
-		//ワールド変換行列
-		XMMATRIX matWorld1;
-
-		matWorld1 = XMMatrixIdentity();
-
-		XMMATRIX matScale1 = XMMatrixScaling(EnemyScale.x, EnemyScale.y, EnemyScale.z);
-
-		XMMATRIX matRot1 = XMMatrixRotationY(EnemyRotation.y);
-
-		//平行移動行列
-		XMMATRIX matTrans1;
-
-		matTrans1 = XMMatrixTranslation(EnemyPosition.x, EnemyPosition.y, EnemyPosition.z);
-
-		//ワールド行列を合成
-		matWorld1 = matScale1 * matRot1 * matTrans1;
-
-		//ワールド、ビュー、射影行列を合成してシェーダーに転送
-		constMapTransform1->mat = matWorld1 * matView * matProjection;
-
-
-		//ワールド変換行列
-		XMMATRIX matWorld2;
-
-		matWorld2 = XMMatrixIdentity();
-
-		XMMATRIX matScale2 = XMMatrixScaling(EnemyScale2.x, EnemyScale2.y, EnemyScale2.z);
-
-		XMMATRIX matRot2 = XMMatrixRotationY(EnemyRotation2.y);
-
-		//平行移動行列
-		XMMATRIX matTrans2;
-
-		matTrans2 = XMMatrixTranslation(EnemyPosition2.x, EnemyPosition2.y, EnemyPosition2.z);
-
-		//ワールド行列を合成
-		matWorld2 = matScale2 * matRot2 * matTrans2;
-
-		//ワールド、ビュー、射影行列を合成してシェーダーに転送
-		constMapTransform2->mat = matWorld2 * matView * matProjection;
-
-
-		//ワールド変換行列
-		XMMATRIX matWorld3;
-
-		matWorld3 = XMMatrixIdentity();
-
-		XMMATRIX matScale3 = XMMatrixScaling(EnemyScale3.x, EnemyScale3.y, EnemyScale3.z);
-
-		XMMATRIX matRot3 = XMMatrixRotationY(EnemyRotation3.y);
-
-		//平行移動行列
-		XMMATRIX matTrans3;
-
-		matTrans3 = XMMatrixTranslation(EnemyPosition3.x, EnemyPosition3.y, EnemyPosition3.z);
-
-		//ワールド行列を合成
-		matWorld3 = matScale3 * matRot3 * matTrans3;
-
-		//ワールド、ビュー、射影行列を合成してシェーダーに転送
-		constMapTransform3->mat = matWorld3 * matView * matProjection;
-
-
-		//ワールド変換行列
-		XMMATRIX matWorld4;
-
-		matWorld4 = XMMatrixIdentity();
-
-		XMMATRIX matScale4 = XMMatrixScaling(EnemyScale4.x, EnemyScale4.y, EnemyScale4.z);
-
-		XMMATRIX matRot4 = XMMatrixRotationY(EnemyRotation4.y);
-
-		//平行移動行列
-		XMMATRIX matTrans4;
-
-		matTrans4 = XMMatrixTranslation(EnemyPosition4.x, EnemyPosition4.y, EnemyPosition4.z);
-
-		//ワールド行列を合成
-		matWorld4 = matScale4 * matRot4 * matTrans4;
-
-		//ワールド、ビュー、射影行列を合成してシェーダーに転送
-		constMapTransform4->mat = matWorld4 * matView * matProjection;
-
-
-		//判定対象AとBの座標
-		XMFLOAT3 posA, posB;
-
-		posA = EnemyPosition;
-
-		posB = boomerangPosition;
-
-		//敵キャラの座標
-
-		float x = posB.x - posA.x;
-		float y = posB.y - posA.y;
-		float z = posB.z - posA.z;
-
-		float cd = sqrt(x * x + y * y + z * z);
-
-		if (cd <= 10)
-		{
-			Hit = TRUE;
-		}
-
-		//判定対象AとBの座標
-		XMFLOAT3 posA2;
-
-		posA2 = EnemyPosition2;
-
-		//敵キャラの座標
-
-		float x2 = posB.x - posA2.x;
-		float y2 = posB.y - posA2.y;
-		float z2 = posB.z - posA2.z;
-
-		float cd2 = sqrt(x2 * x2 + y2 * y2 + z2 * z2);
-
-		if (cd2 <= 10)
-		{
-			Hit2 = TRUE;
-		}
-
-		//判定対象AとBの座標
-		XMFLOAT3 posA3;
-
-		posA3 = EnemyPosition3;
-
-		//敵キャラの座標
-
-		float x3 = posB.x - posA3.x;
-		float y3 = posB.y - posA3.y;
-		float z3 = posB.z - posA3.z;
-
-		float cd3 = sqrt(x3 * x3 + y3 * y3 + z3 * z3);
-
-		if (cd3 <= 10)
-		{
-			Hit3 = TRUE;
-		}
-
-		//判定対象AとBの座標
-		XMFLOAT3 posA4;
-
-		posA4 = EnemyPosition4;
-
-		//敵キャラの座標
-
-		float x4 = posB.x - posA4.x;
-		float y4 = posB.y - posA4.y;
-		float z4 = posB.z - posA4.z;
-
-		float cd4 = sqrt(x4 * x4 + y4 * y4 + z4 * z4);
-
-		if (cd4 <= 10)
-		{
-			Hit4 = TRUE;
-		}
-
-
 		// 1.リソースバリアで書き込み可能に変更
 		D3D12_RESOURCE_BARRIER barrierDesc{};
 		barrierDesc.Transition.pResource = DXInit.backBuffers[bbIndex]; // バックバッファを指定
@@ -1580,35 +1163,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
 		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
 
-		//D3D12_RESOURCE_BARRIER barrierDesc2{};
-		//barrierDesc2.Transition.pResource = DXInit2.backBuffers[bbIndex2]; // バックバッファを指定
-		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
-		//barrierDesc2.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
-		//DXInit2.commandList->ResourceBarrier(1, &barrierDesc2);
-
 		//2.描画先の変更
 		//レンダーターゲットビューのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = DXInit.rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += bbIndex * DXInit.device->GetDescriptorHandleIncrementSize(DXInit.rtvHeapDesc.Type);
 		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
 
-		/*D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle2 = DXInit2.rtvHeap->GetCPUDescriptorHandleForHeapStart();
-		rtvHandle2.ptr += bbIndex2 * DXInit2.device->GetDescriptorHandleIncrementSize(DXInit2.rtvHeapDesc.Type);
-		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, nullptr);*/
-
 		//深度ステンシルビュー用デスクリプターヒープのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
-		/*D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle2 = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, &dsvHandle2);*/
-
 		//3.画面クリア
-		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; //青っぽい色{ R, G, B, A }
+		FLOAT clearColor[] = { 0.5f,0.8f,0.8f,0.0f }; //青っぽい色{ R, G, B, A }
 		DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 		DXInit.commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-
-		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
 
 		//スペースキーが押されていたら背景色変化
 		/*if (input->PushKey(DIK_SPACE))
@@ -1717,74 +1285,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 		DXInit.commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
-		if (sceneNo_ == SceneNo::Title)
-		{
+		/*{
 			Sprite::PreDraw(DXInit.commandList.Get());
 
 			Title->Draw();
 
 			Sprite::PostDraw();
-		}
+		}*/
 
-		if (sceneNo_ == SceneNo::Game)
-		{
-			//0番定数バッファビュー(CBV)の設定コマンド
-			DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
 
-			//インデックスバッファビューの設定コマンド
-			DXInit.commandList->IASetIndexBuffer(&ibView);
+		//0番定数バッファビュー(CBV)の設定コマンド
+		DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
 
-			// 描画コマンド
-			DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+		//インデックスバッファビューの設定コマンド
+		DXInit.commandList->IASetIndexBuffer(&ibView);
 
-			if (Hit == FALSE)
-			{
-				//1番定数バッファビュー(CBV)の設定コマンド
-				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
-
-				// 描画コマンド
-				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-			}
-
-			if (Hit2 == FALSE)
-			{
-				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform2->GetGPUVirtualAddress());
-
-				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-			}
-
-			if (Hit3 == FALSE)
-			{
-				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform3->GetGPUVirtualAddress());
-
-				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-			}
-
-			if (Hit4 == FALSE)
-			{
-				DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform4->GetGPUVirtualAddress());
-
-				DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-			}
-		}
-
-		if (sceneNo_ == SceneNo::Tuto)
-		{
-			Sprite::PreDraw(DXInit.commandList.Get());
-
-			Tuto->Draw();
-
-			Sprite::PostDraw();
-		}
-
-		if (sceneNo_ == SceneNo::Clear)
-		{
-			Sprite::PreDraw(DXInit.commandList.Get());
-
-			Clear->Draw();
-
-			Sprite::PostDraw();
-		}
+		// 描画コマンド
+		DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 		////1番定数バッファビュー(CBV)の設定コマンド
 		//DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
@@ -1813,30 +1330,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
 		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
 
-		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
-		//barrierDesc2.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
-		//DXInit2.commandList->ResourceBarrier(1, &barrierDesc2);
-
 		// 命令のクローズ
 		DXInit.result = DXInit.commandList->Close();
 		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.commandList->Close();
-		assert(SUCCEEDED(DXInit2.result));*/
 
 		// コマンドリストの実行
 		ID3D12CommandList* commandLists[] = { DXInit.commandList.Get() };
 		DXInit.commandQueue->ExecuteCommandLists(1, commandLists);
 
-		/*ID3D12CommandList* commandLists2[] = { DXInit2.commandList };
-		DXInit2.commandQueue->ExecuteCommandLists(1, commandLists2);*/
-
 		// 画面に表示するバッファをフリップ(裏表の入替え)
 		DXInit.result = DXInit.swapChain->Present(1, 0);
 		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.swapChain->Present(1, 0);
-		assert(SUCCEEDED(DXInit2.result));*/
 
 		//コマンドの実行完了を待つ
 		DXInit.commandQueue->Signal(DXInit.fence, ++DXInit.fenceVal);
@@ -1848,28 +1352,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			CloseHandle(event);
 		}
 
-		/*DXInit2.commandQueue->Signal(DXInit2.fence, ++DXInit2.fenceVal);
-		if (DXInit2.fence->GetCompletedValue() != DXInit2.fenceVal)
-		{
-			HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-			DXInit2.fence->SetEventOnCompletion(DXInit2.fenceVal, event);
-			WaitForSingleObject(event, INFINITE);
-			CloseHandle(event);
-		}*/
-
 		//キューをクリア
 		DXInit.result = DXInit.commandAllocator->Reset();
 		assert(SUCCEEDED(DXInit.result));
 
-		/*DXInit2.result = DXInit2.commandAllocator->Reset();
-		assert(SUCCEEDED(DXInit2.result));*/
-
 		//再びコマンドリストにためる準備
 		DXInit.result = DXInit.commandList->Reset(DXInit.commandAllocator.Get(), nullptr);
 		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.commandList->Reset(DXInit2.commandAllocator, nullptr);
-		assert(SUCCEEDED(DXInit2.result));*/
 
 		// --- DirectX毎フレーム処理　ここまで --- //
 
@@ -1882,8 +1371,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UnregisterClass(winApp.w.lpszClassName, winApp.w.hInstance);
 
 	delete fps;
-
-	//UnregisterClass(subWinApp.w.lpszClassName, subWinApp.w.hInstance);
 
 	return 0;
 }
