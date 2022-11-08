@@ -88,7 +88,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//Over   //ゲメオーバー
 	};
 
-	SceneNo sceneNo_ = SceneNo::Title;
+	SceneNo sceneNo_ = SceneNo::Game;
 
 	//OX::DebugFont::initialize(g_pD3DDev, 2500, 1024);
 
@@ -1164,17 +1164,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		matTarget2 = XMMatrixIdentity();
 		matTarget2 = MoveMatrix4(matTarget2, targetSideTranslation2);
 
-		XMFLOAT3 BP1 = { eye.x, eye.y,eye.z };
+		//XMFLOAT3 BP1 = { eye.x, eye.y,eye.z };
+		XMFLOAT3 BP1 = { -50, 50,-50 };
 
 		//通常ブーメラン
-		XMFLOAT3 BP2 = targetSideTranslation;
-		XMFLOAT3 BP3 = targetSideTranslation2;
+		/*XMFLOAT3 BP2 = targetSideTranslation;
+		XMFLOAT3 BP3 = targetSideTranslation2;*/
 
 		//戻りブメ
 		/*XMFLOAT3 BP2 = { target.x, target.y + 3, target.z };
 		XMFLOAT3 BP3 = BP2;*/
 
-		XMFLOAT3 BP4 = BP1;
+		XMFLOAT3 BP2 = { -20,25,-80 };
+		XMFLOAT3 BP3 = { 15,10,-80 };
+
+		//XMFLOAT3 BP4 = BP1;
+		XMFLOAT3 BP4 = { 70,0,-70 };
 
 		if (sceneNo_ == SceneNo::Title)
 		{
@@ -1242,10 +1247,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			{
 				timer++;
 				t = (1.0 / splitNum) * timer;
-				boomerangRotation.y++;
+				//boomerangRotation.y++;
 				if (timer >= splitNum)
 				{
-					boomerangRotation.y = 0;
+					//boomerangRotation.y = 0;
 					timer = 0;
 					bezierMode = FALSE;
 				}
@@ -1363,7 +1368,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		//ベジェ関数
-		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
+		//boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
+		eye = HalfwayPoint(BP1, BP2, BP3, BP4, t);
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 		/*BoomerangCollision(boomerangPosition, EnemyPosition, Hit);*/
 
