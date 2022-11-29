@@ -1132,7 +1132,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 frontV = { eye.x - target.x,eye.y - target.y,eye.z - target.z };
 
 		XMFLOAT3 sideV = { boomerangWidth * frontV.z, 0, -boomerangWidth * frontV.x };
-
+		
 		//回転
 		if (input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
 		{
