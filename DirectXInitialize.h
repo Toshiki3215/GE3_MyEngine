@@ -17,13 +17,6 @@ class DirectXInitialize
 {
 public:
 	HRESULT result;
-	/*ID3D12Device* device = nullptr;
-	IDXGIFactory7* dxgiFactory = nullptr;
-	IDXGISwapChain4* swapChain = nullptr;
-	ID3D12CommandAllocator* commandAllocator = nullptr;
-	ID3D12GraphicsCommandList* commandList = nullptr;
-	ID3D12CommandQueue* commandQueue = nullptr;
-	ID3D12DescriptorHeap* rtvHeap = nullptr;*/
 
 	ComPtr <ID3D12Device> device;
 	ComPtr <IDXGIFactory6> dxgiFactory;
@@ -45,10 +38,34 @@ public:
 	// バックバッファ
 	std::vector<ID3D12Resource*> backBuffers;
 
+	D3D12_RESOURCE_DESC depthResourceDesc{};
+
+	D3D12_HEAP_PROPERTIES depthHeapProp{};
+
+	D3D12_CLEAR_VALUE depthClearValue{};
+
+	ID3D12Resource* depthBuff = nullptr;
+
+	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
+
+	ID3D12DescriptorHeap* dsvHeap = nullptr;
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+
+	D3D12_RESOURCE_BARRIER barrierDesc{};
+
+	D3D12_VIEWPORT viewport{};
+
+	D3D12_RECT scissorRect{};
+
 	// フェンスの生成
 	ID3D12Fence* fence = nullptr;
 	UINT64 fenceVal = 0;
 
 	void createDX(HWND hwnd);
+
+	void PreDraw();
+
+	void PostDraw();
 
 };
