@@ -1081,17 +1081,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//スプライト
 	Sprite* Title = nullptr;
-	Sprite::LoadTexture(1, L"Resources/gameStart1.png");
+	Sprite::LoadTexture(1, L"Resources/title_one.png");
 	Title = Sprite::Create(1, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Title->SetSize({ 1280.0f, 720.0f });
 
 	Sprite* Tuto = nullptr;
-	Sprite::LoadTexture(3, L"Resources/control.png");
+	Sprite::LoadTexture(3, L"Resources/title_one2.png");
 	Tuto = Sprite::Create(3, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Tuto->SetSize({ 1280.0f, 720.0f });
 
 	Sprite* Clear = nullptr;
-	Sprite::LoadTexture(2, L"Resources/gameClear.png");
+	Sprite::LoadTexture(2, L"Resources/title_one3.png");
 	Clear = Sprite::Create(2, { 640.0f, 360.0f }, { 1.0f, 1.0f, 1.0f, 1.0f }, { 0.5f, 0.5f });
 	Clear->SetSize({ 1280.0f, 720.0f });
 
@@ -1167,12 +1167,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 BP1 = { eye.x, eye.y,eye.z };
 
 		//通常ブーメラン
-		XMFLOAT3 BP2 = targetSideTranslation;
-		XMFLOAT3 BP3 = targetSideTranslation2;
+		/*XMFLOAT3 BP2 = targetSideTranslation;
+		XMFLOAT3 BP3 = targetSideTranslation2;*/
 
 		//戻りブメ
-		/*XMFLOAT3 BP2 = { target.x, target.y + 3, target.z };
-		XMFLOAT3 BP3 = BP2;*/
+		XMFLOAT3 BP2 = { target.x, target.y + 3, target.z };
+		XMFLOAT3 BP3 = BP2;
 
 		XMFLOAT3 BP4 = BP1;
 
