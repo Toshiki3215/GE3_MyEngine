@@ -6,7 +6,6 @@
 #include "Vector3.h"
 #include "Matrix4.h"
 #include "FPS.h"
-#include "SpriteCommon.h"
 #include "Sprite.h"
 
 using namespace DirectX;
@@ -59,9 +58,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// --- 描画初期化処理　ここから --- //
 
-	SpriteCommon* spriteCommon = nullptr;
+	/*SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
-	spriteCommon->Initialize();
+	spriteCommon->Initialize();*/
 
 	//頂点データ構造体
 	struct Vertex
@@ -725,6 +724,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//FPS固定
 	fps->SetFrameRate(60);
 
+
 	//ゲームループ
 	while (true)
 	{
@@ -752,8 +752,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		DXInit.PreDraw();
 
-		Sprite* sprite = new Sprite();
-		sprite->Initialize(spriteCommon);
+		/*Sprite* sprite = new Sprite();
+		sprite->Initialize(spriteCommon);*/
 
 		// パイプラインステートとルートシグネチャの設定コマンド
 		DXInit.commandList->SetPipelineState(pipelineState);
@@ -821,7 +821,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//FPS
 		fps->FpsControlEnd();
-		delete sprite;
+		//delete sprite;
 
 	}
 
@@ -830,7 +830,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	delete input;
 	delete fps;
-	delete spriteCommon;
+
 
 	return 0;
 }

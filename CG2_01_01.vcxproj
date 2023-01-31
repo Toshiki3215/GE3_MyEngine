@@ -177,7 +177,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowsApp.cpp" />
   </ItemGroup>
@@ -187,7 +186,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WindowsApp.h" />
   </ItemGroup>
