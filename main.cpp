@@ -31,8 +31,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	winApp.createWin();
 
-	//winApp.createSubWin();
-
 	// --- DirectX初期化処理　ここから --- //
 
 #ifdef _DEBUG
@@ -49,18 +47,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	DirectXInitialize DXInit;
 
 	DXInit.createDX(winApp.hwnd);
-
-	/*DirectXInitialize DXInit2;
-
-	DXInit2.createDX(winApp.hwndSub);*/
-
-	/*DirectXInitialize DXInit2;
-
-	DXInit2.createDX(winApp.hwnd);
-
-	DirectXInitialize DXInit;
-
-	DXInit.createDX(winApp.hwndSub);*/
 
 	//DirectInputの初期化
 	Input* input = nullptr;
@@ -85,12 +71,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Tuto,
 		Game,  //射撃
 		Clear, //ゲームクリア
-		//Over   //ゲメオーバー
 	};
 
 	SceneNo sceneNo_ = SceneNo::Title;
-
-	//OX::DebugFont::initialize(g_pD3DDev, 2500, 1024);
 
 	//頂点データ構造体
 	struct Vertex
@@ -446,7 +429,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//全てのシェーダから見える
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;
-
 
 	//テクスチャサンプラーの設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -1021,57 +1003,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	DXInit.device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 
-	//深度バッファのリソース設定
-
-	//リソース設定
-	D3D12_RESOURCE_DESC depthResourceDesc{};
-	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = WindowsApp::window_width;   //レンダーターゲットに合わせる
-	depthResourceDesc.Height = WindowsApp::window_height; //レンダーターゲットに合わせる
-	depthResourceDesc.DepthOrArraySize = 1;
-	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;  //深度値フォーマット
-	depthResourceDesc.SampleDesc.Count = 1;
-	depthResourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;  //デプスステンシル
-
-	//深度バッファのその他の設定
-
-	//深度値用ヒーププロパティ
-	D3D12_HEAP_PROPERTIES depthHeapProp{};
-	depthHeapProp.Type = D3D12_HEAP_TYPE_DEFAULT;
-
-	//深度値のクリア設定
-	D3D12_CLEAR_VALUE depthClearValue{};
-	depthClearValue.DepthStencil.Depth = 1.0f;  //深度値1.0f(最大値)でクリア
-	depthClearValue.Format = DXGI_FORMAT_D32_FLOAT;  //深度値フォーマット
-
-	//深度バッファ生成
-
-	//リソース生成
-	ID3D12Resource* depthBuff = nullptr;
-	DXInit.result = DXInit.device->CreateCommittedResource
-	(
-		&depthHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&depthResourceDesc,
-		D3D12_RESOURCE_STATE_DEPTH_WRITE,  //深度値書き込みに使用
-		&depthClearValue,
-		IID_PPV_ARGS(&depthBuff)
-	);
-
-	//深度ビュー用デスクリプタヒープ生成
-	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
-	dsvHeapDesc.NumDescriptors = 1;   //深度ビューは1つ
-	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;   //デプスステンシルビュー
-	ID3D12DescriptorHeap* dsvHeap = nullptr;
-	DXInit.result = DXInit.device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
-
-	//深度ビュー生成
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
-	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;   //深度値フォーマット
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	DXInit.device->CreateDepthStencilView(depthBuff, &dsvDesc, dsvHeap->GetCPUDescriptorHandleForHeapStart());
-
-
 	// --- 描画初期化処理　ここまで --- //
 
 	//FPS固定
@@ -1120,10 +1051,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		input->Update(DXInit.result);
 
-		// バックバッファの番号を取得(2つなので0番か1番)
-		UINT bbIndex = DXInit.swapChain->GetCurrentBackBufferIndex();
-
-		//UINT bbIndex2 = DXInit2.swapChain->GetCurrentBackBufferIndex();
+		DXInit.PreDraw();
 
 		//ブーメラン横幅調整用変数
 		float boomerangWidth = 0.8f;
@@ -1365,30 +1293,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//ベジェ関数
 		boomerangPosition = HalfwayPoint(BP1, BP2, BP3, BP4, t);
 
-		/*BoomerangCollision(boomerangPosition, EnemyPosition, Hit);*/
-
-		//移動
-		//if (input->PushKey(DIK_UP) || input->PushKey(DIK_DOWN) || input->PushKey(DIK_RIGHT) || input->PushKey(DIK_LEFT))
-		//{
-		//	//座標を移動する処理(Z座標)
-		//	if (input->PushKey(DIK_UP))
-		//	{
-		//		position.z += 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_DOWN))
-		//	{
-		//		position.z -= 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_RIGHT))
-		//	{
-		//		position.x += 1.0f;
-		//	}
-		//	else if (input->PushKey(DIK_LEFT))
-		//	{
-		//		position.x -= 1.0f;
-		//	}
-		//}
-
 		XMMATRIX matScale = XMMatrixScaling(boomerangScale.x, boomerangScale.y, boomerangScale.z);
 
 		XMMATRIX matRot = XMMatrixRotationY(boomerangRotation.y);
@@ -1571,115 +1475,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			Hit4 = TRUE;
 		}
 
-
-		// 1.リソースバリアで書き込み可能に変更
-		D3D12_RESOURCE_BARRIER barrierDesc{};
-		barrierDesc.Transition.pResource = DXInit.backBuffers[bbIndex]; // バックバッファを指定
-		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
-		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
-		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
-
-		//D3D12_RESOURCE_BARRIER barrierDesc2{};
-		//barrierDesc2.Transition.pResource = DXInit2.backBuffers[bbIndex2]; // バックバッファを指定
-		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
-		//barrierDesc2.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
-		//DXInit2.commandList->ResourceBarrier(1, &barrierDesc2);
-
-		//2.描画先の変更
-		//レンダーターゲットビューのハンドルを取得
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = DXInit.rtvHeap->GetCPUDescriptorHandleForHeapStart();
-		rtvHandle.ptr += bbIndex * DXInit.device->GetDescriptorHandleIncrementSize(DXInit.rtvHeapDesc.Type);
-		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-
-		/*D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle2 = DXInit2.rtvHeap->GetCPUDescriptorHandleForHeapStart();
-		rtvHandle2.ptr += bbIndex2 * DXInit2.device->GetDescriptorHandleIncrementSize(DXInit2.rtvHeapDesc.Type);
-		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, nullptr);*/
-
-		//深度ステンシルビュー用デスクリプターヒープのハンドルを取得
-		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		DXInit.commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
-
-		/*D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle2 = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		DXInit2.commandList->OMSetRenderTargets(1, &rtvHandle2, false, &dsvHandle2);*/
-
-		//3.画面クリア
-		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; //青っぽい色{ R, G, B, A }
-		DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		DXInit.commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
-
-		//DXInit2.commandList->ClearRenderTargetView(rtvHandle2, clearColor, 0, nullptr);
-
-		//スペースキーが押されていたら背景色変化
-		/*if (input->PushKey(DIK_SPACE))
-		{
-			FLOAT clearColor[] = { 0.1f,0.8f,0.8f,0.0f };
-			DXInit.commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
-		}*/
-
-		//色変え
-		if (input->PushKey(DIK_R) || input->PushKey(DIK_T))
-		{
-			if (input->PushKey(DIK_R) && constMapMaterial->color.x < 1)
-			{
-				constMapMaterial->color.x += 0.01;
-			}
-			else if (input->PushKey(DIK_T) && constMapMaterial->color.x > 0)
-			{
-				constMapMaterial->color.x -= 0.01;
-			}
-		}
-
-		if (input->PushKey(DIK_G) || input->PushKey(DIK_H))
-		{
-			if (input->PushKey(DIK_G) && constMapMaterial->color.y < 1)
-			{
-				constMapMaterial->color.y += 0.01;
-			}
-			else if (input->PushKey(DIK_H) && constMapMaterial->color.y > 0)
-			{
-				constMapMaterial->color.y -= 0.01;
-			}
-		}
-
-		if (input->PushKey(DIK_B) || input->PushKey(DIK_N))
-		{
-			if (input->PushKey(DIK_B) && constMapMaterial->color.z < 1)
-			{
-				constMapMaterial->color.z += 0.01;
-			}
-			else if (input->PushKey(DIK_N) && constMapMaterial->color.z > 0)
-			{
-				constMapMaterial->color.z -= 0.01;
-			}
-		}
-
-
-		//4.描画コマンド　ここから
-
-		// --- グラフィックスコマンド --- //
-
-		// ビューポート設定コマンド
-		D3D12_VIEWPORT viewport{};
-		viewport.Width = WindowsApp::window_width;
-		viewport.Height = WindowsApp::window_height;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-
-		// ビューポート設定コマンドを、コマンドリストに積む
-		DXInit.commandList->RSSetViewports(1, &viewport);
-
-		// シザー矩形
-		D3D12_RECT scissorRect{};
-		scissorRect.left = 0; // 切り抜き座標左
-		scissorRect.right = scissorRect.left + WindowsApp::window_width; // 切り抜き座標右
-		scissorRect.top = 0; // 切り抜き座標上
-		scissorRect.bottom = scissorRect.top + WindowsApp::window_height; // 切り抜き座標下
-
-		// シザー矩形設定コマンドを、コマンドリストに積む
-		DXInit.commandList->RSSetScissorRects(1, &scissorRect);
-
 		// パイプラインステートとルートシグネチャの設定コマンド
 		DXInit.commandList->SetPipelineState(pipelineState);
 		DXInit.commandList->SetGraphicsRootSignature(rootSignature);
@@ -1688,18 +1483,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 三角形リスト
 		DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-		// 点のリスト
-		//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST); 
+		//その他リスト(コメントアウト)
+		{
+			// 点のリスト
+			//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST); 
 
-		// 線のリスト
-		//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST); 
+			// 線のリスト
+			//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINELIST); 
 
-		// 線のストリップ
-		//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
+			// 線のストリップ
+			//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
-		// 三角形のストリップ
-		//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
+			// 三角形のストリップ
+			//DXInit.commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		}
 
 		// 頂点バッファビューの設定コマンド
 		DXInit.commandList->IASetVertexBuffers(0, 1, &vbView);
@@ -1785,13 +1582,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			Sprite::PostDraw();
 		}
 
-		////1番定数バッファビュー(CBV)の設定コマンド
-		//DXInit.commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
-
-		//// 描画コマンド
-		//DXInit.commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-
 		//ブレンドを有効にする
 		blenddesc.BlendEnable = true;
 
@@ -1804,71 +1594,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//デストの値を0%使う
 		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
-
-		//4.描画コマンド　ここまで
-
-		// 5.リソースバリアを戻す
-		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
-		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
-		DXInit.commandList->ResourceBarrier(1, &barrierDesc);
-
-		//barrierDesc2.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
-		//barrierDesc2.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
-		//DXInit2.commandList->ResourceBarrier(1, &barrierDesc2);
-
-		// 命令のクローズ
-		DXInit.result = DXInit.commandList->Close();
-		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.commandList->Close();
-		assert(SUCCEEDED(DXInit2.result));*/
-
-		// コマンドリストの実行
-		ID3D12CommandList* commandLists[] = { DXInit.commandList.Get() };
-		DXInit.commandQueue->ExecuteCommandLists(1, commandLists);
-
-		/*ID3D12CommandList* commandLists2[] = { DXInit2.commandList };
-		DXInit2.commandQueue->ExecuteCommandLists(1, commandLists2);*/
-
-		// 画面に表示するバッファをフリップ(裏表の入替え)
-		DXInit.result = DXInit.swapChain->Present(1, 0);
-		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.swapChain->Present(1, 0);
-		assert(SUCCEEDED(DXInit2.result));*/
-
-		//コマンドの実行完了を待つ
-		DXInit.commandQueue->Signal(DXInit.fence, ++DXInit.fenceVal);
-		if (DXInit.fence->GetCompletedValue() != DXInit.fenceVal)
-		{
-			HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-			DXInit.fence->SetEventOnCompletion(DXInit.fenceVal, event);
-			WaitForSingleObject(event, INFINITE);
-			CloseHandle(event);
-		}
-
-		/*DXInit2.commandQueue->Signal(DXInit2.fence, ++DXInit2.fenceVal);
-		if (DXInit2.fence->GetCompletedValue() != DXInit2.fenceVal)
-		{
-			HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-			DXInit2.fence->SetEventOnCompletion(DXInit2.fenceVal, event);
-			WaitForSingleObject(event, INFINITE);
-			CloseHandle(event);
-		}*/
-
-		//キューをクリア
-		DXInit.result = DXInit.commandAllocator->Reset();
-		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.commandAllocator->Reset();
-		assert(SUCCEEDED(DXInit2.result));*/
-
-		//再びコマンドリストにためる準備
-		DXInit.result = DXInit.commandList->Reset(DXInit.commandAllocator.Get(), nullptr);
-		assert(SUCCEEDED(DXInit.result));
-
-		/*DXInit2.result = DXInit2.commandList->Reset(DXInit2.commandAllocator, nullptr);
-		assert(SUCCEEDED(DXInit2.result));*/
+		DXInit.PostDraw();
 
 		// --- DirectX毎フレーム処理　ここまで --- //
 
@@ -1880,9 +1606,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ウィンドウクラスを登録解除
 	UnregisterClass(winApp.w.lpszClassName, winApp.w.hInstance);
 
+	delete input;
 	delete fps;
-
-	//UnregisterClass(subWinApp.w.lpszClassName, subWinApp.w.hInstance);
 
 	return 0;
 }
