@@ -1,4 +1,5 @@
 #include "SpriteCommon.h"
+#include<DirectXMath.h>
 
 void SpriteCommon::Initialize()
 {
