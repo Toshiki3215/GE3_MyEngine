@@ -7,6 +7,7 @@
 #include "Matrix4.h"
 #include "FPS.h"
 #include "Sprite.h"
+#include "Object3D.h"
 
 using namespace DirectX;
 using namespace std;
