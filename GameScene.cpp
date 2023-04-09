@@ -88,6 +88,11 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
 	spriteCommon->LoadTexture(1, "tex.png");
 	tex2->SetTextureIndex(1);
 
+	//パーティクル生成
+	particleManager = ParticleManager::Create();
+	particleManager->LoadTexture("texture2.png");
+	particleManager->Update();
+
 }
 
 void GameScene::Reset() {
@@ -117,7 +122,10 @@ void GameScene::Update() {
     floor->Update();
 	obj->Update();
 	obj2->Update();
+	isEffFlag = 1;
     //skydome->Update();
+	GameScene::EffUpdate();
+	GameScene::EffUpdate2();
 
 		break;
 
@@ -193,7 +201,8 @@ void GameScene::Draw()
 
 		// パーティクル描画前処理
 		ParticleManager::PreDraw(dxCommon->GetCommandList());
-		//player_->EffDraw();
+		GameScene::EffDraw();
+		GameScene::EffDraw2();
 
 		// パーティクル描画後処理
 		ParticleManager::PostDraw();
@@ -208,6 +217,88 @@ void GameScene::Draw()
 
 		break;
 	}
+}
+
+void GameScene::EffUpdate()
+{
+	//パーティクル範囲
+	for (int i = 0; i < 20; i++) {
+		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+		const float rnd_pos = 0.01f;
+		Vector3 pos{ 20, 20, 40 };
+		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.z += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		//速度
+		//X,Y,Z全て[-0.05f,+0.05f]でランダムに分布
+		const float rnd_vel = 0.1f;
+		Vector3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		//重力に見立ててYのみ[-0.001f,0]でランダムに分布
+		const float rnd_acc = 0.00001f;
+		Vector3 acc{};
+		acc.x = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
+		acc.y = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
+
+		//追加
+		particleManager->Add(60, pos, vel, acc, 1.0f, 0.0f);
+
+		particleManager->Update();
+	}
+
+}
+
+void GameScene::EffUpdate2()
+{
+	//パーティクル範囲
+	for (int i = 0; i < 40; i++) {
+		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
+		const float rnd_pos = 0.01f;
+		Vector3 pos{ 50, 0, 20 };
+		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		pos.z += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+		//速度
+		//X,Y,Z全て[-0.05f,+0.05f]でランダムに分布
+		const float rnd_vel = 0.1f;
+		Vector3 vel{};
+		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+		//重力に見立ててYのみ[-0.001f,0]でランダムに分布
+		const float rnd_acc = 0.00001f;
+		Vector3 acc{};
+		acc.x = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
+		acc.y = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
+
+		//追加
+		particleManager->Add(60, pos, vel, acc, 1.0f, 0.0f);
+
+		particleManager->Update();
+	}
+
+}
+
+void GameScene::EffDraw()
+{
+	if (isEffFlag == 1) 
+	{
+		// 3Dオブクジェクトの描画
+		particleManager->Draw();
+	}
+	else {}
+}
+
+void GameScene::EffDraw2()
+{
+	if (isEffFlag == 1)
+	{
+		// 3Dオブクジェクトの描画
+		particleManager->Draw();
+	}
+	else {}
 }
 
 

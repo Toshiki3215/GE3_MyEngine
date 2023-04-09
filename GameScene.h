@@ -52,6 +52,12 @@ public: // メンバ関数
 	void CamRota();
 	void CamUpdate();
 
+	void EffUpdate();
+	void EffDraw();
+
+	void EffUpdate2();
+	void EffDraw2();
+
 
 	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
 	
@@ -60,6 +66,9 @@ private: // メンバ変数 (固定)
 	Input* input = nullptr;
 
 	SpriteCommon* spriteCommon = nullptr;
+
+	//パーティクルクラスの初期化 
+	ParticleManager* particleManager = nullptr;
 
 private:	//メンバ変数
 	const float PI = 3.141592;
@@ -102,5 +111,7 @@ private:	//メンバ変数
 	Scene scene;
 
 	int stage;
+
+	int isEffFlag;
 
 };
