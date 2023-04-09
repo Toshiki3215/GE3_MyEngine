@@ -171,22 +171,26 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectXInitialize.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Object3D.cpp" />
+    <ClCompile Include="ParticleManager.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Vector3.cpp" />
     <ClCompile Include="WindowsApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="DirectXInitialize.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Object3D.h" />
+    <ClInclude Include="ParticleManager.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WindowsApp.h" />
