@@ -1,30 +1,38 @@
 #pragma once
-#include<Windows.h>
+#include <Windows.h>
 
-class WindowsApp {
+class WinApp
+{
 public:
+	static LRESULT WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	//ウィンドウサイズ
-	static const int window_width = 1280;	//横幅
-	static const int window_height = 720;	//縦幅
+	//getter
+	HWND GetHwnd() const { return hwnd; }
 
-	//サブウィンドウサイズ
-	static const int subWindow_width = 640;	 //横幅
-	static const int subWindow_height = 720; //縦幅
+	HINSTANCE GetHInstance() const { return w.hInstance; }
+
+	bool ProcessMessage();
+
+	// ウィンドウ横幅
+	static const int window_width = 1280;
+
+	// ウィンドウ縦幅
+	static const int window_height = 720;
+
+public: //メンバ関数
+	//初期化
+	void Initialize();
+
+	//更新
+	void Update();
+
+	//終了
+	void Finalize();
+private:
+	//ウィンドウハンドル
+	HWND hwnd = nullptr;
 
 	//ウィンドウクラスの設定
 	WNDCLASSEX w{};
 
-	//メッセージ
-	MSG msg{};
-
-	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-
-	HWND hwnd;
-
-	HWND hwndSub;
-
-	void createWin();
-
-	void createSubWin();
 };

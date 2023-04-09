@@ -1,6 +1,7 @@
 #include "ParticleManager.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
+#include "ConvertXM.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -9,10 +10,10 @@ using namespace Microsoft::WRL;
 
 // 静的メンバ変数の実体
 const float ParticleManager::radius = 5.0f;				// 底面の半径
-const float ParticleManager::prizmHeight = 8.0f;		// 柱の高さ
-ID3D12Device* ParticleManager::device = nullptr;
+const float ParticleManager::prizmHeight = 8.0f;			// 柱の高さ
+ComPtr<ID3D12Device> ParticleManager::device;
 UINT ParticleManager::descriptorHandleIncrementSize = 0;
-ID3D12GraphicsCommandList* ParticleManager::cmdList = nullptr;
+ComPtr<ID3D12GraphicsCommandList> ParticleManager::cmdList;
 ComPtr<ID3D12RootSignature> ParticleManager::rootsignature;
 ComPtr<ID3D12PipelineState> ParticleManager::pipelinestate;
 ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap;
@@ -20,26 +21,21 @@ ComPtr<ID3D12Resource> ParticleManager::vertBuff;
 ComPtr<ID3D12Resource> ParticleManager::texbuff;
 CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
 CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
-XMMATRIX ParticleManager::matView{};
-XMMATRIX ParticleManager::matProjection{};
-XMFLOAT3 ParticleManager::eye = { 0,0,-5.0f };
-XMFLOAT3 ParticleManager::target = { 0, 0, 0 };
-XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 ParticleManager::VertexPos ParticleManager::vertices[vertexCount];
-XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
-XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
+Matrix4 ParticleManager::matBillboard = Affin::matUnit();
+Matrix4 ParticleManager::matBillboardY = Affin::matUnit();
 
-//XMFLOAT3同士の加算処理
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs) 
+Camera* ParticleManager::camera = nullptr;
+
+ParticleManager::ParticleManager() 
 {
-	XMFLOAT3 result;
-	result.x = lhs.x + rhs.x;
-	result.y = lhs.y + rhs.y;
-	result.z = lhs.z + rhs.z;
-	return result;
-}
 
+}
+ParticleManager::~ParticleManager() 
+{
+
+}
 
 void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
 {
@@ -51,14 +47,8 @@ void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, i
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
 
-	// カメラ初期化
-	InitializeCamera(window_width, window_height);
-
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
-
-	// テクスチャ読み込み
-	LoadTexture();
 
 	// モデル生成
 	CreateModel();
@@ -107,31 +97,6 @@ ParticleManager* ParticleManager::Create()
 	return particleManager;
 }
 
-void ParticleManager::SetEye(XMFLOAT3 eye)
-{
-	ParticleManager::eye = eye;
-
-	UpdateViewMatrix();
-}
-
-void ParticleManager::SetTarget(XMFLOAT3 target)
-{
-	ParticleManager::target = target;
-
-	UpdateViewMatrix();
-}
-
-void ParticleManager::CameraMoveEyeVector(XMFLOAT3 move)
-{
-	XMFLOAT3 eye_moved = GetEye();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	SetEye(eye_moved);
-}
-
 void ParticleManager::InitializeDescriptorHeap()
 {
 	HRESULT result = S_FALSE;
@@ -152,51 +117,34 @@ void ParticleManager::InitializeDescriptorHeap()
 
 }
 
-void ParticleManager::InitializeCamera(int window_width, int window_height)
-{
-
-	UpdateViewMatrix();
-
-	
-	// 透視投影による射影行列の生成
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
-		(float)window_width / window_height,
-		0.1f, 1000.0f
-	);
-}
 
 void ParticleManager::InitializeGraphicsPipeline()
 {
 	HRESULT result = S_FALSE;
-	ComPtr<ID3DBlob> vsBlob;    // 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> gsBlob;    // ジオメトリシェーダーオブジェクト
+	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
+	ComPtr<ID3DBlob> gsBlob; // ジオメトリシェーダーオブジェクト
 	ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleVS.hlsl",	// シェーダファイル名
+		L"ParticleVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
-
 	if (FAILED(result)) 
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
-
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
-
 		errstr += "\n";
-
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
@@ -204,27 +152,22 @@ void ParticleManager::InitializeGraphicsPipeline()
 
 	//ジオメトリシェーダーの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleGS.hlsl",	// シェーダファイル名
+		L"ParticleGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&gsBlob, &errorBlob);
-
-	if (FAILED(result)) 
-	{
+	if (FAILED(result)) {
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
-
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
-
 		errstr += "\n";
-
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
@@ -232,7 +175,7 @@ void ParticleManager::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticlePS.hlsl",	// シェーダファイル名
+		L"ParticlePS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -244,15 +187,12 @@ void ParticleManager::InitializeGraphicsPipeline()
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
-
 		errstr.resize(errorBlob->GetBufferSize());
 
 		std::copy_n((char*)errorBlob->GetBufferPointer(),
 			errorBlob->GetBufferSize(),
 			errstr.begin());
-
 		errstr += "\n";
-
 		// エラー内容を出力ウィンドウに表示
 		OutputDebugStringA(errstr.c_str());
 		exit(1);
@@ -282,8 +222,12 @@ void ParticleManager::InitializeGraphicsPipeline()
 
 	// サンプルマスク
 	gpipeline.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+
 	// ラスタライザステート
 	gpipeline.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	//gpipeline.RasterizerState.CullMode = D3D12_CULL_MODE_NONE;
+	//gpipeline.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+	
 	// デプスステンシルステート
 	gpipeline.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 
@@ -292,14 +236,29 @@ void ParticleManager::InitializeGraphicsPipeline()
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;	// RBGA全てのチャンネルを描画
 	blenddesc.BlendEnable = true;
 
-	//加算
+	//半透明
 	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
-	blenddesc.SrcBlend = D3D12_BLEND_ONE;
-	blenddesc.DestBlend = D3D12_BLEND_ONE;
-
+	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	////加算
+	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;
+	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+	//blenddesc.DestBlend = D3D12_BLEND_ONE;
+	//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+
+	////減算
+	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;
+	//blenddesc.SrcBlend = D3D12_BLEND_ONE;
+	//blenddesc.DestBlend = D3D12_BLEND_ONE;
+	//blenddesc.BlendOpAlpha = D3D12_BLEND_OP_SUBTRACT;
+	//blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
+	//blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
 
 	gpipeline.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 
@@ -351,26 +310,37 @@ void ParticleManager::InitializeGraphicsPipeline()
 
 }
 
-void ParticleManager::LoadTexture()
+std::string kDefaultTextureDirectoryPath = "Resources/";
+void ParticleManager::LoadTexture(const std::string& fileName)
 {
 	HRESULT result = S_FALSE;
 
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
+	//ディレクトリパスとファイル名を連結してフルパスを得る
+	std::string fullPath = kDefaultTextureDirectoryPath + fileName;
+
+	//ワイド文字列に変換した際の文字列バッファサイズの計算
+	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
+
+	//ワイド文字列に変換
+	std::vector<wchar_t> wfilePath(filePathBufferSize);
+	MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
+
+
 	// WICテクスチャのロード
-	result = LoadFromWICFile(L"Resources/effect1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
-	assert(SUCCEEDED(result));
+	result = LoadFromWICFile(
+		wfilePath.data(),// L"Resources/oooo.png"「Resources」フォルダの「texture.png」
+		WIC_FLAGS_NONE,
+		&metadata, scratchImg);
 
 	ScratchImage mipChain{};
-
 	// ミップマップ生成
 	result = GenerateMipMaps(
 		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
 		TEX_FILTER_DEFAULT, 0, mipChain);
-
-	if (SUCCEEDED(result)) 
-	{
+	if (SUCCEEDED(result)) {
 		scratchImg = std::move(mipChain);
 		metadata = scratchImg.GetMetadata();
 	}
@@ -392,12 +362,10 @@ void ParticleManager::LoadTexture()
 		&heapProps, D3D12_HEAP_FLAG_NONE, &texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
 		nullptr, IID_PPV_ARGS(&texbuff));
-
 	assert(SUCCEEDED(result));
 
 	// テクスチャバッファにデータ転送
-	for (size_t i = 0; i < metadata.mipLevels; i++) 
-	{
+	for (size_t i = 0; i < metadata.mipLevels; i++) {
 		const Image* img = scratchImg.GetImage(i, 0, 0); // 生データ抽出
 		result = texbuff->WriteToSubresource(
 			(UINT)i,
@@ -433,8 +401,7 @@ void ParticleManager::CreateModel()
 	HRESULT result = S_FALSE;
 
 	//四角形のインデックスデータ
-	unsigned short indicesSquare[] = 
-	{
+	unsigned short indicesSquare[] = {
 		0,1,2,//三角形１
 		2,1,3,//三角形２
 	};
@@ -455,9 +422,7 @@ void ParticleManager::CreateModel()
 	// 頂点バッファへのデータ転送
 	VertexPos* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
-
-	if (SUCCEEDED(result)) 
-	{
+	if (SUCCEEDED(result)) {
 		memcpy(vertMap, vertices, sizeof(vertices));
 		vertBuff->Unmap(0, nullptr);
 	}
@@ -468,94 +433,6 @@ void ParticleManager::CreateModel()
 	vbView.StrideInBytes = sizeof(vertices[0]);
 }
 
-void ParticleManager::UpdateViewMatrix()
-{
-	//視点座標
-	XMVECTOR eyePosition = XMLoadFloat3(&eye);
-	//注視点座標
-	XMVECTOR targetPosition = XMLoadFloat3(&target);
-	//(仮の)　上方向
-	XMVECTOR upVector = XMLoadFloat3(&up);
-
-	//カメラZ軸(視線方向)
-	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
-
-	//0ベクトルだと向きが定まらないので除外
-	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
-	assert(!XMVector3IsInfinite(cameraAxisZ));
-	assert(!XMVector3Equal(upVector, XMVectorZero()));
-	assert(!XMVector3IsInfinite(upVector));
-
-	//ベクトルを正規化
-	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
-
-	//カメラのX軸(右方向)
-	XMVECTOR cameraAxisX;
-	//X軸は上方向→Z軸の外積で求まる
-	cameraAxisX = XMVector3Cross(upVector, cameraAxisZ);
-	//ベクトルを正規化
-	cameraAxisX = XMVector3Normalize(cameraAxisX);
-
-	//カメラのY軸(上方向)
-	XMVECTOR cameraAxisY;
-	//Y軸はZ軸→X軸の外積で求まる
-	cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
-
-	//カメラ回転行列
-	XMMATRIX matCameraRot;
-
-	//カメラ座標系→ワールド座標系の変換行列
-	matCameraRot.r[0] = cameraAxisX;
-	matCameraRot.r[1] = cameraAxisY;
-	matCameraRot.r[2] = cameraAxisZ;
-	matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
-
-#pragma region 全方向ビルドボード行列の計算
-	//カメラ座標系→ワールド座標系の変換行列
-	matBillboard.r[0] = cameraAxisX;
-	matBillboard.r[1] = cameraAxisY;
-	matBillboard.r[2] = cameraAxisZ;
-	matBillboard.r[3] = XMVectorSet(0, 0, 0, 1);
-
-#pragma region
-
-#pragma region Y軸回りビルボード行列の計算
-	// カメラX軸、Y軸、Z軸
-	XMVECTOR ybillCameraAxisX, ybillCameraAxisY, ybillCameraAxisZ;
-
-	// X軸は共通
-	ybillCameraAxisX = cameraAxisX;
-	// Y軸はワールド座標系のY軸
-	ybillCameraAxisY = XMVector3Normalize(upVector);
-	// X軸はX軸→Y軸の外積で求まる
-	ybillCameraAxisZ = XMVector3Cross(ybillCameraAxisX, ybillCameraAxisY);
-
-	// Y軸回りビルボード行列
-	matBillboardY.r[0] = ybillCameraAxisX;
-	matBillboardY.r[1] = ybillCameraAxisY;
-	matBillboardY.r[2] = ybillCameraAxisZ;
-	matBillboardY.r[3] = XMVectorSet(0, 0, 0, 1);
-#pragma endregion
-
-	//転置により逆行列(逆回転)を計算
-	matView = XMMatrixTranspose(matCameraRot);
-
-	//視点座標にー１を掛けた座標
-	XMVECTOR reverseEyePosition = XMVectorNegate(eyePosition);
-
-	//カメラ位置からワールド原点へのベクトル(カメラ座標系)
-	XMVECTOR tX = XMVector3Dot(cameraAxisX, reverseEyePosition);//X成分
-	XMVECTOR tY = XMVector3Dot(cameraAxisY, reverseEyePosition);//Y成分
-	XMVECTOR tZ = XMVector3Dot(cameraAxisZ, reverseEyePosition);//Z成分
-
-	//一つのベクトルにまとめる
-	XMVECTOR translation = XMVectorSet(tX.m128_f32[1], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
-
-	//ビュー行列に平行移動成分を設定
-	matView.r[3] = translation;
-
-}
-
 bool ParticleManager::Initialize()
 {
 	// nullptrチェック
@@ -563,7 +440,6 @@ bool ParticleManager::Initialize()
 
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-
 	// リソース設定
 	CD3DX12_RESOURCE_DESC resourceDesc =
 		CD3DX12_RESOURCE_DESC::Buffer((sizeof(ConstBufferData) + 0xff) & ~0xff);
@@ -590,16 +466,14 @@ void ParticleManager::Update()
 
 	//寿命が尽きたパーティクルを削除
 	particles.remove_if(
-		[](Particle& x) 
-		{
+		[](Particle& x) {
 			return x.frame >= x.num_frame;
 		}
 	);
 	//全パーティクル更新
 	for (std::forward_list<Particle>::iterator it = particles.begin();
 		it != particles.end();
-		it++) 
-	{
+		it++) {
 		//経過フレーム数をカウント
 		it->frame++;
 		//速度に加速度を加算
@@ -621,13 +495,11 @@ void ParticleManager::Update()
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 
 
-	if (SUCCEEDED(result))
-	{
+	if (SUCCEEDED(result)) {
 		//パーティクルの情報を一つづつ反映
 		for (std::forward_list<Particle>::iterator it = particles.begin();
 			it != particles.end();
-			it++) 
-		{
+			it++) {
 			//座標
 			vertMap->pos = it->position;
 			//次の頂点へ
@@ -638,12 +510,11 @@ void ParticleManager::Update()
 		}
 		vertBuff->Unmap(0, nullptr);
 	}
-
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matView * matProjection;
-	constMap->matBillboard = matBillboard;	// 行列の合成
+	constMap->mat = (camera->GetViewProjectionMatrix());
+	constMap->matBillboard = (camera->GetBillboardMatrix());	// 行列の合成
 	constBuff->Unmap(0, nullptr);
 }
 
@@ -669,7 +540,7 @@ void ParticleManager::Draw()
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velociy, XMFLOAT3 accel, float start_scale, float end_scale, XMFLOAT4 color)
+void ParticleManager::Add(int life, Vector3 position, Vector3 velociy, Vector3 accel, float start_scale, float end_scale)
 {
 	//リストに要素を追加
 	particles.emplace_front();
@@ -680,6 +551,4 @@ void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velociy, XMFLOAT
 	p.velocity = velociy;
 	p.accel = accel;
 	p.num_frame = life;
-	p.color = color;
-
 }

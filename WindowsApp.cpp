@@ -1,90 +1,80 @@
 #include "WindowsApp.h"
+#include <tchar.h>
 
-//ウィンドウプロシージャ
-LRESULT WindowsApp::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
+LRESULT WinApp::WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-	//メッセージに応じてゲーム固有の処理を行う
-	switch (msg)
+	//メッセージで分岐
+	switch (msg) 
 	{
-		//ウィンドウが破壊された
-	case WM_DESTROY:
-
-		//osに対して、アプリの終了を伝える
-		PostQuitMessage(0);
+	case WM_DESTROY: //ウィンドウが破棄された
+		PostQuitMessage(0); //OSに対して、アプリの終了を伝える
 		return 0;
 	}
 
-	//標準のメッセージ処理を行う
-	return DefWindowProc(hwnd, msg, wparam, lparam);
+	return DefWindowProc(hwnd, msg, wparam, lparam); //標準の処理を行う
+
+	return false;
 }
 
-//Widowsアプリでのエントリーポイント(main関数)
-void WindowsApp::createWin()
+bool WinApp::ProcessMessage()
 {
-	//ウィンドウクラスの設定
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowsApp::WindowProc; //ウィンドウプロシージャを設定
-	w.lpszClassName = L"DirectXGame";	//ウィンドウクラス名
-	w.hInstance = GetModuleHandle(nullptr);//ウィンドウハンドル
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
+	MSG msg{};
 
-	//ウィンドウクラスをosに登録する
+	if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	if (msg.message == WM_QUIT)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+void WinApp::Initialize()
+{
+
+	w.cbSize = sizeof(WNDCLASSEX);
+	w.lpfnWndProc = (WNDPROC)WindowProcedure;	//ウィンドウプロシージャを設定
+	w.lpszClassName = _T("DX12Sample");			//ウィンドウクラス名
+	w.hInstance = GetModuleHandle(nullptr);		//ウィンドウハンドル
+	w.hCursor = LoadCursor(NULL, IDC_ARROW);	//カーソル指定
+
+	//ウィンドウクラスをOSに登録する
 	RegisterClassEx(&w);
 
-	//ウィンドウサイズ{x座標,y座標,横幅,縦幅}
+	//ウィンドウサイズ{X座標　Y座標　横幅　縦幅}
 	RECT wrc = { 0,0,window_width,window_height };
 
-	//自動でサイズを補正する
+	//関数を使ってウィンドウのサイズを自動で補正する
 	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
 
 	//ウィンドウオブジェクトの生成
-	hwnd = CreateWindow(w.lpszClassName,//クラス名
-		L"DirectXGame",//タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,//標準的なウィンドウスタイル
-		CW_USEDEFAULT,//表示x座標(osに任せる)
-		CW_USEDEFAULT,//表示y座標(osに任せる)
-		wrc.right - wrc.left,//ウィンドウ横幅
-		wrc.bottom - wrc.top,//ウィンドウ縦幅
-		nullptr,//親ウィンドウハンドル
-		nullptr,//メニューハンドル
-		w.hInstance,//呼び出しアプリケーションハンドル
-		nullptr);//オプション
+	hwnd = CreateWindow(w.lpszClassName,//クラス名指定
+		_T("BUDDY'S"),	//タイトルバーの文字
+		WS_OVERLAPPEDWINDOW,			//タイトルバーと境界線があるウィンドウ
+		CW_USEDEFAULT,					//表示x座標はOSにお任せ
+		CW_USEDEFAULT,					//表示y座標はOSにお任せ
+		wrc.right - wrc.left,			//ウィンドウ幅
+		wrc.bottom - wrc.top,			//ウィンドウ高
+		nullptr,						//親ウィンドウハンドル
+		nullptr,						//メニューハンドル
+		w.hInstance,					//呼び出しアプリケーションハンドル
+		nullptr);						//追加パラメーター(オプション)
 
-	//ウィンドウを表示状態にする
+	//ウィンドウ表示
 	ShowWindow(hwnd, SW_SHOW);
 }
 
-void WindowsApp::createSubWin()
+void WinApp::Update()
 {
-	//ウィンドウクラスの設定
-	w.cbSize = sizeof(WNDCLASSEX);
-	w.lpfnWndProc = (WNDPROC)WindowsApp::WindowProc; //ウィンドウプロシージャを設定
-	w.lpszClassName = L"DirectXGame";	//ウィンドウクラス名
-	w.hInstance = GetModuleHandle(nullptr);//ウィンドウハンドル
-	w.hCursor = LoadCursor(NULL, IDC_ARROW);//カーソル指定
+}
 
-	//ウィンドウクラスをosに登録する
-	RegisterClassEx(&w);
-
-	//ウィンドウサイズ{x座標,y座標,横幅,縦幅}
-	RECT wrc = { 0,0,subWindow_width,subWindow_height };
-
-	//自動でサイズを補正する
-	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-
-	//ウィンドウオブジェクトの生成
-	hwndSub = CreateWindow(w.lpszClassName,//クラス名
-		L"DirectXGame",//タイトルバーの文字
-		WS_OVERLAPPEDWINDOW,//標準的なウィンドウスタイル
-		CW_USEDEFAULT,//表示x座標(osに任せる)
-		CW_USEDEFAULT,//表示y座標(osに任せる)
-		wrc.right - wrc.left,//ウィンドウ横幅
-		wrc.bottom - wrc.top,//ウィンドウ縦幅
-		nullptr,//親ウィンドウハンドル
-		nullptr,//メニューハンドル
-		w.hInstance,//呼び出しアプリケーションハンドル
-		nullptr);//オプション
-
-	//ウィンドウを表示状態にする
-	ShowWindow(hwndSub, SW_SHOW);
+void WinApp::Finalize()
+{
+	//ウィンドウクラスを登録解除
+	UnregisterClass(w.lpszClassName, w.hInstance);
 }

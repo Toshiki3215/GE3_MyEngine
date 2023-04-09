@@ -1,171 +1,160 @@
 #pragma once
+#include"SpriteCommon.h"
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+#include "Matrix4.h"
+#include "Affin.h"
 
-#include <Windows.h>
-#include <wrl.h>
-#include <d3d12.h>
-#include <DirectXMath.h>
-
-class Sprite
+// 頂点データ構造体
+struct Vertex
 {
-private: 
+	Vector3 pos; // xyz座標
+	Vector2 uv;  // uv座標
+};
+
+class Sprite 
+{
+public:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
-
-public: 
-	// 頂点データ構造体
-	struct VertexPosUv
+	// 定数バッファ用データ構造体（マテリアル）
+	struct ConstBufferDataMaterial 
 	{
-		XMFLOAT3 pos; // xyz座標
-		XMFLOAT2 uv;  // uv座標
+		Vector4 color; // 色 (RGBA)
 	};
 
-	// 定数バッファ用データ構造体
-	struct ConstBufferData
+	//定数バッファ用構造体（３D変換行列）
+	struct ConstBufferDataTransform 
 	{
-		XMFLOAT4 color;	// 色 (RGBA)
-		XMMATRIX mat;	// ３Ｄ変換行列
+		Matrix4 mat;	//3D変換行列
+	};
+
+	//頂点番号
+	enum VertexNumber 
+	{
+		LB,//左下
+		LT,//左上
+		RB,//右下
+		RT,//右上
 	};
 
 public:
+	//初期化
+	void Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex = UINT32_MAX);
 
-	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
+	void Update();
 
-	static void LoadTexture(UINT texnumber, const wchar_t* filename);
-
-	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
-
-	static void PostDraw();
-
-	static Sprite* Create(UINT texNumber, XMFLOAT2 position, XMFLOAT4 color = { 1, 1, 1, 1 }, XMFLOAT2 anchorpoint = { 0.0f, 0.0f }, bool isFlipX = false, bool isFlipY = false);
-
-	// 座標の取得
-	const XMFLOAT2& GetPosition() { return position; }
-
-	//カラー替え
-	void SetColor(const XMFLOAT4& color) { this->color = color; }
-
-
-
-private: 
-	// 静的メンバ変数
-	
-	// テクスチャの最大枚数
-	static const int srvCount = 512;
-
-	// 頂点数
-	static const int vertNum = 4;
-
-	// デバイス
-	static ID3D12Device* device;
-
-	// デスクリプタサイズ
-	static UINT descriptorHandleIncrementSize;
-
-	// コマンドリスト
-	static ID3D12GraphicsCommandList* cmdList;
-
-	// ルートシグネチャ
-	static ComPtr<ID3D12RootSignature> rootSignature;
-
-	// パイプラインステートオブジェクト
-	static ComPtr<ID3D12PipelineState> pipelineState;
-
-	// 射影行列
-	static XMMATRIX matProjection;
-
-	// デスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> descHeap;
-
-	// テクスチャバッファ
-	static ComPtr<ID3D12Resource> texBuff[srvCount];
-
-public:
-	// メンバ関数
-	
-	// コンストラクタ
-	Sprite(UINT texNumber, XMFLOAT2 position, XMFLOAT2 size, XMFLOAT4 color, XMFLOAT2 anchorpoint, bool isFlipX, bool isFlipY);
-
-	// 初期化
-	bool Initialize();
-
-	void SetRotation(float rotation);
-
-	// 座標の設定
-	void SetPosition(const XMFLOAT2& position);
-
-	// サイズの設定
-	void SetSize(const XMFLOAT2& size);
-
-	// アンカーポイントの設定
-	void SetAnchorPoint(const XMFLOAT2& anchorpoint);
-
-	// 左右反転の設定
-	void SetIsFlipX(bool isFlipX);
-
-	// 上下反転の設定
-	void SetIsFlipY(bool isFlipY);
-
-	// テクスチャ範囲設定
-	void SetTextureRect(const XMFLOAT2& texBase, const XMFLOAT2& texSize);
-
-	// 描画
 	void Draw();
 
-private: 
-	// メンバ変数
+	void SetPozition(const Vector2& position_);
 
-	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff;
+	const Vector2& GetPosition() const { return position; }
 
-	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuff;
+	void SetRotation(float rotation_);
 
-	// 頂点バッファビュー
+	float GetRotation() { return rotation; }
+
+	void SetColor(const Vector4& color_) { color = color_; }
+
+	Vector4 GetColor() { return color; }
+
+	void SetScale(const Vector3& scale_) { scale = scale_; }
+
+	Vector3 GetScale() { return scale; }
+
+	void SetAnchorPoint(const Vector2& anchorPoint_) { anchorPoint = anchorPoint_; }
+
+	Vector2 GetAnchorPoint() { return anchorPoint; }
+
+	void SetTextureIndex(uint32_t texNmb) { textureIndex_ = texNmb; AdjustTextureSize(); }
+
+	uint32_t GetTextureIndex() { return textureIndex_; }
+
+	void SetTexSize(Vector2 texSize) { textureSize = texSize; }
+
+	Vector2 GetTexSize() { return textureSize; }
+
+	Vector2 GetSize() { return size_; }
+
+	void SetSize(Vector2 size);
+
+	/// 上下反転の設定
+	void SetIsFlipY(bool isFlipY);
+
+	/// 左右反転の設定
+	void SetIsFlipX(bool isFlipX);
+
+private:
+	//テクスチャサイズをイメージに合わせる
+	void AdjustTextureSize();
+
+	SpriteCommon* spritecomon;
+	HRESULT result;
+
+	// 頂点データ
+	Vertex vertices[4] = 
+	{
+		// x      y     z       u     v
+		{{-0.4f, -0.7f, 0.0f}, {0.0f, 1.0f}}, // 左下
+		{{-0.4f, +0.7f, 0.0f}, {0.0f, 0.0f}}, // 左上
+		{{+0.4f, -0.7f, 0.0f}, {1.0f, 1.0f}}, // 右下
+		{{+0.4f, +0.7f, 0.0f}, {1.0f, 0.0f}}, // 右上
+	};
+
+	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 
-	// テクスチャ番号
-	UINT texNumber = 0;
+	Matrix4 matScale;//スケーリング行列
+	Matrix4 matWorld;
+	Matrix4 matRot;//回転行列
+	Matrix4  matTrans;//平行移動行列
 
-	// Z軸回りの回転角
+	//座標
+	Vector3 scale{ 0.5f, 0.5f, 1.0f };
+
+	Vector2 size_ = { 100.0f,100.0f };
+
 	float rotation = 0.0f;
+	Vector2 position = { 0.0f, 0.0f };
 
-	// 座標
-	XMFLOAT2 position{};
+	Vector4 color = { 1,1,1,1 };
 
-	// スプライト幅、高さ
-	XMFLOAT2 size = { 100.0f, 100.0f };
+	Vector2 anchorPoint = { 0.0f,0.0f };
+
+	ComPtr<ID3D12Resource> constBuffTransform;
+	ConstBufferDataTransform* constMapTransform = nullptr;
+
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
+
+	ComPtr<ID3D12Resource> constBuffMaterial;
+
+	Vertex vertices_[4];
+
+	Vertex* vertMap = nullptr;
+
+	//テクスチャ番号
+	uint32_t textureIndex_ = 0;
+
+	//テクスチャ左上座標
+	Vector2 textureLeftTop = { 0.0f,0.0f };
+
+	//テクスチャ切り出しサイズ
+	Vector2 textureSize = { 100.0f,100.0f };
+
+	Matrix4 matProjection;
 
 	// アンカーポイント
-	XMFLOAT2 anchorpoint = { 0, 0 };
+	Vector2 anchorpoint = { 0, 0 };
 
-	// ワールド行列
-	XMMATRIX matWorld{};
-
-	// 色
-	XMFLOAT4 color = { 1, 1, 1, 1 };
+	// 頂点バッファの生成
+	ComPtr<ID3D12Resource> vertBuff = nullptr;
 
 	// 左右反転
 	bool isFlipX = false;
 
 	// 上下反転
 	bool isFlipY = false;
-
-	// テクスチャ始点
-	XMFLOAT2 texBase = { 0, 0 };
-
-	// テクスチャ幅、高さ
-	XMFLOAT2 texSize = { 100.0f, 100.0f };
-
-private:
-	// メンバ関数
-	// 頂点データ転送
-	void TransferVertices();
-
 };
 
