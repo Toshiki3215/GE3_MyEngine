@@ -85,10 +85,10 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 	//テクスチャバッファにデータ転送
 	result = texbuff->WriteToSubresource(
 		0,
-		nullptr,
-		img->pixels,
-		(UINT)img->rowPitch,
-		(UINT)img->slicePitch);
+		nullptr,	//全領域へコピー
+		img->pixels,	//元データアドレス
+		(UINT)img->rowPitch,	//1ラインサイズ
+		(UINT)img->slicePitch);	//1枚サイズ
 
 	//SRV用デスクリプターヒープを生成
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
@@ -111,7 +111,6 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 		texbuff.Get(),	//ビューと関連付けるバッファ
 		&srvDesc,	//テクスチャ設定情報
 		descHeapSRV->GetCPUDescriptorHandleForHeapStart());	//ヒープの先頭アドレス
-
 
 }
 
