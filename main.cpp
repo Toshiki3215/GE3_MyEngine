@@ -2,15 +2,15 @@
 #include "Input.h"
 #include "DirectXInitialize.h"
 #include "FPS.h"
+#include "FbxLoader.h"
+
 //#include "ImGuiManager.h"
 //#include <imgui.h>
 
-
 #include "GameScene.h"
 
-
-
-int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
+int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
+{
 
 #pragma region WindowsAPI初期化処理
 
@@ -34,6 +34,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	//入力の初期化　
 	input = new Input();
 	input->Initialize(winApp);
+
+	//FBX初期化
+	FbxLoader::GetInstance()->Initialize(dxCommon->GetDevice());
 
 #pragma endregion
 
@@ -61,16 +64,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 
 #pragma endregion
 	//ゲームループ
-	while (true) 
+	while (true)
 	{
 #pragma region ウィンドウメッセージ処理
 
 		//アプリケーションが終わる時にmessageがWM_QUITになる
-		if (winApp->ProcessMessage()) 
+		if (winApp->ProcessMessage())
 		{
 			break;
 		}
-		if (input->PushKey(DIK_ESCAPE)) 
+		if (input->PushKey(DIK_ESCAPE))
 		{
 			break;
 		}
@@ -132,11 +135,15 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int) {
 	winApp->Finalize();
 	//delete imgui;
 
-	//入力開放
+	//入力解放
 	delete input;
-	//WindowsAPI開放
+
+	//WindowsAPI解放
 	delete winApp;
 	delete dxCommon;
+
+	//FBX解放
+	FbxLoader::GetInstance()->Finalize();
 
 	delete fps;
 

@@ -1,16 +1,19 @@
 #include "GameScene.h"
-
+#include "FbxLoader.h"
 
 /// <summary>
 	/// コンストクラタ
 	/// </summary>
-GameScene::GameScene() {
+GameScene::GameScene() 
+{
+
 }
 
 /// <summary>
 /// デストラクタ
 /// </summary>
-GameScene::~GameScene() {
+GameScene::~GameScene() 
+{
 	delete spriteCommon;
 	delete camera;
 	delete obj;
@@ -24,7 +27,8 @@ GameScene::~GameScene() {
 /// <summary>
 /// 初期化
 /// </summary>
-void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
+void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) 
+{
 	// nullチェック
 	assert(dxCommon);
 	assert(input);
@@ -93,9 +97,13 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) {
 	particleManager->LoadTexture("texture2.png");
 	particleManager->Update();
 
+	//モデル名を指定してファイル読み込み
+	FbxLoader::GetInstance()->LoadModelFronmFile("cube");
+
 }
 
-void GameScene::Reset() {
+void GameScene::Reset() 
+{
 	camWtf.Initialize();
 	camWtf.position = { 0.0f, 3.0f, -8.0f };
 
@@ -105,7 +113,8 @@ void GameScene::Reset() {
 }
 
 // 毎フレーム処理
-void GameScene::Update() {
+void GameScene::Update() 
+{
 	switch (scene)
 	{
 	case Scene::Title:
@@ -222,7 +231,8 @@ void GameScene::Draw()
 void GameScene::EffUpdate()
 {
 	//パーティクル範囲
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 20; i++) 
+	{
 		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
 		const float rnd_pos = 0.01f;
 		Vector3 pos{ 20, 20, 40 };
@@ -253,7 +263,8 @@ void GameScene::EffUpdate()
 void GameScene::EffUpdate2()
 {
 	//パーティクル範囲
-	for (int i = 0; i < 40; i++) {
+	for (int i = 0; i < 40; i++) 
+	{
 		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
 		const float rnd_pos = 0.01f;
 		Vector3 pos{ 50, 0, 20 };
@@ -288,7 +299,10 @@ void GameScene::EffDraw()
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
 	}
-	else {}
+	else 
+	{
+
+	}
 }
 
 void GameScene::EffDraw2()
@@ -298,7 +312,10 @@ void GameScene::EffDraw2()
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
 	}
-	else {}
+	else 
+	{
+
+	}
 }
 
 
@@ -314,12 +331,14 @@ void GameScene::CamMove()
 	}
 }
 
-void GameScene::CamRota() {
+void GameScene::CamRota() 
+{
 	//視点移動
 
 	//左右
 	Vector3 theta;
-	if (input->PushKey(DIK_A)) {
+	if (input->PushKey(DIK_A)) 
+	{
 
 		theta.y = -camRotaSpeed;
 	}
