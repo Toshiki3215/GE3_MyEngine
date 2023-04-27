@@ -7,10 +7,10 @@
 //デフォルトテクスチャ格納ディレクトリ
 std::string SpriteCommon::kDefaultTextureDirectoryPath = "Resources/";
 
-void SpriteCommon::Initialize(DirectXCommon* dxcommon)
+void SpriteCommon::Initialize(DirectXInitialize* dxInit)
 {
-	assert(dxcommon);
-	dxcommon_ = dxcommon;
+	assert(dxInit);
+	dxInit_ = dxInit;
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
@@ -186,14 +186,14 @@ void SpriteCommon::Initialize(DirectXCommon* dxcommon)
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob);
 	assert(SUCCEEDED(result));
-	result = dxcommon_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	result = dxInit_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
 
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
-	result = dxcommon_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = dxInit_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
 	ScratchImage mipChain{};
@@ -231,9 +231,9 @@ void SpriteCommon::Initialize(DirectXCommon* dxcommon)
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
 	// 設定を元にSRV用デスクリプタヒープを生成
-	result = dxcommon_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	result = dxInit_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result));
-	incrementSize = dxcommon_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	incrementSize = dxInit_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
@@ -265,7 +265,7 @@ void SpriteCommon::LoadTexture(uint32_t index, const std::string& fileName)
 	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
 	textureResourceDesc.SampleDesc.Count = 1;
 
-	result = dxcommon_->GetDevice()->CreateCommittedResource(
+	result = dxInit_->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
@@ -299,22 +299,22 @@ void SpriteCommon::LoadTexture(uint32_t index, const std::string& fileName)
 	srvHandle.ptr += (incrementSize * index);
 
 	// ハンドルの指す位置にシェーダーリソースビュー作成
-	dxcommon_->GetDevice()->CreateShaderResourceView(texBuff[index].Get(), &srvDesc, srvHandle);
+	dxInit_->GetDevice()->CreateShaderResourceView(texBuff[index].Get(), &srvDesc, srvHandle);
 }
 
 void SpriteCommon::SetTextureCommands(uint32_t index)
 {
 	// パイプラインステートとルートシグネチャの設定コマンド
-	dxcommon_->GetCommandList()->SetPipelineState(pipelineState.Get());
-	dxcommon_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	dxInit_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	dxInit_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
 
 	//プリミティブ形状の設定コマンド
-	dxcommon_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角リスト
+	dxInit_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角リスト
 	// SRVヒープの設定コマンド
-	dxcommon_->GetCommandList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
+	dxInit_->GetCommandList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
 	// SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 	// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 	srvGpuHandle.ptr += (incrementSize * index);
-	dxcommon_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }

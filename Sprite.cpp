@@ -17,7 +17,7 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
 
 	// 頂点バッファの生成
-	result = spritecomon->GetDxCommon()->GetDevice()->CreateCommittedResource(
+	result = spritecomon->GetDxInitialize()->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&spritecomon->GetResourceDesc(), // リソース設定
@@ -60,7 +60,7 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 		// 定数バッファの生成
-		result = spritecomon->GetDxCommon()->GetDevice()->CreateCommittedResource(
+		result = spritecomon->GetDxInitialize()->GetDevice()->CreateCommittedResource(
 			&cbHeapProp, // ヒープ設定
 			D3D12_HEAP_FLAG_NONE,
 			&cbResourceDesc, // リソース設定
@@ -98,7 +98,7 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 		0.0f, 1.0f, matProjection);
 
 	// 定数バッファの生成
-	result = spritecomon->GetDxCommon()->GetDevice()->CreateCommittedResource(
+	result = spritecomon->GetDxInitialize()->GetDevice()->CreateCommittedResource(
 		&cbHeapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc, // リソース設定
@@ -196,13 +196,13 @@ void Sprite::Draw()
 	spritecomon->SetTextureCommands(textureIndex_);
 
 	//頂点バッファビューの設定コマンド
-	spritecomon->GetDxCommon()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	spritecomon->GetDxInitialize()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
 	// 定数バッファビュー(CBV)の設定コマンド
-	spritecomon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+	spritecomon->GetDxInitialize()->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 	// 定数バッファビュー(CBV)の設定コマンド
-	spritecomon->GetDxCommon()->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+	spritecomon->GetDxInitialize()->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 	// 描画コマンド
-	spritecomon->GetDxCommon()->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+	spritecomon->GetDxInitialize()->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
 }
 
 void Sprite::SetPozition(const Vector2& position_)

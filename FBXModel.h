@@ -38,7 +38,7 @@ class FBXModel
 public:
 
 	//フレンドクラス
-	friend class FbxLoader;
+	friend class FBXLoader;
 
 private:
 

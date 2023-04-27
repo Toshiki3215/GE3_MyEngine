@@ -27,18 +27,18 @@ GameScene::~GameScene()
 /// <summary>
 /// 初期化
 /// </summary>
-void GameScene::Initialize(DirectXCommon* dxCommon, Input* input) 
+void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 {
 	// nullチェック
-	assert(dxCommon);
+	assert(dxInit);
 	assert(input);
 
-	this->dxCommon = dxCommon;
+	this->dxInit = dxInit;
 	this->input = input;
 
 	//スプライト共通部分の初期化
 	spriteCommon = new SpriteCommon;
-	spriteCommon->Initialize(dxCommon);
+	spriteCommon->Initialize(dxInit);
 
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
@@ -98,7 +98,7 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	particleManager->Update();
 
 	//モデル名を指定してファイル読み込み
-	FbxLoader::GetInstance()->LoadModelFronmFile("cube");
+	FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 
 }
 
@@ -157,7 +157,7 @@ void GameScene::Draw()
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// <summary>
 	//3Dオブジェクト描画前処理
-	Object3d::PreDraw(dxCommon->GetCommandList());
+	Object3d::PreDraw(dxInit->GetCommandList());
 	//// 3Dオブクジェクトの描画
 	switch (scene)
 	{
@@ -209,7 +209,7 @@ void GameScene::Draw()
 	case Scene::Play:
 
 		// パーティクル描画前処理
-		ParticleManager::PreDraw(dxCommon->GetCommandList());
+		ParticleManager::PreDraw(dxInit->GetCommandList());
 		GameScene::EffDraw();
 		GameScene::EffDraw2();
 

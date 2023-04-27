@@ -37,9 +37,9 @@ public:
 
 public:
 	//初期化
-	void Initialize(DirectXCommon* dxcommon);
+	void Initialize(DirectXInitialize* dxInit);
 
-	DirectXCommon* GetDxCommon() { return dxcommon_; }
+	DirectXInitialize* GetDxInitialize() { return dxInit_; }
 
 	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
 
@@ -77,7 +77,7 @@ private:
 	// SRVの最大個数
 	static const size_t kMaxSRVCount = 2056;
 
-	DirectXCommon* dxcommon_;
+	DirectXInitialize* dxInit_;
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	ComPtr<ID3DBlob> psBlob; // ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト

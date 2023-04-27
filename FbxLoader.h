@@ -8,14 +8,14 @@
 
 #include <string>
 
-class FbxLoader
+class FBXLoader
 {
 public:
 	/// <summary>
 	/// シングルトンインスタンスの取得
 	/// </summary>
 	/// <returns>インスタンス</returns>
-	static FbxLoader* GetInstance();
+	static FBXLoader* GetInstance();
 
 	//初期化
 	void Initialize(ID3D12Device* device);
@@ -25,13 +25,13 @@ public:
 
 private:
 	// privateなコンストラクタ（シングルトンパターン）
-	FbxLoader() = default;
+	FBXLoader() = default;
 	// privateなデストラクタ（シングルトンパターン）
-	~FbxLoader() = default;
+	~FBXLoader() = default;
 	// コピーコンストラクタを禁止（シングルトンパターン）
-	FbxLoader(const FbxLoader& obj) = delete;
+	FBXLoader(const FBXLoader& obj) = delete;
 	// コピー代入演算子を禁止（シングルトンパターン）
-	void operator=(const FbxLoader& obj) = delete;
+	void operator=(const FBXLoader& obj) = delete;
 
 	//D3D12デバイス
 	ID3D12Device* device = nullptr;

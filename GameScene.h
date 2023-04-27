@@ -34,7 +34,7 @@ public: // ƒƒ“ƒoŠÖ”
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
-	void Initialize(DirectXCommon* dxCommon, Input* input);
+	void Initialize(DirectXInitialize* dxInit, Input* input);
 
 	void Reset();
 
@@ -62,7 +62,7 @@ public: // ƒƒ“ƒoŠÖ”
 	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
 	
 private: // ƒƒ“ƒo•Ï” (ŒÅ’è)
-	DirectXCommon* dxCommon = nullptr;
+	DirectXInitialize* dxInit = nullptr;
 	Input* input = nullptr;
 
 	SpriteCommon* spriteCommon = nullptr;

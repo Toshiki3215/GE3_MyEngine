@@ -4,17 +4,17 @@
 using namespace DirectX;
 
 //静的メンバ変数の実態
-const std::string FbxLoader::baseDirectory = "Resources/";
+const std::string FBXLoader::baseDirectory = "Resources/";
 
-const std::string FbxLoader::defaultTextureFileName = "white1x1.png";
+const std::string FBXLoader::defaultTextureFileName = "white1x1.png";
 
-FbxLoader* FbxLoader::GetInstance()
+FBXLoader* FBXLoader::GetInstance()
 {
-    static FbxLoader instance;
+    static FBXLoader instance;
     return &instance;
 }
 
-void FbxLoader::Initialize(ID3D12Device* device)
+void FBXLoader::Initialize(ID3D12Device* device)
 {
     //再初期化チェック
     assert(fbxManager == nullptr);
@@ -34,7 +34,7 @@ void FbxLoader::Initialize(ID3D12Device* device)
 
 }
 
-void FbxLoader::Finalize()
+void FBXLoader::Finalize()
 {
     //各種FBXインスタンスの破棄
     fbxImporter->Destroy();
@@ -43,7 +43,7 @@ void FbxLoader::Finalize()
 
 }
 
-void FbxLoader::LoadModelFronmFile(const string& modelName)
+void FBXLoader::LoadModelFronmFile(const string& modelName)
 {
     //モデルと同じ名前のフォルダから読み込む
     const string directoryPath = baseDirectory + modelName + "/";
@@ -87,7 +87,7 @@ void FbxLoader::LoadModelFronmFile(const string& modelName)
 
 }
 
-void FbxLoader::ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* parent)
+void FBXLoader::ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* parent)
 {
     //ノード名を取得
     //string name = fbxNode->GetName();
@@ -169,7 +169,7 @@ void FbxLoader::ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* p
 
 }
 
-void FbxLoader::ParseMesh(FBXModel* fbxModel, FbxNode* fbxNode)
+void FBXLoader::ParseMesh(FBXModel* fbxModel, FbxNode* fbxNode)
 {
     //ノードのメッシュを取得
     FbxMesh* fbxMesh = fbxNode->GetMesh();
@@ -185,7 +185,7 @@ void FbxLoader::ParseMesh(FBXModel* fbxModel, FbxNode* fbxNode)
 
 }
 
-void FbxLoader::ParseMeshVertices(FBXModel* fbxModel, FbxMesh* fbxMesh)
+void FBXLoader::ParseMeshVertices(FBXModel* fbxModel, FbxMesh* fbxMesh)
 {
     auto& vertices = fbxModel->vertices;
 
@@ -213,7 +213,7 @@ void FbxLoader::ParseMeshVertices(FBXModel* fbxModel, FbxMesh* fbxMesh)
 
 }
 
-void FbxLoader::ParseMeshFaces(FBXModel* fbxModel, FbxMesh* fbxMesh)
+void FBXLoader::ParseMeshFaces(FBXModel* fbxModel, FbxMesh* fbxMesh)
 {
     auto& vertices = fbxModel->vertices;
     auto& indices = fbxModel->indices;
@@ -300,7 +300,7 @@ void FbxLoader::ParseMeshFaces(FBXModel* fbxModel, FbxMesh* fbxMesh)
 
 }
 
-void FbxLoader::ParseMaterial(FBXModel* fbxModel, FbxNode* fbxNode)
+void FBXLoader::ParseMaterial(FBXModel* fbxModel, FbxNode* fbxNode)
 {
     const int materialCount = fbxNode->GetMaterialCount();
 
@@ -370,7 +370,7 @@ void FbxLoader::ParseMaterial(FBXModel* fbxModel, FbxNode* fbxNode)
 
 }
 
-void FbxLoader::LoadTexture(FBXModel* fbxModel, const std::string& fullpath)
+void FBXLoader::LoadTexture(FBXModel* fbxModel, const std::string& fullpath)
 {
     HRESULT result = S_FALSE;
 
@@ -391,7 +391,7 @@ void FbxLoader::LoadTexture(FBXModel* fbxModel, const std::string& fullpath)
 
 }
 
-std::string FbxLoader::ExtractFileName(const std::string& path)
+std::string FBXLoader::ExtractFileName(const std::string& path)
 {
     size_t pos1;
 

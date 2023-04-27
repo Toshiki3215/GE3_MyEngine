@@ -5,7 +5,7 @@
 #include "WindowsApp.h"
 #include <vector>
 
-class DirectXCommon
+class DirectXInitialize
 {
 public://ƒƒ“ƒoŠÖ”
 

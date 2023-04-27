@@ -7,7 +7,7 @@
 
 using namespace Microsoft::WRL;
 
-void DirectXCommon::Initialize(WinApp* winApp)
+void DirectXInitialize::Initialize(WinApp* winApp)
 {
 	//NULL検知
 	assert(winApp);
@@ -34,7 +34,7 @@ void DirectXCommon::Initialize(WinApp* winApp)
 
 }
 
-void DirectXCommon::InitializeDevice()
+void DirectXInitialize::InitializeDevice()
 {
 
 	//デバッグレイヤーをオンに
@@ -98,7 +98,7 @@ void DirectXCommon::InitializeDevice()
 
 }
 
-void DirectXCommon::InitializeCommand()
+void DirectXInitialize::InitializeCommand()
 {
 	result = device->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
@@ -117,7 +117,7 @@ void DirectXCommon::InitializeCommand()
 	assert(SUCCEEDED(result));
 }
 
-void DirectXCommon::InitializeSwapchain()
+void DirectXInitialize::InitializeSwapchain()
 {
 
 	// スワップチェーンの設定
@@ -149,7 +149,7 @@ void DirectXCommon::InitializeSwapchain()
 	assert(SUCCEEDED(result));
 }
 
-void DirectXCommon::InitializeRenderTargetView()
+void DirectXInitialize::InitializeRenderTargetView()
 {
 	// デスクリプタヒープの設定
 
@@ -180,7 +180,7 @@ void DirectXCommon::InitializeRenderTargetView()
 
 }
 
-void DirectXCommon::InitializeDepthBuffer()
+void DirectXInitialize::InitializeDepthBuffer()
 {
 	//リソース設定
 
@@ -227,7 +227,7 @@ void DirectXCommon::InitializeDepthBuffer()
 		dsvHeap->GetCPUDescriptorHandleForHeapStart());
 }
 
-void DirectXCommon::InitializeFence()
+void DirectXInitialize::InitializeFence()
 {
 	// フェンスの生成
 
@@ -235,7 +235,7 @@ void DirectXCommon::InitializeFence()
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 }
 
-void DirectXCommon::PreDraw()
+void DirectXInitialize::PreDraw()
 {
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
@@ -281,7 +281,7 @@ void DirectXCommon::PreDraw()
 	commandList->RSSetScissorRects(1, &scissorRect);
 }
 
-void DirectXCommon::PostDraw()
+void DirectXInitialize::PostDraw()
 {
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT bbIndex = swapChain->GetCurrentBackBufferIndex();

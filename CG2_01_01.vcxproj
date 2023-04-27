@@ -131,6 +131,7 @@
     <ClCompile Include="DirectXInitialize.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="FBXModel.cpp" />
+    <ClCompile Include="FBXObject.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -153,8 +154,9 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ConvertXM.h" />
     <ClInclude Include="DirectXInitialize.h" />
-    <ClInclude Include="FbxLoader.h" />
+    <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="FBXModel.h" />
+    <ClInclude Include="FBXObject.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
