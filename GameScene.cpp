@@ -346,6 +346,7 @@ void GameScene::EffDraw2()
 
 void GameScene::CamMove() 
 {
+	//左右移動
 	if (input->PushKey(DIK_RIGHT)) 
 	{
 		//カメラの移動
@@ -362,6 +363,8 @@ void GameScene::CamMove()
 		//更新
 		camWtf.position += eyeVelocity;
 	}
+
+	//前後移動
 	if (input->PushKey(DIK_UP))
 	{
 		//カメラの移動
@@ -378,6 +381,8 @@ void GameScene::CamMove()
 		//更新
 		camWtf.position += eyeVelocity;
 	}
+
+	//上下移動
 	if (input->PushKey(DIK_U))
 	{
 		//カメラの移動
