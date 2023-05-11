@@ -2,7 +2,7 @@
 #include "Input.h"
 #include "DirectXInitialize.h"
 #include "FPS.h"
-#include "FbxLoader.h"
+#include "FBXLoader.h"
 
 //#include "ImGuiManager.h"
 //#include <imgui.h>

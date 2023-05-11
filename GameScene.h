@@ -10,6 +10,7 @@
 #include "Matrix4.h"
 #include "Camera.h"
 #include "ParticleManager.h"
+#include "FBXObject.h"
 
 /// <summary>
 /// ゲームシーン
@@ -113,5 +114,9 @@ private:	//メンバ変数
 	int stage;
 
 	int isEffFlag;
+
+	FBXModel* fbxModel1 = nullptr;
+
+	FBXObject* fbxObject1 = nullptr;
 
 };

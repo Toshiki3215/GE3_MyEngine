@@ -7,14 +7,33 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 	//頂点データ全体のサイズ
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * vertices.size());
 
+	//頂点バッファの設定
+	/*CD3DX12_HEAP_PROPERTIES D3D12_HEAP_TYPE_UPLOAD{};
+	CD3DX12_RESOURCE_DESC resDescBuff{};
+	CD3DX12_HEAP_PROPERTIES pHeap = CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);*/
+	/*CD3DX12_HEAP_PROPERTIES D3D12_CPU_PAGE_PROPERTY_WRITE_BACK{};
+	CD3DX12_HEAP_PROPERTIES D3D12_MEMORY_POOL_L0{};*/
+
+	heapprop.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+	resdesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resdesc.Width = sizeVB;
+	resdesc.Height = 1;
+	resdesc.DepthOrArraySize = 1;
+	resdesc.MipLevels = 1;
+	resdesc.SampleDesc.Count = 1;
+	resdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
 	//頂点バッファ生成
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		&heapprop,
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(sizeVB),
+		&resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
+
+	assert(SUCCEEDED(result));
 
 	//頂点バッファへのデータ転移
 	VertexPosNormalUv* vertMap = nullptr;
@@ -37,9 +56,9 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 
 	//インデックスバッファ生成
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		&heapprop,
 		D3D12_HEAP_FLAG_NONE,
-		&CD3DX12_RESOURCE_DESC::Buffer(sizeIB),
+		&resdesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&indexBuff));
@@ -75,7 +94,7 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 
 	//テクスチャ用バッファの生成
 	result = device->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
+		&pHeap,
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,//テクスチャ用指定
@@ -116,5 +135,20 @@ void FBXModel::CreateBuffers(ID3D12Device* device)
 
 void FBXModel::Draw(ID3D12GraphicsCommandList* cmdList)
 {
+	//頂点バッファをセット(VBV)
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+
+	//インデックスバッファをセット(IBV)
+	cmdList->IASetIndexBuffer(&ibView);
+
+	//デスクリプタヒープのセット
+	ID3D12DescriptorHeap* ppHeaps[] = { descHeapSRV.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
+	//シェーダリソースビューをセット
+	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+
+	//描画コマンド
+	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 
 }

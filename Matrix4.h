@@ -1,5 +1,7 @@
 #pragma once
 #include "Vector3.h"
+#include "Vector4.h"
+#include <DirectXMath.h>
 
 class Matrix4
 {
@@ -40,3 +42,19 @@ Matrix4& operator*=(Matrix4& m1, const Matrix4& m2);
 // 2項演算子オーバーロード
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 const Vector3 operator*(const Vector3& v, const Matrix4& m2);
+
+//Vector3 ver
+Matrix4 ScaleMatrix4(Vector3 scale);
+Matrix4 RotationXMatrix4(Vector3 rotation);
+Matrix4 RotationYMatrix4(Vector3 rotation);
+Matrix4 RotationZMatrix4(Vector3 rotation);
+Matrix4 MoveMatrix4(Vector3 translation);
+
+//Vector4 ver
+Matrix4 ScaleMatrix4(Vector4 scale);
+Matrix4 RotationXMatrix4(Vector4 rotation);
+Matrix4 RotationYMatrix4(Vector4 rotation);
+Matrix4 RotationZMatrix4(Vector4 rotation);
+Matrix4 MoveMatrix4(Vector4 translation);
+
+Matrix4 RotationMatrix4(Vector4 rotation);

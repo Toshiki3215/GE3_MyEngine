@@ -8,6 +8,10 @@
 
 #include <string>
 
+#include "Vector3.h"
+#include "Matrix4.h"
+#include "Affin.h"
+
 class FBXLoader
 {
 public:
@@ -54,7 +58,8 @@ public:
 	static const string defaultTextureFileName;
 
 	//ファイルからFBXモデル読み込み
-	void LoadModelFronmFile(const string& modelName);
+	//void LoadModelFronmFile(const string& modelName);
+	FBXModel* LoadModelFronmFile(const string& modelName);
 
 	//再帰的にノード構成を解析
 	void ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* parent = nullptr);

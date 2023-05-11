@@ -3,6 +3,7 @@
 #include "Matrix4.h"
 #include "Affin.h"
 #include"Transform.h"
+#include <DirectXMath.h>
 
 class Camera
 {

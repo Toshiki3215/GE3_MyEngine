@@ -43,7 +43,8 @@ void FBXLoader::Finalize()
 
 }
 
-void FBXLoader::LoadModelFronmFile(const string& modelName)
+//void FBXLoader::LoadModelFronmFile(const string& modelName)
+FBXModel* FBXLoader::LoadModelFronmFile(const string& modelName)
 {
     //モデルと同じ名前のフォルダから読み込む
     const string directoryPath = baseDirectory + modelName + "/";
@@ -85,6 +86,8 @@ void FBXLoader::LoadModelFronmFile(const string& modelName)
     //バッファ生成
     fbxModel->CreateBuffers(device);
 
+    return fbxModel;
+
 }
 
 void FBXLoader::ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* parent)
@@ -116,19 +119,19 @@ void FBXLoader::ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* p
     node.translation = { (float)translation[0],(float)translation[1],(float)translation[2],1.0f };
 
     //回転角をDegree(度)からラジアンに変換
-    node.rotation.m128_f32[0] = XMConvertToRadians(node.rotation.m128_f32[0]);
-    node.rotation.m128_f32[1] = XMConvertToRadians(node.rotation.m128_f32[1]);
-    node.rotation.m128_f32[2] = XMConvertToRadians(node.rotation.m128_f32[2]);
+    node.rotation.x = XMConvertToRadians(node.rotation.x);
+    node.rotation.y = XMConvertToRadians(node.rotation.y);
+    node.rotation.z = XMConvertToRadians(node.rotation.z);
 
     //スケール、回転、平行移動行列の計算
-    XMMATRIX matScaling, matRotation, matTranslation;
+    Matrix4 matScaling, matRotation, matTranslation;
 
-    matScaling = XMMatrixScalingFromVector(node.scaling);
-    matRotation = XMMatrixRotationRollPitchYawFromVector(node.rotation);
-    matTranslation = XMMatrixTranslationFromVector(node.translation);
+    matScaling = ScaleMatrix4(node.scaling);
+    matRotation = RotationMatrix4(node.rotation);
+    matTranslation = MoveMatrix4(node.translation);
 
     //ローカル変形行列の計算
-    node.transform = XMMatrixIdentity();
+    node.transform = Affin::matUnit();
 
     //ワールド行列にスケーリングを反映
     node.transform *= matScaling;

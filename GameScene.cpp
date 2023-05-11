@@ -1,5 +1,6 @@
 #include "GameScene.h"
-#include "FbxLoader.h"
+#include "FBXLoader.h"
+#include "FBXObject.h"
 
 /// <summary>
 	/// コンストクラタ
@@ -22,6 +23,8 @@ GameScene::~GameScene()
 	delete tex2;
 	delete floor;
 	//delete skydome;
+	delete fbxObject1;
+	delete fbxModel1;
 }
 
 /// <summary>
@@ -51,6 +54,15 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	ParticleManager::SetCamera(camera);
 	Object3d::SetCamera(camera);
+
+	//デバイスをセット
+	FBXObject::SetDevice(dxInit->GetDevice());
+
+	//カメラをセット
+	FBXObject::SetCamera(camera);
+
+	//グラフィックスパイプライン生成
+	FBXObject::CreateGraphicsPipeline();
 
 	floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
@@ -86,11 +98,11 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	scene = Scene::Play;
 	//stage = 0;
 
-	spriteCommon->LoadTexture(0, "bb.png");
+	/*spriteCommon->LoadTexture(0, "bb.png");
 	tex1->SetTextureIndex(0);
 
 	spriteCommon->LoadTexture(1, "tex.png");
-	tex2->SetTextureIndex(1);
+	tex2->SetTextureIndex(1);*/
 
 	//パーティクル生成
 	particleManager = ParticleManager::Create();
@@ -98,14 +110,20 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	particleManager->Update();
 
 	//モデル名を指定してファイル読み込み
-	FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	//FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+
+	//3Dオブジェクト生成とモデルのセット
+	fbxObject1 = new FBXObject;
+	fbxObject1->Initialize();
+	fbxObject1->SetModel(fbxModel1);
 
 }
 
 void GameScene::Reset() 
 {
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 3.0f, -8.0f };
+	camWtf.position = { 0.0f, 3.0f, 0.0f };
 
 	targetWtf.Initialize();
 	targetWtf.position = { 0.0f,0.0f,targetDistance };
@@ -131,6 +149,9 @@ void GameScene::Update()
     floor->Update();
 	obj->Update();
 	obj2->Update();
+
+	fbxObject1->Update();
+
 	isEffFlag = 1;
     //skydome->Update();
 	GameScene::EffUpdate();
@@ -149,7 +170,7 @@ void GameScene::Update()
 }
 
 // 描画
-void GameScene::Draw() 
+void GameScene::Draw()
 {
 
 	/// <summary>
@@ -178,8 +199,12 @@ void GameScene::Draw()
     obj->Draw();
     obj2->Draw();
     //skydome->Draw();
+	
+	fbxObject1->Draw(dxInit->GetCommandList());
+
 	tex1->Draw();
 	tex2->Draw();
+
 
 		break;
 
@@ -321,10 +346,50 @@ void GameScene::EffDraw2()
 
 void GameScene::CamMove() 
 {
-	if (input->PushKey(DIK_A)) 
+	if (input->PushKey(DIK_RIGHT)) 
 	{
 		//カメラの移動
-		Vector3 eyeVelocity = { 0,0,0 };
+		Vector3 eyeVelocity = { 1.0,0,0 };
+
+		//更新
+		camWtf.position += eyeVelocity;
+	}
+	if (input->PushKey(DIK_LEFT))
+	{
+		//カメラの移動
+		Vector3 eyeVelocity = { -1.0,0,0 };
+
+		//更新
+		camWtf.position += eyeVelocity;
+	}
+	if (input->PushKey(DIK_UP))
+	{
+		//カメラの移動
+		Vector3 eyeVelocity = { 0,0,1 };
+
+		//更新
+		camWtf.position += eyeVelocity;
+	}
+	if (input->PushKey(DIK_DOWN))
+	{
+		//カメラの移動
+		Vector3 eyeVelocity = { 0,0,-1 };
+
+		//更新
+		camWtf.position += eyeVelocity;
+	}
+	if (input->PushKey(DIK_U))
+	{
+		//カメラの移動
+		Vector3 eyeVelocity = { 0,1,0 };
+
+		//更新
+		camWtf.position += eyeVelocity;
+	}
+	if (input->PushKey(DIK_J))
+	{
+		//カメラの移動
+		Vector3 eyeVelocity = { 0,-1,0 };
 
 		//更新
 		camWtf.position += eyeVelocity;

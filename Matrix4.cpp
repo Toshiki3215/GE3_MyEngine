@@ -1,7 +1,6 @@
 #include "Matrix4.h"
 #include "Affin.h"
 
-
 Matrix4::Matrix4() 
 {
 	for (int i = 0; i < 4; i++) 
@@ -249,8 +248,6 @@ Matrix4& operator*=(Matrix4& m1, const Matrix4& m2)
 	return m1;
 }
 
-
-
 // 2項演算子オーバーロード ( 行列と行列の積 )
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2) 
 {
@@ -265,4 +262,199 @@ const Vector3 operator*(const Vector3& v, const Matrix4& m2)
 	Matrix4 mat = Affin::matUnit();
 	Vector3 result = mat.transform(v, m2);
 	return result;
+}
+
+//Vector3 ver
+Matrix4 ScaleMatrix4(Vector3 scale)
+{
+	Matrix4 matScale = Affin::matUnit();
+	
+	matScale = 
+	{
+		scale.x,   0.0f,   0.0f, 0.0f,
+		   0.0f,scale.y,   0.0f, 0.0f,
+		   0.0f,   0.0f,scale.z, 0.0f,
+		   0.0f,   0.0f,   0.0f, 1.0f,
+	};
+
+	return matScale;
+}
+
+Matrix4 RotationXMatrix4(Vector3 rotation)
+{
+	Matrix4 matRotX = Affin::matUnit();
+
+	matRotX =
+	{
+		1.0f,             0.0f,            0.0f, 0.0f,
+		0.0f, cosf(rotation.x),sinf(rotation.x), 0.0f,
+		0.0f,-sinf(rotation.x),cosf(rotation.x), 0.0f,
+		0.0f,             0.0f,            0.0f, 1.0f,
+	};
+
+	return matRotX;
+}
+
+Matrix4 RotationYMatrix4(Vector3 rotation)
+{
+	Matrix4 matRotY = Affin::matUnit();
+
+	matRotY =
+	{
+		cosf(rotation.y), 0.0f,-sinf(rotation.y), 0.0f,
+					0.0f, 1.0f,             0.0f, 0.0f,
+		sinf(rotation.y), 0.0f, cosf(rotation.y), 0.0f,
+					0.0f, 0.0f,             0.0f, 1.0f,
+	};
+
+	return matRotY;
+}
+
+Matrix4 RotationZMatrix4(Vector3 rotation)
+{
+	Matrix4 matRotZ = Affin::matUnit();
+
+	matRotZ = 
+	{
+		 cosf(rotation.z),sinf(rotation.z), 0.0f, 0.0f,
+		-sinf(rotation.z),cosf(rotation.z), 0.0f, 0.0f,
+					 0.0f,            0.0f, 1.0f, 0.0f,
+					 0.0f,            0.0f, 0.0f, 1.0f,
+	};
+
+
+	return matRotZ;
+}
+
+Matrix4 MoveMatrix4(Vector3 translation)
+{
+	Matrix4 matTrans = Affin::matUnit();
+
+	matTrans =
+	{
+				 1.0f,         0.0f,         0.0f, 0.0f,
+				 0.0f,         1.0f,         0.0f, 0.0f,
+				 0.0f,         0.0f,         1.0f, 0.0f,
+		translation.x,translation.y,translation.z, 1.0f,
+	};
+
+	return matTrans;
+}
+
+//Vector4 ver
+Matrix4 ScaleMatrix4(Vector4 scale)
+{
+	Matrix4 matScale = Affin::matUnit();
+
+	matScale = 
+	{
+		scale.x,   0.0f,   0.0f, 0.0f,
+		   0.0f,scale.y,   0.0f, 0.0f,
+		   0.0f,   0.0f,scale.z, 0.0f,
+		   0.0f,   0.0f,   0.0f, 1.0f,
+	};
+
+	return matScale;
+}
+
+Matrix4 RotationXMatrix4(Vector4 rotation)
+{
+	Matrix4 matRotX = Affin::matUnit();
+
+	matRotX =
+	{
+		1.0f,             0.0f,            0.0f, 0.0f,
+		0.0f, cosf(rotation.x),sinf(rotation.x), 0.0f,
+		0.0f,-sinf(rotation.x),cosf(rotation.x), 0.0f,
+		0.0f,             0.0f,            0.0f, 1.0f,
+	};
+
+	return matRotX;
+}
+
+Matrix4 RotationYMatrix4(Vector4 rotation)
+{
+	Matrix4 matRotY = Affin::matUnit();
+
+	matRotY =
+	{
+		cosf(rotation.y), 0.0f,-sinf(rotation.y), 0.0f,
+					0.0f, 1.0f,             0.0f, 0.0f,
+		sinf(rotation.y), 0.0f, cosf(rotation.y), 0.0f,
+					0.0f, 0.0f,             0.0f, 1.0f,
+	};
+
+	return matRotY;
+}
+
+Matrix4 RotationZMatrix4(Vector4 rotation)
+{
+	Matrix4 matRotZ = Affin::matUnit();
+
+	matRotZ =
+	{
+		 cosf(rotation.z),sinf(rotation.z), 0.0f, 0.0f,
+		-sinf(rotation.z),cosf(rotation.z), 0.0f, 0.0f,
+					 0.0f,            0.0f, 1.0f, 0.0f,
+					 0.0f,            0.0f, 0.0f, 1.0f,
+	};
+
+
+	return matRotZ;
+}
+
+Matrix4 MoveMatrix4(Vector4 translation)
+{
+	Matrix4 matTrans = Affin::matUnit();
+
+	matTrans =
+	{
+				 1.0f,         0.0f,         0.0f, 0.0f,
+				 0.0f,         1.0f,         0.0f, 0.0f,
+				 0.0f,         0.0f,         1.0f, 0.0f,
+		translation.x,translation.y,translation.z, 1.0f,
+	};
+
+	return matTrans;
+}
+
+Matrix4 RotationMatrix4(Vector4 rotation)
+{
+	Matrix4 matRot = Affin::matUnit();
+
+	Matrix4 matRotZ = Affin::matUnit();
+
+	matRotZ =
+	{
+		 cosf(rotation.z),sinf(rotation.z), 0.0f, 0.0f,
+		-sinf(rotation.z),cosf(rotation.z), 0.0f, 0.0f,
+					 0.0f,            0.0f, 1.0f, 0.0f,
+					 0.0f,            0.0f, 0.0f, 1.0f,
+	};
+
+	Matrix4 matRotX = Affin::matUnit();
+
+	matRotX =
+	{
+		1.0f,             0.0f,            0.0f, 0.0f,
+		0.0f, cosf(rotation.x),sinf(rotation.x), 0.0f,
+		0.0f,-sinf(rotation.x),cosf(rotation.x), 0.0f,
+		0.0f,             0.0f,            0.0f, 1.0f,
+	};
+
+	Matrix4 matRotY = Affin::matUnit();
+
+	matRotY =
+	{
+		cosf(rotation.y), 0.0f,-sinf(rotation.y), 0.0f,
+					0.0f, 1.0f,             0.0f, 0.0f,
+		sinf(rotation.y), 0.0f, cosf(rotation.y), 0.0f,
+					0.0f, 0.0f,             0.0f, 1.0f,
+	};
+
+	matRot *= matRotZ;
+	matRot *= matRotX;
+	matRot *= matRotY;
+
+	return matRot;
 }

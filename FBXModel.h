@@ -7,26 +7,44 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include <d3dx12.h>
+#include "Vector4.h"
+#include "Matrix4.h"
+
 
 struct Node
 {
 	//名前
 	std::string name;
 
+	////ローカルスケール
+	//DirectX::XMVECTOR scaling = { 1,1,1,0 };
+
+	////ローカル回転角
+	//DirectX::XMVECTOR rotation = { 0,0,0,0 };
+
+	////ローカル移動
+	//DirectX::XMVECTOR translation = { 0,0,0,1 };
+
+	////ローカル変形行列
+	//DirectX::XMMATRIX transform;
+
+	////グローバル変形行列
+	//DirectX::XMMATRIX globalTransform;
+
 	//ローカルスケール
-	DirectX::XMVECTOR scaling = { 1,1,1,0 };
+	Vector4 scaling = { 1,1,1,0 };
 
 	//ローカル回転角
-	DirectX::XMVECTOR rotation = { 0,0,0,0 };
+	Vector4 rotation = { 0,0,0,0 };
 
 	//ローカル移動
-	DirectX::XMVECTOR translation = { 0,0,0,1 };
+	Vector4 translation = { 0,0,0,1 };
 
 	//ローカル変形行列
-	DirectX::XMMATRIX transform;
+	Matrix4 transform;
 
 	//グローバル変形行列
-	DirectX::XMMATRIX globalTransform;
+	Matrix4 globalTransform;
 
 	//親ノード
 	Node* parent = nullptr;
@@ -107,6 +125,10 @@ private:
 
 	template <class T> using vector = std::vector<T>;
 
+	CD3DX12_HEAP_PROPERTIES heapprop{};
+	CD3DX12_RESOURCE_DESC resdesc{};
+	CD3DX12_HEAP_PROPERTIES pHeap = CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
+
 	//頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
 
@@ -134,6 +156,6 @@ public:
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
 	//モデルの変形行列取得
-	const XMMATRIX& GetModelTransform() { return meshNode->globalTransform; }
+	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
 
 };

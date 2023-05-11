@@ -19,6 +19,9 @@
     <None Include="SpriteShaderHeader.hlsli">
       <Filter>リソース ファイル</Filter>
     </None>
+    <None Include="Resources\shaders\FBX.hlsli">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BasicPS.hlsl" />
@@ -27,6 +30,12 @@
       <Filter>リソース ファイル</Filter>
     </FxCompile>
     <FxCompile Include="SpriteVertexShader.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
+      <Filter>リソース ファイル</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\FBXVS.hlsl">
       <Filter>リソース ファイル</Filter>
     </FxCompile>
   </ItemGroup>
