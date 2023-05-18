@@ -112,11 +112,16 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	//モデル名を指定してファイル読み込み
 	//FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 
 	//3Dオブジェクト生成とモデルのセット
 	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(fbxModel1);
+
+	fbxObject2 = new FBXObject;
+	fbxObject2->Initialize();
+	fbxObject2->SetModel(fbxModel2);
 
 }
 
@@ -151,6 +156,7 @@ void GameScene::Update()
 	obj2->Update();
 
 	fbxObject1->Update();
+	fbxObject2->Update();
 
 	isEffFlag = 1;
     //skydome->Update();
@@ -201,6 +207,7 @@ void GameScene::Draw()
     //skydome->Draw();
 	
 	fbxObject1->Draw(dxInit->GetCommandList());
+	fbxObject2->Draw(dxInit->GetCommandList());
 
 	tex1->Draw();
 	tex2->Draw();

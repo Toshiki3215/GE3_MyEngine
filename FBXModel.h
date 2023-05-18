@@ -9,6 +9,7 @@
 #include <d3dx12.h>
 #include "Vector4.h"
 #include "Matrix4.h"
+#include <fbxsdk.h>
 
 
 struct Node
@@ -54,9 +55,47 @@ struct Node
 class FBXModel
 {
 public:
+	//デストラクタ
+	~FBXModel();
 
 	//フレンドクラス
 	friend class FBXLoader;
+
+	//ボーン構造体
+	struct Bone
+	{
+		//名前
+		std::string name;
+
+		//初期姿勢の逆行列
+		Matrix4 invInitialPose;
+
+		//クラスター(FBX側のボーン情報)
+		FbxCluster* fbxCluster;
+
+		//コンストラクタ
+		Bone(const std::string& name)
+		{
+			this->name = name;
+		}
+
+	};
+
+private:
+	//内部クラスのメンバ変数
+
+	//ボーン配列
+	std::vector<Bone> bones;
+
+public:
+	//getter
+	std::vector<Bone>& GetBones() { return bones; }
+
+	//内部クラスの定数
+
+	//ボーンインデックスの最大数
+	static const int MAX_BONE_INDICES = 4;
+
 
 private:
 
@@ -84,7 +123,7 @@ public:
 	//サブクラス
 
 	//頂点データ構造体
-	struct VertexPosNormalUv
+	struct VertexPosNormalUvSkin
 	{
 		//x,y,z座標
 		DirectX::XMFLOAT3 pos;
@@ -95,13 +134,19 @@ public:
 		//uv座標
 		DirectX::XMFLOAT2 uv;
 
+		//ボーン　番号
+		UINT boneIndex[MAX_BONE_INDICES];
+
+		//ボーン　重み
+		float boneWeight[MAX_BONE_INDICES];
+
 	};
 
 	//メッシュを持つノード
 	Node* meshNode = nullptr;
 
 	//頂点データ配列
-	std::vector<VertexPosNormalUv> vertices;
+	std::vector<VertexPosNormalUvSkin> vertices;
 
 	//頂点インデックス配列
 	std::vector<unsigned short> indices;
@@ -147,6 +192,9 @@ private:
 	//SRV用デスクリプターヒープ
 	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
+	//FBXシーン
+	FbxScene* fbxScene = nullptr;
+
 public:
 
 	//バッファ生成
@@ -157,5 +205,8 @@ public:
 
 	//モデルの変形行列取得
 	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
+
+	//getter
+	FbxScene* GetFbxScene() { return fbxScene; }
 
 };

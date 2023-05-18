@@ -118,5 +118,9 @@ private:	//ƒƒ“ƒo•Ï”
 	FBXModel* fbxModel1 = nullptr;
 
 	FBXObject* fbxObject1 = nullptr;
+	
+	FBXModel* fbxModel2 = nullptr;
+
+	FBXObject* fbxObject2 = nullptr;
 
 };

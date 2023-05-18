@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FBXModel.h"
+#include "FBXLoader.h"
 #include "Camera.h"
 
 #include <Windows.h>
@@ -8,9 +9,6 @@
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <DirectXMath.h>
-//#include "Vector3.h"
-//#include "Matrix4.h"
-//#include "Affin.h"
 #include <string>
 
 class FBXObject
@@ -21,10 +19,10 @@ protected:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	/*using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
+	using XMMATRIX = DirectX::XMMATRIX;*/
 
 public:
 
@@ -79,8 +77,9 @@ protected:
 	//ローカルワールド変換行列
 	Matrix4 matWorld;
 
-	//モデル
-	FBXModel* fbxModel = nullptr;
+	//定数バッファ(スキン)
+	ComPtr<ID3D12Resource> constBuffSkin;
+
 
 private:
 
@@ -93,6 +92,9 @@ private:
 	CD3DX12_HEAP_PROPERTIES cbheapprop{};
 
 	CD3DX12_RESOURCE_DESC cbresdesc{};
+
+	//モデル
+	FBXModel* fbxModel = nullptr;
  
 public:
 
@@ -104,5 +106,15 @@ public:
 
 	//モデルのセット
 	void SetModel(FBXModel* fbxModel) { this->fbxModel = fbxModel; }
+
+	//定数
+	//ボーンの最大数
+	static const int MAX_BONES = 32;
+
+	//定数バッファ用データ構造体(スキニング)
+	struct ConstBufferDataSkin
+	{
+		Matrix4 bones[MAX_BONES];
+	};
 
 };
