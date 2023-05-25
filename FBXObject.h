@@ -92,6 +92,7 @@ private:
 	CD3DX12_HEAP_PROPERTIES cbheapprop{};
 
 	CD3DX12_RESOURCE_DESC cbresdesc{};
+	CD3DX12_RESOURCE_DESC cbresdesc2{};
 
 	//ƒ‚ƒfƒ‹
 	FBXModel* fbxModel = nullptr;

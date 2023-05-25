@@ -21,7 +21,7 @@ GameScene::~GameScene()
 	delete obj2;
 	delete tex1;
 	delete tex2;
-	delete floor;
+	//delete floor;
 	//delete skydome;
 	delete fbxObject1;
 	delete fbxModel1;
@@ -64,10 +64,10 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	//グラフィックスパイプライン生成
 	FBXObject::CreateGraphicsPipeline();
 
-	floorMD = Model::LoadFromOBJ("floor");
+	/*floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
 	floor->SetModel(floorMD);
-	floor->wtf.position = (Vector3{ 0, -10, 0 });
+	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
 
 	//skydomeMD = Model::LoadFromOBJ("skydome");
 	//skydome = Object3d::Create();
@@ -111,13 +111,13 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//モデル名を指定してファイル読み込み
 	//FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	//fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 
 	//3Dオブジェクト生成とモデルのセット
-	fbxObject1 = new FBXObject;
+	/*fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
-	fbxObject1->SetModel(fbxModel1);
+	fbxObject1->SetModel(fbxModel1);*/
 
 	fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
@@ -151,11 +151,11 @@ void GameScene::Update()
 	case Scene::Play:
 		CamUpdate();
 		
-    floor->Update();
+    //floor->Update();
 	obj->Update();
 	obj2->Update();
 
-	fbxObject1->Update();
+	//fbxObject1->Update();
 	fbxObject2->Update();
 
 	isEffFlag = 1;
@@ -201,12 +201,12 @@ void GameScene::Draw()
 		/*player_->Draw();
 		enemyManager_->Draw();*/
     
-    floor->Draw();
+    //floor->Draw();
     obj->Draw();
     obj2->Draw();
     //skydome->Draw();
 	
-	fbxObject1->Draw(dxInit->GetCommandList());
+	//fbxObject1->Draw(dxInit->GetCommandList());
 	fbxObject2->Draw(dxInit->GetCommandList());
 
 	tex1->Draw();
@@ -470,6 +470,7 @@ void GameScene::CamUpdate()
 	}
 
 	camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
+	//camera->SetTarget({0,20,0 });
 
 	camera->Update();
 }

@@ -27,6 +27,14 @@ void FBXObject::Initialize()
 	cbresdesc.SampleDesc.Count = 1;
 	cbresdesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
+	cbresdesc2.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbresdesc2.Width = ((sizeof(ConstBufferDataSkin) + 0xff) & ~0xff);
+	cbresdesc2.Height = 1;
+	cbresdesc2.DepthOrArraySize = 1;
+	cbresdesc2.MipLevels = 1;
+	cbresdesc2.SampleDesc.Count = 1;
+	cbresdesc2.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
 
 	//定数バッファの生成
 	result = device->CreateCommittedResource(
@@ -41,10 +49,10 @@ void FBXObject::Initialize()
 	result = device->CreateCommittedResource(
 		&cbheapprop,
 		D3D12_HEAP_FLAG_NONE,
-		&cbresdesc,
+		&cbresdesc2,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffTrans));
+		IID_PPV_ARGS(&constBuffSkin));
 
 }
 
@@ -132,7 +140,7 @@ void FBXObject::CreateGraphicsPipeline()
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 		{//影響を受けるボーン番号(4つ)
-			"BONEINDICS",0,DXGI_FORMAT_R32G32B32_UINT,0,
+			"BONEINDICES",0,DXGI_FORMAT_R32G32B32_UINT,0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
