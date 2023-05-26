@@ -155,6 +155,13 @@ Matrix4 Matrix4::MakeInverse(const Matrix4* mat)
 	return retMat;
 }
 
+Matrix4 Matrix4::MakeIdentity()
+{
+	Matrix4 mat = Affin::matUnit();
+
+	return mat;
+}
+
 void Matrix4::MakeOrthogonalL(float left, float right, float bottom, float top, float near_, float far_, Matrix4& matrix)
 {
 

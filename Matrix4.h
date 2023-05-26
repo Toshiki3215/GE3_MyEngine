@@ -28,11 +28,8 @@ public:
 	static void MakePerspectiveL(float fovAngleY, float aspect, float near_, float far_, Matrix4& matrix);
 	Matrix4 MakeInverse(const Matrix4* mat);
 
-	static Matrix4 MakeIdentity()
-	{
-		Matrix4 mat;
-		return mat;
-	}
+	static Matrix4 MakeIdentity();
+
 	Vector3 transform(const Vector3& v, const Matrix4& m);
 };
 

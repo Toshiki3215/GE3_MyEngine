@@ -84,7 +84,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2->SetModel(obj2MD);
 	obj2->wtf.position = (Vector3{ 50, 0, 20 });
 
-	tex1 = new Sprite();
+	/*tex1 = new Sprite();
 	tex1->Initialize(spriteCommon);
 	tex1->SetPozition({ 500,0 });
 	tex1->SetSize({256.0f, 125.0f});
@@ -92,7 +92,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	tex2 = new Sprite();
 	tex2->Initialize(spriteCommon);
 	tex2->SetPozition({ 500,500 });
-	tex2->SetSize({ 120.0f, 120.0f });
+	tex2->SetSize({ 120.0f, 120.0f });*/
 
 	//ゲームフロー
 	scene = Scene::Play;
@@ -111,13 +111,13 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//モデル名を指定してファイル読み込み
 	//FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	//fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 
 	//3Dオブジェクト生成とモデルのセット
-	/*fbxObject1 = new FBXObject;
+	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
-	fbxObject1->SetModel(fbxModel1);*/
+	fbxObject1->SetModel(fbxModel1);
 
 	fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
@@ -155,7 +155,7 @@ void GameScene::Update()
 	obj->Update();
 	obj2->Update();
 
-	//fbxObject1->Update();
+	fbxObject1->Update();
 	fbxObject2->Update();
 
 	isEffFlag = 1;
@@ -202,15 +202,15 @@ void GameScene::Draw()
 		enemyManager_->Draw();*/
     
     //floor->Draw();
-    obj->Draw();
-    obj2->Draw();
+    /*obj->Draw();
+    obj2->Draw();*/
     //skydome->Draw();
 	
-	//fbxObject1->Draw(dxInit->GetCommandList());
+	fbxObject1->Draw(dxInit->GetCommandList());
 	fbxObject2->Draw(dxInit->GetCommandList());
 
-	tex1->Draw();
-	tex2->Draw();
+	/*tex1->Draw();
+	tex2->Draw();*/
 
 
 		break;
