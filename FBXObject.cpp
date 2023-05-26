@@ -63,6 +63,9 @@ void FBXObject::Initialize()
 	}
 	constBuffSkin->Unmap(0, nullptr);
 
+	//1フレーム分の時間を60FPSで設定
+	frameTime.SetTime(0, 0, 0, 1, 0, FbxTime::EMode::eFrames60);
+
 }
 
 void FBXObject::CreateGraphicsPipeline()
@@ -147,9 +150,6 @@ void FBXObject::CreateGraphicsPipeline()
 			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-			/*"TEXCOORD", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0*/
 		},
 		{//影響を受けるボーン番号(4つ)
 			"BONEINDICES",0,DXGI_FORMAT_R32G32B32_UINT,0,
@@ -270,6 +270,19 @@ void FBXObject::Update()
 	//カメラ座標
 	const Vector3& cameraPos = camera->GetEye();
 
+	//アニメーション
+	if (isPlay)
+	{
+		//1フレーム進める
+		currentTime += frameTime;
+
+		//最後まで再生したら先頭に戻す
+		if (currentTime > endTime)
+		{
+			currentTime = startTime;
+		}
+	}
+
 	HRESULT result;
 
 	//定数バッファへデータ転移
@@ -297,7 +310,7 @@ void FBXObject::Update()
 		Matrix4 matCurrentPose;
 
 		//今の姿勢行列を取得
-		FbxAMatrix fbxCurrentPose = bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(0);
+		FbxAMatrix fbxCurrentPose = bones[i].fbxCluster->GetLink()->EvaluateGlobalTransform(currentTime);
 
 		//Matrix4に変換
 		FBXLoader::ConvertMatrixFromFbx(&matCurrentPose, fbxCurrentPose);
@@ -334,5 +347,32 @@ void FBXObject::Draw(ID3D12GraphicsCommandList* cmdList)
 
 	//モデル描画
 	fbxModel->Draw(cmdList);
+
+}
+
+void FBXObject::PlayAnimation()
+{
+	FbxScene* fbxScene = fbxModel->GetFbxScene();
+
+	//0番目のアニメーション取得
+	FbxAnimStack* animstack = fbxScene->GetSrcObject<FbxAnimStack>(0);
+
+	//アニメーションの名前取得
+	const char* animstackname = animstack->GetName();
+
+	//アニメーションの時間情報
+	FbxTakeInfo* takeinfo = fbxScene->GetTakeInfo(animstackname);
+
+	//開始時間取得
+	startTime = takeinfo->mLocalTimeSpan.GetStart();
+
+	//終了時間取得
+	endTime = takeinfo->mLocalTimeSpan.GetStop();
+
+	//開始時間に合わせる
+	currentTime = startTime;
+
+	//再生中状態にする
+	isPlay = true;
 
 }

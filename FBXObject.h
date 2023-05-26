@@ -118,4 +118,26 @@ public:
 		Matrix4 bones[MAX_BONES];
 	};
 
+private:
+	
+	//1フレームの時間
+	FbxTime frameTime;
+
+	//アニメーション開始時間
+	FbxTime startTime;
+
+	//アニメーション終了時間
+	FbxTime endTime;
+
+	//現在時間(アニメーション)
+	FbxTime currentTime;
+
+	//アニメーション再生中
+	bool isPlay = false;
+
+public:
+
+	//アニメーション開始
+	void PlayAnimation();
+
 };

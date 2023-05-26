@@ -156,6 +156,8 @@ void GameScene::Update()
 	obj2->Update();
 
 	fbxObject1->Update();
+
+	fbxObject2->PlayAnimation();
 	fbxObject2->Update();
 
 	isEffFlag = 1;
@@ -197,9 +199,6 @@ void GameScene::Draw()
 		break;
 
 	case Scene::Play:
-
-		/*player_->Draw();
-		enemyManager_->Draw();*/
     
     //floor->Draw();
     /*obj->Draw();
