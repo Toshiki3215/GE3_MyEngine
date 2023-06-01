@@ -96,7 +96,6 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//ゲームフロー
 	scene = Scene::Play;
-	//stage = 0;
 
 	/*spriteCommon->LoadTexture(0, "bb.png");
 	tex1->SetTextureIndex(0);
@@ -110,7 +109,6 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	particleManager->Update();
 
 	//モデル名を指定してファイル読み込み
-	//FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 
@@ -122,6 +120,8 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
 	fbxObject2->SetModel(fbxModel2);
+
+	fbxObject2->PlayAnimation();
 
 }
 
@@ -135,7 +135,7 @@ void GameScene::Reset()
 
 }
 
-// 毎フレーム処理
+// ----- 毎フレーム処理 ----- //
 void GameScene::Update() 
 {
 	switch (scene)
@@ -151,19 +151,18 @@ void GameScene::Update()
 	case Scene::Play:
 		CamUpdate();
 		
-    //floor->Update();
-	obj->Update();
-	obj2->Update();
+		//floor->Update();
+		obj->Update();
+		obj2->Update();
 
-	fbxObject1->Update();
+		fbxObject1->Update();
 
-	fbxObject2->PlayAnimation();
-	fbxObject2->Update();
+		fbxObject2->Update();
 
-	isEffFlag = 1;
-    //skydome->Update();
-	GameScene::EffUpdate();
-	GameScene::EffUpdate2();
+		isEffFlag = 0;
+		//skydome->Update();
+		GameScene::EffUpdate();
+		GameScene::EffUpdate2();
 
 		break;
 
@@ -177,7 +176,7 @@ void GameScene::Update()
 	}
 }
 
-// 描画
+// ----- 描画  ----- //
 void GameScene::Draw()
 {
 
@@ -187,7 +186,8 @@ void GameScene::Draw()
 	/// <summary>
 	//3Dオブジェクト描画前処理
 	Object3d::PreDraw(dxInit->GetCommandList());
-	//// 3Dオブクジェクトの描画
+
+	// ----- 3Dオブクジェクトの描画 ----- //
 	switch (scene)
 	{
 	case Scene::Title:
@@ -200,16 +200,16 @@ void GameScene::Draw()
 
 	case Scene::Play:
     
-    //floor->Draw();
-    /*obj->Draw();
-    obj2->Draw();*/
-    //skydome->Draw();
-	
-	fbxObject1->Draw(dxInit->GetCommandList());
-	fbxObject2->Draw(dxInit->GetCommandList());
+		//floor->Draw();
+		//skydome->Draw();
+		/*obj->Draw();
+		obj2->Draw();*/
+		
+		fbxObject1->Draw(dxInit->GetCommandList());
+		fbxObject2->Draw(dxInit->GetCommandList());
 
-	/*tex1->Draw();
-	tex2->Draw();*/
+		/*tex1->Draw();
+		tex2->Draw();*/
 
 
 		break;
@@ -226,7 +226,7 @@ void GameScene::Draw()
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();
 
-	// パーティクルの描画
+	// ----- パーティクルの描画 ----- //
 	switch (scene)
 	{
 	case Scene::Title:
