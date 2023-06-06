@@ -64,6 +64,31 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	//グラフィックスパイプライン生成
 	FBXObject::CreateGraphicsPipeline();
 
+	// ---------- テクスチャ ---------- //
+	//テクスチャ生成
+	/*tex1 = new Sprite();
+	tex1->Initialize(spriteCommon);
+	tex1->SetPozition({ 500,0 });
+	tex1->SetSize({256.0f, 125.0f});
+
+	tex2 = new Sprite();
+	tex2->Initialize(spriteCommon);
+	tex2->SetPozition({ 500,500 });
+	tex2->SetSize({ 120.0f, 120.0f });*/
+
+	//テクスチャ読込
+	/*spriteCommon->LoadTexture(0, "bb.png");
+	tex1->SetTextureIndex(0);
+
+	spriteCommon->LoadTexture(1, "tex.png");
+	tex2->SetTextureIndex(1);*/
+
+	// ---------- パーティクル ---------- //
+	particleManager = ParticleManager::Create();
+	particleManager->LoadTexture("texture2.png");
+	particleManager->Update();
+
+	// ---------- 3Dオブジェクト ---------- //
 	/*floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
 	floor->SetModel(floorMD);
@@ -84,35 +109,12 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2->SetModel(obj2MD);
 	obj2->wtf.position = (Vector3{ 50, 0, 20 });
 
-	/*tex1 = new Sprite();
-	tex1->Initialize(spriteCommon);
-	tex1->SetPozition({ 500,0 });
-	tex1->SetSize({256.0f, 125.0f});
-
-	tex2 = new Sprite();
-	tex2->Initialize(spriteCommon);
-	tex2->SetPozition({ 500,500 });
-	tex2->SetSize({ 120.0f, 120.0f });*/
-
-	//ゲームフロー
-	scene = Scene::Play;
-
-	/*spriteCommon->LoadTexture(0, "bb.png");
-	tex1->SetTextureIndex(0);
-
-	spriteCommon->LoadTexture(1, "tex.png");
-	tex2->SetTextureIndex(1);*/
-
-	//パーティクル生成
-	particleManager = ParticleManager::Create();
-	particleManager->LoadTexture("texture2.png");
-	particleManager->Update();
-
+	// ---------- FBX ---------- //
 	//モデル名を指定してファイル読み込み
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 
-	//3Dオブジェクト生成とモデルのセット
+	//FBXオブジェクト生成とモデルのセット
 	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(fbxModel1);
@@ -120,8 +122,10 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
 	fbxObject2->SetModel(fbxModel2);
-
 	fbxObject2->PlayAnimation();
+
+	//ゲームフロー
+	scene = Scene::Play;
 
 }
 
@@ -150,19 +154,21 @@ void GameScene::Update()
 
 	case Scene::Play:
 		CamUpdate();
+
+		// ---------- パーティクル ---------- //
+		isEffFlag = 0;
+		GameScene::EffUpdate();
+		GameScene::EffUpdate2();
 		
+		// ---------- 3Dオブジェクト ---------- //
 		//floor->Update();
+		//skydome->Update();
 		obj->Update();
 		obj2->Update();
 
+		// ---------- FBX ---------- //
 		fbxObject1->Update();
-
 		fbxObject2->Update();
-
-		isEffFlag = 0;
-		//skydome->Update();
-		GameScene::EffUpdate();
-		GameScene::EffUpdate2();
 
 		break;
 
@@ -200,17 +206,19 @@ void GameScene::Draw()
 
 	case Scene::Play:
     
+		// ---------- テクスチャ ---------- //
+		/*tex1->Draw();
+		tex2->Draw();*/
+
+		// ---------- 3Dオブジェクト ---------- //
 		//floor->Draw();
 		//skydome->Draw();
 		/*obj->Draw();
 		obj2->Draw();*/
 		
+		// ---------- FBX ---------- //
 		fbxObject1->Draw(dxInit->GetCommandList());
 		fbxObject2->Draw(dxInit->GetCommandList());
-
-		/*tex1->Draw();
-		tex2->Draw();*/
-
 
 		break;
 

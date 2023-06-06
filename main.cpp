@@ -3,10 +3,6 @@
 #include "DirectXInitialize.h"
 #include "FPS.h"
 #include "FBXLoader.h"
-
-//#include "ImGuiManager.h"
-//#include <imgui.h>
-
 #include "GameScene.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
@@ -22,12 +18,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Input* input = nullptr;
 	GameScene* gameScene = nullptr;
 
-	//ImGuiManager* imgui = nullptr;
-
 	//windowsAPIの初期化
 	winApp = new WinApp();
 	winApp->Initialize();
 
+	//DirectXの初期化
 	dxInit = new DirectXInitialize();
 	dxInit->Initialize(winApp);
 
@@ -59,7 +54,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	gameScene = new GameScene();
 	gameScene->Initialize(dxInit, input);
 
-	//FPS変えたいとき
+	//FPS固定
 	fps->SetFrameRate(60);
 
 #pragma endregion
@@ -85,7 +80,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region DirectX毎フレーム処理
 		/////////////////////////////////////////////////////
 		//----------DireceX毎フレーム処理　ここから------------//
-		///////////////////////////////////////////////////
+		/////////////////////////////////////////////////////
 
 		//入力の更新
 		input->Update();
@@ -95,7 +90,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 		//////////////////////////////////////////////
 		//-------DireceX毎フレーム処理　ここまで--------//
-		////////////////////////////////////////////
+		//////////////////////////////////////////////
 
 #pragma endregion
 
@@ -122,18 +117,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	}
 #pragma region  WindowsAPI後始末
 
-	/*ID3D12DebugDevice* debugInterface;
-	if (SUCCEEDED(dxCommon->GetDevice()->QueryInterface(&debugInterface))) {
-		debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
-		debugInterface->Release();
-	}*/
-
 	delete gameScene;
 
-	/*imgui->Finalize();*/
 	//WindowsAPIの終了処理
 	winApp->Finalize();
-	//delete imgui;
 
 	//入力解放
 	delete input;
