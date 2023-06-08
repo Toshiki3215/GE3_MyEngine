@@ -115,8 +115,6 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 	constMapMaterial->color = Vector4(1, 1, 1, 1);              // RGBAÇ≈îºìßñæÇÃê‘
 }
 
-
-
 void Sprite::Update()
 {
 	ComPtr<ID3D12Resource> textureBuffer = spritecomon->GetTextureBuffer(textureIndex_);
@@ -248,5 +246,3 @@ void Sprite::AdjustTextureSize()
 	textureSize.x = static_cast<float>(resDesc.Width);
 	textureSize.y = static_cast<float>(resDesc.Height);
 }
-
-

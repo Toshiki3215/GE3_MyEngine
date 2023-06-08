@@ -109,7 +109,7 @@ private:
 	Matrix4 matScale;//スケーリング行列
 	Matrix4 matWorld;
 	Matrix4 matRot;//回転行列
-	Matrix4  matTrans;//平行移動行列
+	Matrix4 matTrans;//平行移動行列
 
 	//座標
 	Vector3 scale{ 0.5f, 0.5f, 1.0f };
