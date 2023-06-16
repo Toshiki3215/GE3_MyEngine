@@ -86,7 +86,8 @@ public:
 	/// 左右反転の設定
 	void SetIsFlipX(bool isFlipX);
 
-private:
+//private:
+protected:
 	//テクスチャサイズをイメージに合わせる
 	void AdjustTextureSize();
 
