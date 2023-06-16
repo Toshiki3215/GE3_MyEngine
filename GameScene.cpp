@@ -84,9 +84,9 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	tex2->SetTextureIndex(1);*/
 
 	// ---------- パーティクル ---------- //
-	particleManager = ParticleManager::Create();
+	/*particleManager = ParticleManager::Create();
 	particleManager->LoadTexture("texture2.png");
-	particleManager->Update();
+	particleManager->Update();*/
 
 	// ---------- 3Dオブジェクト ---------- //
 	/*floorMD = Model::LoadFromOBJ("floor");
@@ -99,7 +99,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	//skydome->SetModel(skydomeMD);
 	//skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
-	objMD = Model::LoadFromOBJ("obj");
+	/*objMD = Model::LoadFromOBJ("obj");
 	obj = Object3d::Create();
 	obj->SetModel(objMD);
 	obj->wtf.position = (Vector3{ 20, 20, 40 });
@@ -107,22 +107,22 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2MD = Model::LoadFromOBJ("obj2");
 	obj2 = Object3d::Create();
 	obj2->SetModel(obj2MD);
-	obj2->wtf.position = (Vector3{ 50, 0, 20 });
+	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
 
 	// ---------- FBX ---------- //
 	//モデル名を指定してファイル読み込み
-	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
+	/*fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");*/
 
 	//FBXオブジェクト生成とモデルのセット
-	fbxObject1 = new FBXObject;
+	/*fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(fbxModel1);
 
 	fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
 	fbxObject2->SetModel(fbxModel2);
-	fbxObject2->PlayAnimation();
+	fbxObject2->PlayAnimation();*/
 
 	//ゲームフロー
 	scene = Scene::Play;
@@ -156,19 +156,19 @@ void GameScene::Update()
 		CamUpdate();
 
 		// ---------- パーティクル ---------- //
-		isEffFlag = 0;
+		/*isEffFlag = 0;
 		GameScene::EffUpdate();
-		GameScene::EffUpdate2();
+		GameScene::EffUpdate2();*/
 		
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Update();
 		//skydome->Update();
-		obj->Update();
-		obj2->Update();
+		/*obj->Update();
+		obj2->Update();*/
 
 		// ---------- FBX ---------- //
-		fbxObject1->Update();
-		fbxObject2->Update();
+		/*fbxObject1->Update();
+		fbxObject2->Update();*/
 
 		break;
 
@@ -217,8 +217,8 @@ void GameScene::Draw()
 		obj2->Draw();*/
 		
 		// ---------- FBX ---------- //
-		fbxObject1->Draw(dxInit->GetCommandList());
-		fbxObject2->Draw(dxInit->GetCommandList());
+		/*fbxObject1->Draw(dxInit->GetCommandList());
+		fbxObject2->Draw(dxInit->GetCommandList());*/
 
 		break;
 
@@ -248,12 +248,12 @@ void GameScene::Draw()
 	case Scene::Play:
 
 		// パーティクル描画前処理
-		ParticleManager::PreDraw(dxInit->GetCommandList());
-		GameScene::EffDraw();
-		GameScene::EffDraw2();
+		//ParticleManager::PreDraw(dxInit->GetCommandList());
+		//GameScene::EffDraw();
+		//GameScene::EffDraw2();
 
-		// パーティクル描画後処理
-		ParticleManager::PostDraw();
+		//// パーティクル描画後処理
+		//ParticleManager::PostDraw();
 
 		break;
 
