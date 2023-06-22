@@ -37,7 +37,6 @@ void Camera::Update(Transform wtf)
 	newEye.y = affineMat.m[3][1];
 	newEye.z = affineMat.m[3][2];
 
-
 	UpdateViewMatrix(newEye);
 	UpdateProjectionMatrix();
 	matViewProjection = matView * matProjection;
