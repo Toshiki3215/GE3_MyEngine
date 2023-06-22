@@ -72,7 +72,7 @@ private: // ƒƒ“ƒo•Ï” (ŒÅ’è)
 	ParticleManager* particleManager = nullptr;
 
 private:	//ƒƒ“ƒo•Ï”
-	const float PI = 3.141592;
+	const float PI = 3.141592f;
 
 	//ƒJƒƒ‰
 	Camera* camera = nullptr;

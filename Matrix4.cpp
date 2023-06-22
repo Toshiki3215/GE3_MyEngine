@@ -82,20 +82,20 @@ Matrix4 Matrix4::MakeInverse(const Matrix4* mat)
 	for (int i = 0; i < 4; i++)
 	{
 		//Å‘å‚Ìâ‘Î’l‚ð’–Ú‘ÎŠp¬•ª‚Ìâ‘Î’l‚Æ‰¼’è
-		float max = fabs(sweep[i][i]);
+		float max = fabsf(sweep[i][i]);
 		int maxIndex = i;
 
 		//i—ñ–Ú‚ªÅ‘å‚Ìâ‘Î’l‚Æ‚È‚és‚ð’T‚·
 		for (int j = i + 1; j < 4; j++)
 		{
-			if (fabs(sweep[j][i]) > max)
+			if (fabsf(sweep[j][i]) > max)
 			{
-				max = fabs(sweep[j][i]);
+				max = fabsf(sweep[j][i]);
 				maxIndex = j;
 			}
 		}
 
-		if (fabs(sweep[maxIndex][i]) <= MAX_ERR)
+		if (fabsf(sweep[maxIndex][i]) <= MAX_ERR)
 		{
 			//‹ts—ñ‚Í‹‚ß‚ç‚ê‚È‚¢
 			return MakeIdentity();

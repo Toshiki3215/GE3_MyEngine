@@ -27,7 +27,7 @@ void Camera::Update(Transform wtf)
 {
 
 	Matrix4 affineMat;
-	affineMat.MakeIdentity;
+	affineMat.MakeIdentity();
 	affineMat = Affin::matTrans(eye);
 
 	affineMat *= wtf.matWorld;
@@ -280,6 +280,6 @@ void Camera::MoveVector(const Vector3& move)
 float Camera::FieldOfViewY() 
 {
 
-	return 2 * atan(sensor / (2 * focalLengs));
+	return 2 * atanf(sensor / (2 * focalLengs));
 
 }

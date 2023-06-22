@@ -1,4 +1,4 @@
-#include "GameScene.h"
+﻿#include "GameScene.h"
 #include "FBXLoader.h"
 #include "FBXObject.h"
 
@@ -454,8 +454,8 @@ void GameScene::CamRota()
 	}
 	
 	//視点は一定の距離
-	targetWtf.position.z = cos(targetTheta) * targetDistance;
-	targetWtf.position.y = sin(targetTheta) * targetDistance;
+	targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;
 }
 
 void GameScene::CamUpdate() 
