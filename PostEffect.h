@@ -16,5 +16,12 @@ public:
     //描画コマンドの発行
     void Draw(ID3D12GraphicsCommandList* cmdList);
 
+private:
+    // ルートシグネチャ
+    ComPtr<ID3D12RootSignature> rootSignature;
+
+    // パイプランステートの生成
+    ComPtr<ID3D12PipelineState> pipelineState;
+
 };
 

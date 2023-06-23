@@ -4,6 +4,7 @@
 #include "FPS.h"
 #include "FBXLoader.h"
 #include "GameScene.h"
+#include "PostEffect.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -17,6 +18,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	FPS* fps = new FPS;
 	Input* input = nullptr;
 	GameScene* gameScene = nullptr;
+	PostEffect* postEffect = nullptr;
 
 	//windowsAPIの初期化
 	winApp = new WinApp();
@@ -32,6 +34,9 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//FBX初期化
 	FBXLoader::GetInstance()->Initialize(dxInit->GetDevice());
+
+	//ポストエフェクト用テクスチャの読み込み
+	//spriteCommon->LoadTexture(100, L"Resources/white1x1.png");
 
 #pragma endregion
 

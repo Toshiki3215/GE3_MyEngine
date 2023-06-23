@@ -33,7 +33,13 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	}
 
 	//パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineState.Get())
+	cmdList->SetPipelineState(pipelineState.Get());
+
+	//ルートシグネチャの設定
+	cmdList->SetComputeRootSignature(rootSignature.Get());
+
+	//プリミティブ形状を設定
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
 	spritecomon->SetTextureCommands(textureIndex_);
 
