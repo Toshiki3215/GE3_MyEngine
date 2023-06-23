@@ -109,6 +109,35 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2->SetModel(obj2MD);
 	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
 
+	//レベルデータの読み込み
+	levelEData = LevelELoader::LoadFile("level_editer");
+
+	//レベルデータからオブジェクトを生成、配置
+	for (auto& objData : levelEData->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models)::iterator it = models.find(objData.fileName);
+		if (it != models.end()) { model = it->second; }
+
+		//モデルを指定して3Dオブジェクトを生成
+		Object3d* newObject = Object3d::Create();
+		newObject->SetModel(model);
+
+		//座標
+		Vector3 pos;
+		newObject->wtf.position = pos;
+
+		//回転角
+		Vector3 rot;
+		newObject->wtf.rotation = rot;
+
+		//スケール
+		Vector3 scale;
+		newObject->wtf.scale = scale;
+
+	}
+
 	// ---------- FBX ---------- //
 	//モデル名を指定してファイル読み込み
 	/*fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
@@ -166,6 +195,11 @@ void GameScene::Update()
 		/*obj->Update();
 		obj2->Update();*/
 
+		for (auto& object : objects) 
+		{
+			object->Update();
+		}
+
 		// ---------- FBX ---------- //
 		/*fbxObject1->Update();
 		fbxObject2->Update();*/
@@ -215,6 +249,11 @@ void GameScene::Draw()
 		//skydome->Draw();
 		/*obj->Draw();
 		obj2->Draw();*/
+
+		for (auto& object : objects) 
+		{
+			object->Draw();
+		}
 		
 		// ---------- FBX ---------- //
 		/*fbxObject1->Draw(dxInit->GetCommandList());

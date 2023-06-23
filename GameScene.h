@@ -11,6 +11,10 @@
 #include "Camera.h"
 #include "ParticleManager.h"
 #include "FBXObject.h"
+#include "LevelEditerLoader.h"
+#include <map>
+
+struct LevelData;
 
 /// <summary>
 /// ゲームシーン
@@ -95,6 +99,11 @@ private:	//メンバ変数
 
 	Object3d* obj2 = nullptr;
 	Model* obj2MD = nullptr;
+
+	LevelEData* levelEData = nullptr;
+	std::map<std::string, Model*> models;
+	std::vector<Object3d*> objects;
+	//Object3d* objects = nullptr;
 
 	Sprite* tex1 = nullptr;
 	Sprite* tex2 = nullptr;

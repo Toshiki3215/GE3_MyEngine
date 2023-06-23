@@ -144,6 +144,7 @@
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LevelEditerLoader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -169,6 +170,8 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="LevelEditerLoader.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Object3D.h" />
