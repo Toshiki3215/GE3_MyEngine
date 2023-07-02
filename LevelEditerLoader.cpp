@@ -53,6 +53,8 @@ LevelEData* LevelELoader::LoadFile(const std::string& fileName)
 		//種別を取得
 		std::string type = object["type"].get<std::string>();
 
+		// ----- 種類ごとの処理 ----- //
+
 		//MESH
 		if (type.compare("MESH") == 0)
 		{
@@ -72,31 +74,16 @@ LevelEData* LevelELoader::LoadFile(const std::string& fileName)
 			nlohmann::json& transform = object["transform"];
 
 			//平行移動
-			/*objData.translation.m128_f32[0] =  (float)transform["translation"][1];
-			objData.translation.m128_f32[1] =  (float)transform["translation"][2];
-			objData.translation.m128_f32[2] = -(float)transform["translation"][0];
-			objData.translation.m128_f32[3] = 1.0f;*/
-
 			objData.translation.x =  (float)transform["translation"][1];
 			objData.translation.y =  (float)transform["translation"][2];
 			objData.translation.z = -(float)transform["translation"][0];
 
 			//回転角
-			/*objData.rotation.m128_f32[0] = -(float)transform["rotation"][1];
-			objData.rotation.m128_f32[1] = -(float)transform["rotation"][2];
-			objData.rotation.m128_f32[2] =  (float)transform["rotation"][0];
-			objData.rotation.m128_f32[3] = 0.0f;*/
-
 			objData.rotation.x = -(float)transform["rotation"][1];
 			objData.rotation.y = -(float)transform["rotation"][2];
 			objData.rotation.z =  (float)transform["rotation"][0];
 
 			//スケーリング
-			/*objData.scaling.m128_f32[0] = (float)transform["scaling"][1];
-			objData.scaling.m128_f32[1] = (float)transform["scaling"][2];
-			objData.scaling.m128_f32[2] = (float)transform["scaling"][0];
-			objData.scaling.m128_f32[3] = 0.0f;*/
-
 			objData.scaling.x = (float)transform["scaling"][1];
 			objData.scaling.y = (float)transform["scaling"][2];
 			objData.scaling.z = (float)transform["scaling"][0];
@@ -105,10 +92,11 @@ LevelEData* LevelELoader::LoadFile(const std::string& fileName)
 
 		}
 
+
 		// TODO: オブジェクト走査を再帰関数にまとめ、再帰呼出で枝を走査する
 		if (object.contains("children")) 
 		{
-
+			
 		}
 	}
 

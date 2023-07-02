@@ -21,8 +21,8 @@ GameScene::~GameScene()
 	delete obj2;
 	delete tex1;
 	delete tex2;
-	//delete floor;
-	//delete skydome;
+	delete floor;
+	delete skydome;
 	delete fbxObject1;
 	delete fbxModel1;
 }
@@ -89,15 +89,15 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	particleManager->Update();*/
 
 	// ---------- 3Dオブジェクト ---------- //
-	/*floorMD = Model::LoadFromOBJ("floor");
+	floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
 	floor->SetModel(floorMD);
-	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
+	floor->wtf.position = (Vector3{ 0, -10, 0 });
 
-	//skydomeMD = Model::LoadFromOBJ("skydome");
-	//skydome = Object3d::Create();
-	//skydome->SetModel(skydomeMD);
-	//skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
+	skydomeMD = Model::LoadFromOBJ("skydome");
+	skydome = Object3d::Create();
+	skydome->SetModel(skydomeMD);
+	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
 	/*objMD = Model::LoadFromOBJ("obj");
 	obj = Object3d::Create();
@@ -109,8 +109,9 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2->SetModel(obj2MD);
 	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
 
-	//レベルデータの読み込み
-	levelEData = LevelELoader::LoadFile("level_editer");
+	//レベルデータの読み込み - jsonファイル読み込み
+	//levelEData = LevelELoader::LoadFile("level_editer");
+	levelEData = LevelELoader::LoadFile("test");
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objData : levelEData->objects)
@@ -122,20 +123,27 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 		//モデルを指定して3Dオブジェクトを生成
 		Object3d* newObject = Object3d::Create();
+		if (objData.fileName == "floorObj")
+		{
+			model = Model::LoadFromOBJ("floor");		//levelEditer用のモデル
+		}
+		else 
+		{
+			model = Model::LoadFromOBJ("obj2");		//levelEditer用のモデル
+		}
 		newObject->SetModel(model);
 
 		//座標
-		Vector3 pos;
-		newObject->wtf.position = pos;
+		newObject->wtf.position = objData.translation;
 
 		//回転角
-		Vector3 rot;
-		newObject->wtf.rotation = rot;
+		newObject->wtf.rotation = objData.rotation;
 
 		//スケール
-		Vector3 scale;
-		newObject->wtf.scale = scale;
+		newObject->wtf.scale = objData.scaling;
 
+		//配列に登録
+		objects.push_back(newObject);
 	}
 
 	// ---------- FBX ---------- //
@@ -190,8 +198,8 @@ void GameScene::Update()
 		GameScene::EffUpdate2();*/
 		
 		// ---------- 3Dオブジェクト ---------- //
-		//floor->Update();
-		//skydome->Update();
+		floor->Update();
+		skydome->Update();
 		/*obj->Update();
 		obj2->Update();*/
 
@@ -246,7 +254,7 @@ void GameScene::Draw()
 
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Draw();
-		//skydome->Draw();
+		skydome->Draw();
 		/*obj->Draw();
 		obj2->Draw();*/
 
@@ -395,7 +403,6 @@ void GameScene::EffDraw2()
 
 	}
 }
-
 
 void GameScene::CamMove() 
 {

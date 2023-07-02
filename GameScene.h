@@ -91,8 +91,8 @@ private:	//ƒƒ“ƒo•Ï”
 	//”wŒi‚â°
 	Object3d* floor = nullptr;
 	Model* floorMD = nullptr;
-	/*Object3d* skydome = nullptr;
-	Model* skydomeMD = nullptr;*/
+	Object3d* skydome = nullptr;
+	Model* skydomeMD = nullptr;
 
 	Object3d* obj = nullptr;
 	Model* objMD = nullptr;
