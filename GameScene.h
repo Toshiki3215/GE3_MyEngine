@@ -11,6 +11,7 @@
 #include "Camera.h"
 #include "ParticleManager.h"
 #include "FBXObject.h"
+#include "Player.h"
 
 /// <summary>
 /// ゲームシーン
@@ -50,8 +51,12 @@ public: // メンバ関数
 	void Draw();
 
 	void CamMove();
+	void CamMove2(Vector3 pos);
 	void CamRota();
 	void CamUpdate();
+	void CamUpdate2(Vector3 pos);
+
+	void PlayerUpdata(Vector3 pos);
 
 	void EffUpdate();
 	void EffDraw();
@@ -87,14 +92,17 @@ private:	//メンバ変数
 	//背景や床
 	Object3d* floor = nullptr;
 	Model* floorMD = nullptr;
-	/*Object3d* skydome = nullptr;
-	Model* skydomeMD = nullptr;*/
+	Object3d* skydome = nullptr;
+	Model* skydomeMD = nullptr;
 
 	Object3d* obj = nullptr;
 	Model* objMD = nullptr;
 
 	Object3d* obj2 = nullptr;
 	Model* obj2MD = nullptr;
+
+	Object3d* playerObj = nullptr;
+	Model* playerMD = nullptr;
 
 	Sprite* tex1 = nullptr;
 	Sprite* tex2 = nullptr;
@@ -122,5 +130,12 @@ private:	//メンバ変数
 	FBXModel* fbxModel2 = nullptr;
 
 	FBXObject* fbxObject2 = nullptr;
+
+	/*FBXModel* playerModel = nullptr;
+	FBXObject* playerFbx = nullptr;*/
+
+	Vector3 playerPos;
+
+	Player* player_ = nullptr;
 
 };

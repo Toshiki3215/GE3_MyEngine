@@ -19,10 +19,11 @@ GameScene::~GameScene()
 	delete camera;
 	delete obj;
 	delete obj2;
+	delete playerObj;
 	delete tex1;
 	delete tex2;
 	//delete floor;
-	//delete skydome;
+	delete skydome;
 	delete fbxObject1;
 	delete fbxModel1;
 }
@@ -43,6 +44,8 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxInit);
 
+	playerPos = { 0,0,0 };
+
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
@@ -50,7 +53,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	camWtf.position = { 0.0f, 3.0f, -8.0f };
 
 	targetWtf.Initialize();
-	targetWtf.position = { 0.0f,0.0f,targetDistance };
+	targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
 
 	ParticleManager::SetCamera(camera);
 	Object3d::SetCamera(camera);
@@ -66,6 +69,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	// ---------- テクスチャ ---------- //
 	//テクスチャ生成
+
 	/*tex1 = new Sprite();
 	tex1->Initialize(spriteCommon);
 	tex1->SetPozition({ 500,0 });
@@ -77,6 +81,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	tex2->SetSize({ 120.0f, 120.0f });*/
 
 	//テクスチャ読込
+
 	/*spriteCommon->LoadTexture(0, "bb.png");
 	tex1->SetTextureIndex(0);
 
@@ -84,22 +89,29 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	tex2->SetTextureIndex(1);*/
 
 	// ---------- パーティクル ---------- //
+
 	particleManager = ParticleManager::Create();
 	particleManager->LoadTexture("texture2.png");
 	particleManager->Update();
 
 	// ---------- 3Dオブジェクト ---------- //
+
 	/*floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
 	floor->SetModel(floorMD);
 	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
 
-	//skydomeMD = Model::LoadFromOBJ("skydome");
-	//skydome = Object3d::Create();
-	//skydome->SetModel(skydomeMD);
-	//skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
+	skydomeMD = Model::LoadFromOBJ("skydome");
+	skydome = Object3d::Create();
+	skydome->SetModel(skydomeMD);
+	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
-	objMD = Model::LoadFromOBJ("obj");
+	playerMD = Model::LoadFromOBJ("obj");
+	playerObj = Object3d::Create();
+	playerObj->SetModel(playerMD);
+	playerObj->wtf.position = (playerPos);
+
+	/*objMD = Model::LoadFromOBJ("obj");
 	obj = Object3d::Create();
 	obj->SetModel(objMD);
 	obj->wtf.position = (Vector3{ 20, 20, 40 });
@@ -107,25 +119,40 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	obj2MD = Model::LoadFromOBJ("obj2");
 	obj2 = Object3d::Create();
 	obj2->SetModel(obj2MD);
-	obj2->wtf.position = (Vector3{ 50, 0, 20 });
+	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
 
 	// ---------- FBX ---------- //
+	
 	//モデル名を指定してファイル読み込み
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
+	//fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
+	//playerModel = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
 
 	//FBXオブジェクト生成とモデルのセット
+
 	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(fbxModel1);
 
-	fbxObject2 = new FBXObject;
+	/*fbxObject2 = new FBXObject;
 	fbxObject2->Initialize();
 	fbxObject2->SetModel(fbxModel2);
-	fbxObject2->PlayAnimation();
+	fbxObject2->PlayAnimation();*/
+
+	/*playerFbx = new FBXObject;
+	playerFbx->Initialize();
+	playerFbx->SetModel(playerModel);*/
 
 	//ゲームフロー
 	scene = Scene::Play;
+
+	//自キャラの生成
+	player_ = new Player();
+
+	//自キャラの初期化
+	player_->Initialize(input);
+
+	playerPos = player_->GetPlayerPos();
 
 }
 
@@ -153,7 +180,9 @@ void GameScene::Update()
 		break;
 
 	case Scene::Play:
+		//PlayerUpdata(playerPos);
 		CamUpdate();
+		//CamUpdate2(playerPos);
 
 		// ---------- パーティクル ---------- //
 		isEffFlag = 0;
@@ -162,13 +191,17 @@ void GameScene::Update()
 		
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Update();
-		//skydome->Update();
-		obj->Update();
-		obj2->Update();
+		skydome->Update();
+		/*obj->Update();
+		obj2->Update();*/
+		playerObj->wtf.position = (playerPos);
+		playerObj->Update();
 
 		// ---------- FBX ---------- //
 		fbxObject1->Update();
-		fbxObject2->Update();
+		//fbxObject2->Update();
+
+		player_->Update();
 
 		break;
 
@@ -212,13 +245,16 @@ void GameScene::Draw()
 
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Draw();
-		//skydome->Draw();
+		skydome->Draw();
 		/*obj->Draw();
 		obj2->Draw();*/
+
+		player_->Draw();
 		
 		// ---------- FBX ---------- //
 		fbxObject1->Draw(dxInit->GetCommandList());
-		fbxObject2->Draw(dxInit->GetCommandList());
+		//fbxObject2->Draw(dxInit->GetCommandList());
+		//playerFbx->Draw(dxInit->GetCommandList());
 
 		break;
 
@@ -413,49 +449,70 @@ void GameScene::CamMove()
 		//更新
 		camWtf.position += eyeVelocity;
 	}
+	Vector3 theta;
+
+	if (input->PushKey(DIK_1))
+	{
+		theta.y = -5;
+		//更新
+		camWtf.rotation = theta;
+	}
+	//視点は一定の距離
+	targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;
+
+}
+
+void GameScene::CamMove2(Vector3 pos)
+{
+
+	//更新
+	camWtf.position += pos;
+
+	camWtf.position.z = pos.z + 50;
 }
 
 void GameScene::CamRota() 
 {
 	//視点移動
 
-	//左右
-	Vector3 theta;
-	if (input->PushKey(DIK_A)) 
-	{
+	////左右
+	//Vector3 theta;
+	//if (input->PushKey(DIK_A)) 
+	//{
 
-		theta.y = -camRotaSpeed;
-	}
-	else if (input->PushKey(DIK_D)) 
-	{
-		theta.y = camRotaSpeed;
-	}
+	//	theta.y = -camRotaSpeed;
+	//}
+	//else if (input->PushKey(DIK_D)) 
+	//{
+	//	theta.y = camRotaSpeed;
+	//}
 
-	camWtf.rotation += theta;
+	//camWtf.rotation += theta;
 
-	//上下
-	if (input->PushKey(DIK_W)) 
-	{
-		targetTheta += camRotaSpeed;
-	}
-	else if (input->PushKey(DIK_S)) 
-	{
-		targetTheta += -camRotaSpeed;
-	}
+	////上下
+	//if (input->PushKey(DIK_W)) 
+	//{
+	//	targetTheta += camRotaSpeed;
+	//}
+	//else if (input->PushKey(DIK_S)) 
+	//{
+	//	targetTheta += -camRotaSpeed;
+	//}
 	
 	//角度制限
-	if (targetTheta < -PI / 5 * 2) 
+	/*if (targetTheta < -PI / 5 * 2) 
 	{
 		targetTheta = -PI / 5 * 2;
 	}
 	else if (targetTheta > PI / 3)
 	{ 
 		targetTheta = PI / 3;
-	}
+	}*/
 	
 	//視点は一定の距離
-	targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;
+	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
 }
 
 void GameScene::CamUpdate() 
@@ -476,11 +533,72 @@ void GameScene::CamUpdate()
 		targetWtf.matWorld.m[3][1] = 0;
 	}
 
-	camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
+	//camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
+	camera->SetTarget(playerPos);
 	//camera->SetTarget({0,20,0 });
 
 	camera->Update();
 }
+
+void GameScene::CamUpdate2(Vector3 pos)
+{
+	CamMove();
+	CamRota();
+
+	camWtf.UpdateMat();
+
+	camera->SetEye(camWtf.position);
+
+	targetWtf.UpdateMat();
+	targetWtf.matWorld *= camWtf.matWorld;
+
+	//y方向の制限
+	if (targetWtf.matWorld.m[3][1] < 0)
+	{
+		targetWtf.matWorld.m[3][1] = 0;
+	}
+
+	//camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
+	camera->SetTarget(pos);
+	//camera->SetTarget({0,20,0 });
+
+	camera->Update();
+}
+
+void GameScene::PlayerUpdata(Vector3 pos)
+{
+	//左右移動
+	if (input->PushKey(DIK_RIGHT))
+	{
+		Vector3 speed = { 1,0,0 };
+
+		//更新
+		pos += speed;
+	}
+	if (input->PushKey(DIK_RIGHT))
+	{
+		Vector3 speed = { -1,0,0 };
+
+		//更新
+		pos += speed;
+	}
+	if (input->PushKey(DIK_UP))
+	{
+		Vector3 speed = { 0,-1,0 };
+
+		//更新
+		pos += speed;
+	}
+	if (input->PushKey(DIK_DOWN))
+	{
+		Vector3 speed = { 0,1,0 };
+
+		//更新
+		pos += speed;
+	}
+
+}
+
 
 Vector3 GameScene::bVelocity(Vector3& velocity, Transform& worldTransform)
 {
