@@ -12,12 +12,12 @@ void Player::Initialize(Input* input)
 
 	moveTarget = Vector3(0, 0, 0);
 
-	rotaTarget = Vector3(0, 0, 1);
+	rotaTarget = Vector3(0, 0, 10);
 
 	playerModel = Model::LoadFromOBJ("obj");
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerModel);
-	playerObj->wtf.position = (playerPos);
+	playerObj->wtf.position = playerPos;
 }
 
 void Player::Update()
@@ -26,13 +26,13 @@ void Player::Update()
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
 
 	//左右移動
-	if (input->PushKey(DIK_D))
-	{
-		Vector3 speed = { 1,0,0 };
+	//if (input->PushKey(DIK_D))
+	//{
+	//	Vector3 speed = { 1,0,0 };
 
-		//更新
-		playerPos += speed;
-	}
+	//	//更新
+	//	playerPos += speed;
+	//}
 	if (input->PushKey(DIK_A))
 	{
 		Vector3 speed = { -1,0,0 };
@@ -55,7 +55,7 @@ void Player::Update()
 		playerPos += speed;
 	}
 
-	playerObj->wtf.position = (playerPos);
+	playerObj->wtf.position = playerPos;
 	playerObj->UpdateMat();
 	playerObj->Update();
 
@@ -73,6 +73,11 @@ void Player::Update()
 void Player::Draw()
 {
 	playerObj->Draw();
+
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) 
+	{
+		bullet->Draw();
+	}
 }
 
 Vector3 Player::GetPlayerPos()
@@ -82,10 +87,10 @@ Vector3 Player::GetPlayerPos()
 
 void Player::Attack() 
 {
-	if (input->PushKey(DIK_RETURN)) 
+	if (input->PushKey(DIK_SPACE)) 
 	{
 
-		//playerPos = worldTransform_.translation_;
+		playerPos = playerObj->wtf.position;
 
 		//弾の速度
 		const float kBulletSpeed = 1.0f;

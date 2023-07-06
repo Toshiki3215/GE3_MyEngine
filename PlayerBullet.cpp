@@ -9,8 +9,8 @@ void PlayerBullet::Initilize(const Vector3& position, const Vector3& velocity)
 	bulletModel = Model::LoadFromOBJ("obj");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);
-	bulletObj->wtf.position = (bulletPos);
-	bulletObj->wtf.scale = (bulletScale);
+	bulletObj->wtf.position = bulletPos;
+	bulletObj->wtf.scale = bulletScale;
 
 	//ˆø”‚ÅŽó‚¯Žæ‚Á‚½‘¬“x‚ðƒƒ“ƒo•Ï”‚É‘ã“ü
 	velocity_ = velocity;
@@ -20,6 +20,7 @@ void PlayerBullet::Initilize(const Vector3& position, const Vector3& velocity)
 void PlayerBullet::Update()
 {
 	bulletPos += velocity_;
+	bulletObj->wtf.position = bulletPos;
 
 	if (--deathTimer_ <= 0)
 	{
@@ -30,6 +31,7 @@ void PlayerBullet::Update()
 
 void PlayerBullet::Draw()
 {
+	bulletObj->wtf.position = bulletPos;
 	bulletObj->Draw();
 }
 
