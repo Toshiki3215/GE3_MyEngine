@@ -5,6 +5,7 @@
 #include "FBXLoader.h"
 #include "GameScene.h"
 #include "PostEffect.h"
+#include "SpriteCommon.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -19,6 +20,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	Input* input = nullptr;
 	GameScene* gameScene = nullptr;
 	PostEffect* postEffect = nullptr;
+	SpriteCommon* spriteCommon = nullptr;
 
 	//windowsAPIの初期化
 	winApp = new WinApp();
@@ -36,8 +38,16 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	FBXLoader::GetInstance()->Initialize(dxInit->GetDevice());
 
 	//ポストエフェクト用テクスチャの読み込み
-	//spriteCommon->LoadTexture(100, L"Resources/white1x1.png");
+	//spritecomon->LoadTexture(1, "white1x1.png");
+	spriteCommon->LoadTexture(0, "white1x1.png");
+	postEffect->SetPozition({ 500,500 });
+	postEffect->SetSize({ 120.0f, 120.0f });
 
+	postEffect = new PostEffect();
+	postEffect->Initialize(spriteCommon);
+	postEffect->SetTextureIndex(0);
+	
+	
 #pragma endregion
 
 #pragma region DirectX初期化処理
@@ -107,6 +117,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// ゲームシーンの描画
 		//gameScene->Draw();
 
+		postEffect->Draw(dxInit->GetCommandList());
+
 		// 描画終了
 		dxInit->PostDraw();
 
@@ -123,6 +135,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region  WindowsAPI後始末
 
 	delete gameScene;
+
+	delete postEffect;
 
 	//WindowsAPIの終了処理
 	winApp->Finalize();
