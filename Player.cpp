@@ -26,13 +26,13 @@ void Player::Update()
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
 
 	//左右移動
-	//if (input->PushKey(DIK_D))
-	//{
-	//	Vector3 speed = { 1,0,0 };
+	if (input->PushKey(DIK_D))
+	{
+		Vector3 speed = { 1,0,0 };
 
-	//	//更新
-	//	playerPos += speed;
-	//}
+		//更新
+		playerPos += speed;
+	}
 	if (input->PushKey(DIK_A))
 	{
 		Vector3 speed = { -1,0,0 };
