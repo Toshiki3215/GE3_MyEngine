@@ -42,7 +42,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//ポストエフェクト用テクスチャの読み込み
 	//spritecomon->LoadTexture(1, "white1x1.png");
 	postEffect = new PostEffect();
-	postEffect->Initialize(spriteCommon);
+	//postEffect->Initialize(spriteCommon);
+	postEffect->Initialize();
 	postEffect->SetPozition({ 500,500 });
 	postEffect->SetSize({ 120.0f, 120.0f });
 
@@ -118,8 +119,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// ゲームシーンの描画
 		//gameScene->Draw();
 
-		//postEffect->Draw(dxInit->GetCommandList());
-		postEffect->Draw();
+		postEffect->Draw(dxInit->GetCommandList());
+		//postEffect->Draw();
 
 		// 描画終了
 		dxInit->PostDraw();
