@@ -14,7 +14,7 @@ public:
     PostEffect();
 
     //描画コマンドの発行
-    void Draw(ID3D12GraphicsCommandList* cmdList);
+    //void Draw(ID3D12GraphicsCommandList* cmdList);
 
 private:
     // ルートシグネチャ

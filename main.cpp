@@ -12,7 +12,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 #pragma region WindowsAPI初期化処理
 
-
 	//ポインタ
 	WinApp* winApp = nullptr;
 	DirectXInitialize* dxInit = nullptr;
@@ -34,19 +33,21 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	input = new Input();
 	input->Initialize(winApp);
 
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Initialize(dxInit);
+
 	//FBX初期化
 	FBXLoader::GetInstance()->Initialize(dxInit->GetDevice());
 
 	//ポストエフェクト用テクスチャの読み込み
 	//spritecomon->LoadTexture(1, "white1x1.png");
-	spriteCommon->LoadTexture(0, "white1x1.png");
+	postEffect = new PostEffect();
+	postEffect->Initialize(spriteCommon);
 	postEffect->SetPozition({ 500,500 });
 	postEffect->SetSize({ 120.0f, 120.0f });
 
-	postEffect = new PostEffect();
-	postEffect->Initialize(spriteCommon);
+	spriteCommon->LoadTexture(0, "white1x1.png");
 	postEffect->SetTextureIndex(0);
-	
 	
 #pragma endregion
 
@@ -117,7 +118,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// ゲームシーンの描画
 		//gameScene->Draw();
 
-		postEffect->Draw(dxInit->GetCommandList());
+		//postEffect->Draw(dxInit->GetCommandList());
+		postEffect->Draw();
 
 		// 描画終了
 		dxInit->PostDraw();

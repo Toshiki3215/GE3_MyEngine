@@ -1,5 +1,49 @@
 #include"Sprite.h"
 
+Sprite::Sprite()
+{
+	//テクスチャ番号
+	textureIndex_ = 0;
+
+	//テクスチャ左上座標
+	textureLeftTop = { 0.0f,0.0f };
+
+	//テクスチャ切り出しサイズ
+	textureSize = { 100.0f,100.0f };
+
+	color = { 1,1,1,1 };
+
+	anchorPoint = { 0.0f,0.0f };
+
+	// 左右反転
+	isFlipX = false;
+
+	// 上下反転
+	isFlipY = false;
+}
+
+Sprite::Sprite(uint32_t num, Vector2 pos, Vector2 size, Vector4 Color, Vector2 anchorpoint, bool FlipX, bool FlipY)
+{
+	//テクスチャ番号
+	textureIndex_ = num;
+
+	//テクスチャ左上座標
+	textureLeftTop = pos;
+
+	//テクスチャ切り出しサイズ
+	textureSize = size;
+
+	color = Color;
+
+	anchorPoint = anchorpoint;
+
+	// 左右反転
+	isFlipX = FlipX;
+
+	// 上下反転
+	isFlipY = FlipY;
+}
+
 void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 {
 	spritecomon = spritecommon_;

@@ -69,18 +69,18 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	/*tex1 = new Sprite();
 	tex1->Initialize(spriteCommon);
 	tex1->SetPozition({ 500,0 });
-	tex1->SetSize({256.0f, 125.0f});
+	tex1->SetSize({256.0f, 125.0f});*/
 
-	tex2 = new Sprite();
+	/*tex2 = new Sprite();
 	tex2->Initialize(spriteCommon);
 	tex2->SetPozition({ 500,500 });
 	tex2->SetSize({ 120.0f, 120.0f });*/
 
 	//テクスチャ読込
 	/*spriteCommon->LoadTexture(0, "bb.png");
-	tex1->SetTextureIndex(0);
+	tex1->SetTextureIndex(0);*/
 
-	spriteCommon->LoadTexture(1, "tex.png");
+	/*spriteCommon->LoadTexture(1, "tex.png");
 	tex2->SetTextureIndex(1);*/
 
 	// ---------- パーティクル ---------- //
@@ -356,7 +356,6 @@ void GameScene::EffDraw2()
 
 	}
 }
-
 
 void GameScene::CamMove() 
 {

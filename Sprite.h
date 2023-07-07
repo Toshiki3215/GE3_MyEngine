@@ -16,6 +16,12 @@ struct Vertex
 class Sprite 
 {
 public:
+	//コンストラクタ
+	Sprite();
+
+	Sprite(uint32_t num, Vector2 pos, Vector2 size, Vector4 color, Vector2 anchorpoint, bool FlipX, bool FlipY);
+	
+
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
