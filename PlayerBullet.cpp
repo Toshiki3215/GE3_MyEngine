@@ -1,41 +1,59 @@
 #include "PlayerBullet.h"
 
-void PlayerBullet::Initilize(const Vector3& position, const Vector3& velocity)
+void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj)
 {
-	bulletPos = position;
-	bulletRot = { 0,0,0 };
-	bulletScale = { 1,1,1 };
-	
+	//Ž©‹@‚Ì’e
 	bulletModel = Model::LoadFromOBJ("obj");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);
-	bulletObj->wtf.position = bulletPos;
-	bulletObj->wtf.scale = bulletScale;
+	bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
+	bulletObj->wtf.scale = { 0.5f,0.5f,0.5f };
 
-	//ˆø”‚ÅŽó‚¯Žæ‚Á‚½‘¬“x‚ðƒƒ“ƒo•Ï”‚É‘ã“ü
-	velocity_ = velocity;
+	target = retObj->wtf.position - playerObj->wtf.position;
+	target.nomalize();
 
 }
 
-void PlayerBullet::Update()
+void PlayerBullet::Update(Vector3 enemylen, Vector3 len, float shootSpeed, Object3d* playerObj, Object3d* retObj)
 {
-	bulletPos += velocity_;
-	bulletObj->wtf.position = bulletPos;
 
 	if (--deathTimer_ <= 0)
 	{
 		isDead_ = true;
 	}
 
+	if (isDead_ == true)
+	{
+		bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
+	}
+	else
+	{
+		bulletObj->wtf.position += target;
+		//bulletObj->wtf.position += len;
+		len = target;
+		len *= shootSpeed;
+	}
+
+	if (bulletObj->wtf.position.z >= retObj->wtf.position.z)
+	{
+		//isDead_ = true;
+	}
+
+	bulletObj->Update();
+
+	/*if (bulletObj->wtf.position.z >= retObj->wtf.position.z)
+	{
+		isDead_ = false;
+	}*/
+
 }
 
 void PlayerBullet::Draw()
 {
-	bulletObj->wtf.position = bulletPos;
 	bulletObj->Draw();
 }
 
 Vector3 PlayerBullet::GetWorldPos()
 {
-	return bulletPos;
+	return bulletObj->wtf.position;
 }

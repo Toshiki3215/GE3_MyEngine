@@ -63,16 +63,25 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input) {
 void Player::Update() 
 {
 	playerObj->Update();
-
-	shootObj_->Update();
-	/*hitboxObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.1f, playerObj->wtf.position.z + 0.1f };
-	hitboxObj_->Update();*/
 	retObj_->Update();
 	enemylen = retObj_->wtf.position - shootObj_->wtf.position;
 	enemylen.nomalize();
 
+	//デスフラグの立った弾を削除
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
+
 	//プレイヤーの行動一覧
 	PlayerAction();
+
+	//弾更新
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
+	{
+		bullet->Update(enemylen, len, bulletSpeed, playerObj,retObj_);
+	}
+
+	//shootObj_->Update();
+	/*hitboxObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.1f, playerObj->wtf.position.z + 0.1f };
+	hitboxObj_->Update();*/
 
 }
 
@@ -80,9 +89,14 @@ void Player::Draw()
 {
 	playerObj->Draw();
 
-	if (isShootFlag == true) 
+	/*if (isShootFlag == true) 
 	{
 		shootObj_->Draw();
+	}*/
+
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) 
+	{
+		bullet->Draw();
 	}
 
 	retObj_->Draw();
@@ -91,49 +105,83 @@ void Player::Draw()
 void Player::PlayerAction()
 {
 	//移動(自機)
-	if (input_->PushKey(DIK_W)) {
+	if (input_->PushKey(DIK_W)) 
+	{
 		playerObj->wtf.position.y += 0.05f;
 	}
-	else if (input_->PushKey(DIK_S)) {
+	else if (input_->PushKey(DIK_S)) 
+	{
 		playerObj->wtf.position.y -= 0.05f;
 	}
-	else if (input_->PushKey(DIK_A)) {
+	else if (input_->PushKey(DIK_A)) 
+	{
 		playerObj->wtf.position.x -= 0.05f;
 	}
-	else if (input_->PushKey(DIK_D)) {
+	else if (input_->PushKey(DIK_D)) 
+	{
 		playerObj->wtf.position.x += 0.05f;
 	}
 	//移動(レティクル)
-	/*if (input_->PushKey(DIK_UP)) {
+	if (input_->PushKey(DIK_T)) 
+	{
 		retObj_->wtf.position.y += 0.08f;
 	}
-	else if (input_->PushKey(DIK_DOWN)) {
+	else if (input_->PushKey(DIK_G)) 
+	{
 		retObj_->wtf.position.y -= 0.08f;
 	}
-	else if (input_->PushKey(DIK_LEFT)) {
+	else if (input_->PushKey(DIK_F)) 
+	{
 		retObj_->wtf.position.x -= 0.08f;
 	}
-	else if (input_->PushKey(DIK_RIGHT)) {
+	else if (input_->PushKey(DIK_H)) 
+	{
 		retObj_->wtf.position.x += 0.08f;
-	}*/
+	}
 	//移動制限(自機とレティクル)
-	/*if (playerObj->wtf.position.x >= 0.6f) {
+	/*if (playerObj->wtf.position.x >= 0.6f) 
+	{
 		playerObj->wtf.position.x = 0.6f;
 	}
-	else if (playerObj->wtf.position.x <= -0.6f) {
+	else if (playerObj->wtf.position.x <= -0.6f) 
+	{
 		playerObj->wtf.position.x = -0.6f;
 	}
-	else if (playerObj->wtf.position.y >= 0.19f) {
+	else if (playerObj->wtf.position.y >= 0.19f) 
+	{
 		playerObj->wtf.position.y = 0.19f;
 	}
-	else if (playerObj->wtf.position.y <= -0.35f) {
+	else if (playerObj->wtf.position.y <= -0.35f) 
+	{
 		playerObj->wtf.position.y = -0.35f;
 	}*/
 
 	//弾発射
-	float ShortSpeed = 0.05f;
-
 	if (input_->PushKey(DIK_SPACE)) 
+	{
+		bulletSpeed = 0.05f;
+
+		if (--coolTimer <= 0)
+		{
+			shotCool = false;
+		}
+
+		if (shotCool == false)
+		{
+			//弾生成し、初期化
+			std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
+			newBullet->Initilize(playerObj, retObj_);
+
+			//弾を登録する
+			bullets_.push_back(std::move(newBullet));
+
+			shotCool = true;
+			coolTimer = 10;
+		}
+
+	}
+
+	/*if (input_->PushKey(DIK_SPACE)) 
 	{
 		isShootFlag = true;
 	}
@@ -141,7 +189,7 @@ void Player::PlayerAction()
 	{
 		shootObj_->wtf.position += enemylen;
 		len = enemylen;
-		len *= ShortSpeed;
+		len *= bulletSpeed;
 
 	}
 	else 
@@ -151,7 +199,7 @@ void Player::PlayerAction()
 	if (shootObj_->wtf.position.z >= retObj_->wtf.position.z) 
 	{
 		isShootFlag = false;
-	}
+	}*/
 
 }
 

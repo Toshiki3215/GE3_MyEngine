@@ -4,6 +4,7 @@
 #include "Object3d.h"
 #include "Input.h"
 #include "Camera.h"
+#include "PlayerBullet.h"
 
 #include "ParticleManager.h"
 
@@ -44,6 +45,9 @@ public:
 	/// <param name="pos"></param>
 	void SetPos(Vector3 pos) { playerObj->wtf.position = pos; };
 	void SetCamera(Camera* cam) { camera = cam; };
+
+	//弾リストを取得
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
 
 private:
 	const float PI = 3.141592f;
@@ -95,5 +99,14 @@ private:
 
 	bool isAliveFlag = true;
 
+	//弾
+	std::list<std::unique_ptr<PlayerBullet>> bullets_;
+
+	float bulletSpeed = 0.05f;
+
+	bool shotCool = false;
+
+	static const int32_t shotCoolTime = 0;
+	int32_t coolTimer = shotCoolTime;
 
 };
