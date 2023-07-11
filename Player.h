@@ -89,7 +89,7 @@ private:
 	Vector3 targetPos;
 	Vector3 eyePos;
 	Vector3 centerPos;
-	float targetTheta;
+	//float targetTheta;
 	float targetDistance = 10;
 	float camMoveSpeed = 0.2f;
 
