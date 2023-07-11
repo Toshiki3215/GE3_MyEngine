@@ -1,59 +1,99 @@
-#pragma once
-#include "Matrix4.h"
-#include "input.h"
-#include "Model.h"
+ï»¿#pragma once
+
+#include "DirectXInitialize.h"
+#include "Object3d.h"
+#include "Input.h"
+#include "Camera.h"
+
+#include "ParticleManager.h"
+
 #include "Object3D.h"
-#include "PlayerBullet.h"
+#include "Model.h"
 
 class Player
 {
-public: // ƒƒ“ƒoŠÖ”
+public:
+	Player();
+	~Player();
 
-	/// <summary>
-	/// ‰Šú‰»
-	/// </summary>
-	void Initialize(Input* input);
-
-	//void Reset();
-
-	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
-	/// </summary>
+	void Initialize(DirectXInitialize* dxCommon, Input* input);
 	void Update();
 
-	/// <summary>
-	/// •`‰æ
-	/// </summary>
 	void Draw();
+	void FbxDraw();
 
-	Vector3 GetPlayerPos();
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡Œå‹•ä¸€è¦§
+	void PlayerAction();
+
+	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
+
+	////ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—
+	Vector3 GetWorldPosition();
+
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—(å¼¾)
+	Vector3 GetBulletWorldPosition();
+
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã‚’å–å¾—(ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«)
+	Vector3 GetRetWorldPosition();
+
+	Vector3 GetPos() { return playerObj->wtf.position; };
 
 	/// <summary>
-	/// UŒ‚
+	/// ãƒã‚¸ã‚·ãƒ§ãƒ³
 	/// </summary>
-	void Attack();
-
-	//void OnCollision();
-
-	//’eƒŠƒXƒg‚ğæ“¾
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
+	/// <param name="pos"></param>
+	void SetPos(Vector3 pos) { playerObj->wtf.position = pos; };
+	void SetCamera(Camera* cam) { camera = cam; };
 
 private:
-	Input* input = nullptr;
-
-	Vector3 playerPos;
-
-	Vector3 playerRot;
-
-	Vector3 playerScale;
-
-	Vector3 moveTarget;
-	Vector3 rotaTarget;
+	const float PI = 3.141592f;
+	Input* input_ = nullptr;
+	DirectXInitialize* dxInit = nullptr;
+	
+	//å¾…æ©Ÿ
+	/*FBXModel* fbxModel_ = nullptr;
+	FBXObject3d* fbxObject3d_ = nullptr;*/
 
 	Object3d* playerObj = nullptr;
-	Model* playerModel = nullptr;
+	Model* playerMD = nullptr;
 
-	//’e
-	std::list<std::unique_ptr<PlayerBullet>> bullets_;
+	/*playerMD = Model::LoadFromOBJ("obj");
+	playerObj = Object3d::Create();
+	playerObj->SetModel(playerMD);
+	playerObj->wtf.position = (playerPos);*/
+
+	//å¼¾ç™ºå°„
+	Object3d* shootObj_ = nullptr;
+	Model* shootModel_ = nullptr;
+	bool isShootFlag = false;
+
+	//ãƒ’ãƒƒãƒˆãƒœãƒƒã‚¯ã‚¹
+	Object3d* hitboxObj_ = nullptr;
+	Model* hitboxModel_ = nullptr;
+
+	//ãƒ¬ãƒ†ã‚£ã‚¯ãƒ«
+	Object3d* retObj_ = nullptr;
+	Model* retModel_ = nullptr;
+	Vector3 enemylen;
+	Vector3 len;
+
+	const float moveSpeed_ = 0.1f;
+	const float rotaSpeed_ = 0.1f;
+
+	Camera* camera = nullptr;
+	Transform* camTransForm = nullptr;
+	Vector3 targetPos;
+	Vector3 eyePos;
+	Vector3 centerPos;
+	float targetTheta;
+	float targetDistance = 10;
+	float camMoveSpeed = 0.2f;
+
+	Vector2 camRotaSpeed = { PI / 1800, PI / 1800 };
+
+	Vector3 ret = { -1.5f,1.0f,10.0f };
+
+	bool isAliveFlag = true;
+
 
 };

@@ -139,20 +139,19 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	fbxObject2->SetModel(fbxModel2);
 	fbxObject2->PlayAnimation();*/
 
-	/*playerFbx = new FBXObject;
-	playerFbx->Initialize();
-	playerFbx->SetModel(playerModel);*/
-
 	//ゲームフロー
 	scene = Scene::Play;
 
 	//自キャラの生成
+	//プレイヤー
 	player_ = new Player();
+	player_->Initialize(dxInit, input);
+	player_->SetCamera(camera);
 
 	//自キャラの初期化
-	player_->Initialize(input);
+	/*player_->Initialize(input);
 
-	playerPos = player_->GetPlayerPos();
+	playerPos = player_->GetPlayerPos();*/
 
 }
 
@@ -194,11 +193,11 @@ void GameScene::Update()
 		skydome->Update();
 		/*obj->Update();
 		obj2->Update();*/
-		playerObj->wtf.position = (playerPos);
-		playerObj->Update();
+		/*playerObj->wtf.position = (playerPos);
+		playerObj->Update();*/
 
 		// ---------- FBX ---------- //
-		fbxObject1->Update();
+		//fbxObject1->Update();
 		//fbxObject2->Update();
 
 		player_->Update();
@@ -252,7 +251,7 @@ void GameScene::Draw()
 		player_->Draw();
 		
 		// ---------- FBX ---------- //
-		fbxObject1->Draw(dxInit->GetCommandList());
+		//fbxObject1->Draw(dxInit->GetCommandList());
 		//fbxObject2->Draw(dxInit->GetCommandList());
 		//playerFbx->Draw(dxInit->GetCommandList());
 
@@ -392,7 +391,6 @@ void GameScene::EffDraw2()
 
 	}
 }
-
 
 void GameScene::CamMove() 
 {
@@ -598,7 +596,6 @@ void GameScene::PlayerUpdata(Vector3 pos)
 	}
 
 }
-
 
 Vector3 GameScene::bVelocity(Vector3& velocity, Transform& worldTransform)
 {
