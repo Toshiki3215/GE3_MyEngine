@@ -1,8 +1,6 @@
-#include "Camera.h"
+#include "RailCamera.h"
 
-using namespace DirectX;
-
-Camera::Camera(int window_width, int window_height)
+RailCamera::RailCamera(int window_width, int window_height)
 {
 	aspectRatio = (float)window_width / window_height;
 
@@ -16,33 +14,22 @@ Camera::Camera(int window_width, int window_height)
 	matViewProjection = matView * matProjection;
 }
 
-void Camera::Update()
+void RailCamera::Initialize(Transform wtf)
+{
+	matView = wtf.matWorld;
+
+	matViewProjection = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
+
+}
+
+void RailCamera::Update(Transform wtf)
 {
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 	matViewProjection = matView * matProjection;
 }
 
-void Camera::Update(Transform wtf) 
-{
-
-	Matrix4 affineMat;
-	affineMat.MakeIdentity();
-	affineMat = Affin::matTrans(eye);
-
-	affineMat *= wtf.matWorld;
-
-	Vector3 newEye;
-	newEye.x = affineMat.m[3][0];
-	newEye.y = affineMat.m[3][1];
-	newEye.z = affineMat.m[3][2];
-
-	UpdateViewMatrix(newEye);
-	UpdateProjectionMatrix();
-	matViewProjection = matView * matProjection;
-}
-
-void Camera::UpdateViewMatrix() 
+void RailCamera::UpdateViewMatrix()
 {
 
 	// 視点座標
@@ -164,7 +151,7 @@ void Camera::UpdateViewMatrix()
 #pragma endregion
 }
 
-void Camera::UpdateViewMatrix(Vector3 newEye) 
+void RailCamera::UpdateViewMatrix(Vector3 newEye)
 {
 	XMFLOAT3 xmEye;
 	xmEye.x = newEye.x;
@@ -193,7 +180,7 @@ void Camera::UpdateViewMatrix(Vector3 newEye)
 	}
 }
 
-void Camera::UpdateProjectionMatrix()
+void RailCamera::UpdateProjectionMatrix()
 {
 	// 透視投影による射影行列の生成
 	matProjection.MakePerspectiveL(
@@ -203,39 +190,9 @@ void Camera::UpdateProjectionMatrix()
 	);
 }
 
-void Camera::MoveEyeVector(const Vector3& move)
-{
-	// 視点座標を移動し、反映
-	Vector3 eye_moved = GetEye();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	SetEye(eye_moved);
-}
-
-void Camera::MoveVector(const Vector3& move)
-{
-	// 視点と注視点座標を移動し、反映
-	Vector3 eye_moved = GetEye();
-	Vector3 target_moved = GetTarget();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	target_moved.x += move.x;
-	target_moved.y += move.y;
-	target_moved.z += move.z;
-
-	SetEye(eye_moved);
-	SetTarget(target_moved);
-}
-
-float Camera::FieldOfViewY() 
+float RailCamera::FieldOfViewY()
 {
 
-	return 2.0f * atanf(sensor / (2.0f * focalLengs));
+	return 2.0f * atanf(35 / (2.0f * 50));
 
 }

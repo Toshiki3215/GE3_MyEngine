@@ -54,7 +54,8 @@ public: // メンバ関数
 	/// ビュー行列の取得
 	/// </summary>
 	/// <returns>ビュー行列</returns>
-	inline const Matrix4& GetViewMatrix() {
+	inline const Matrix4& GetViewMatrix() 
+	{
 		return matView;
 	}
 
@@ -62,7 +63,8 @@ public: // メンバ関数
 	/// 射影行列の取得
 	/// </summary>
 	/// <returns>射影行列</returns>
-	inline const Matrix4& GetProjectionMatrix() {
+	inline const Matrix4& GetProjectionMatrix() 
+	{
 		return matProjection;
 	}
 
@@ -70,7 +72,8 @@ public: // メンバ関数
 	/// ビュー射影行列の取得
 	/// </summary>
 	/// <returns>ビュー射影行列</returns>
-	inline const Matrix4& GetViewProjectionMatrix() {
+	inline const Matrix4& GetViewProjectionMatrix() 
+	{
 		return matViewProjection;
 	}
 
@@ -78,7 +81,8 @@ public: // メンバ関数
 	/// ビルボード行列の取得
 	/// </summary>
 	/// <returns>ビルボード行列</returns>
-	inline const Matrix4& GetBillboardMatrix() {
+	inline const Matrix4& GetBillboardMatrix() 
+	{
 		return matBillboard;
 	}
 
@@ -86,7 +90,8 @@ public: // メンバ関数
 	/// 視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	inline const Vector3& GetEye() {
+	inline const Vector3& GetEye() 
+	{
 		return eye;
 	}
 
@@ -94,7 +99,8 @@ public: // メンバ関数
 	/// 視点座標の設定
 	/// </summary>
 	/// <param name="eye">座標</param>
-	inline void SetEye(Vector3 eye) {
+	inline void SetEye(Vector3 eye) 
+	{
 		this->eye = eye; viewDirty = true;
 	}
 
@@ -102,7 +108,8 @@ public: // メンバ関数
 	/// 注視点座標の取得
 	/// </summary>
 	/// <returns>座標</returns>
-	inline const Vector3& GetTarget() {
+	inline const Vector3& GetTarget() 
+	{
 		return target;
 	}
 
@@ -110,7 +117,8 @@ public: // メンバ関数
 	/// 注視点座標の設定
 	/// </summary>
 	/// <param name="target">座標</param>
-	inline void SetTarget(Vector3 target) {
+	inline void SetTarget(Vector3 target) 
+	{
 		this->target = target; viewDirty = true;
 	}
 
@@ -118,7 +126,8 @@ public: // メンバ関数
 	/// 上方向ベクトルの取得
 	/// </summary>
 	/// <returns>上方向ベクトル</returns>
-	inline const Vector3& GetUp() {
+	inline const Vector3& GetUp() 
+	{
 		return up;
 	}
 
@@ -126,22 +135,27 @@ public: // メンバ関数
 	/// 上方向ベクトルの設定
 	/// </summary>
 	/// <param name="up">上方向ベクトル</param>
-	inline void SetUp(Vector3 up) {
+	inline void SetUp(Vector3 up) 
+	{
 		this->up = up; viewDirty = true;
 	}
 
 	// sensor
-	inline const float& GetSensor() {
+	inline const float& GetSensor() 
+	{
 		return sensor;
 	}
-	inline void SetSensor(float sensor) {
+	inline void SetSensor(float sensor) 
+	{
 		this->sensor = sensor; viewDirty = true;
 	}
 	// FL
-	inline const float& GetForcalLengs() {
+	inline const float& GetForcalLengs() 
+	{
 		return focalLengs;
 	}
-	inline void SetFocalLengs(float focalLengs) {
+	inline void SetFocalLengs(float focalLengs) 
+	{
 		this->focalLengs = focalLengs; viewDirty = true;
 	}
 

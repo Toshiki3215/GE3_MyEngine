@@ -9,6 +9,7 @@
 #include "Model.h"
 #include "Matrix4.h"
 #include "Camera.h"
+#include "RailCamera.h"
 #include "ParticleManager.h"
 #include "FBXObject.h"
 #include "Player.h"
@@ -51,12 +52,10 @@ public: // ƒƒ“ƒoŠÖ”
 	void Draw();
 
 	void CamMove();
-	void CamMove2(Vector3 pos);
+	void CamMove2();
 	void CamRota();
 	void CamUpdate();
-	void CamUpdate2(Vector3 pos);
-
-	void PlayerUpdata(Vector3 pos);
+	void CamUpdate2();
 
 	void EffUpdate();
 	void EffDraw();
@@ -87,6 +86,8 @@ private:	//ƒƒ“ƒo•Ï”
 	float targetDistance = 10;
 	float camMoveSpeed = 0.1f;
 	float camRotaSpeed = PI/180;
+
+	RailCamera* railCamera = nullptr;
 
 
 	//”wŒi‚â°
@@ -137,5 +138,7 @@ private:	//ƒƒ“ƒo•Ï”
 	Vector3 playerPos;
 
 	Player* player_ = nullptr;
+
+	bool railCameraSwitch = false;
 
 };
