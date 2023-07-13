@@ -55,7 +55,7 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 		//テクスチャサイズをスプライトのサイズに適用
 		size_ = textureSize;
 	}
-
+	
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用

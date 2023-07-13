@@ -318,3 +318,20 @@ void SpriteCommon::SetTextureCommands(uint32_t index)
 	srvGpuHandle.ptr += (incrementSize * index);
 	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }
+
+void SpriteCommon::SetTextureCommandsPost(uint32_t index)
+{
+	// パイプラインステートとルートシグネチャの設定コマンド
+	dxInit_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	dxInit_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+
+	//プリミティブ形状の設定コマンド
+	dxInit_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角リスト
+	// SRVヒープの設定コマンド
+	dxInit_->GetCommandList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
+	// SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+	srvGpuHandle.ptr += (incrementSize * index);
+	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+}

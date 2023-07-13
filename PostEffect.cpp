@@ -16,12 +16,14 @@ PostEffect::PostEffect()
 {
 }
 
-void PostEffect::Initialize()
+void PostEffect::Initialize(SpriteCommon* spritecommon_)
 {
 	HRESULT result;
 
+	spritecomon = spritecommon_;
+
 	//基底クラスとしての初期化
-	Sprite::Initialize(spritecomon, textureIndex_);
+	Sprite::Initialize(spritecomon);
 
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -40,6 +42,7 @@ void PostEffect::Initialize()
 		nullptr,
 		IID_PPV_ARGS(&texBuff)
 	);
+
 	assert(SUCCEEDED(result));
 
 	{//テクスチャを赤クリア
@@ -81,6 +84,7 @@ void PostEffect::Initialize()
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
 	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
 	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	srvDesc.Texture2D.MipLevels = 1;
 
 	//デスクリプタヒープにSRV作成
@@ -118,18 +122,18 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 
 	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
 
-	//パイプラインステートの設定
-	cmdList->SetPipelineState(pipelineState.Get());
+	////パイプラインステートの設定
+	//cmdList->SetPipelineState(pipelineState.Get());
 
-	//ルートシグネチャの設定
-	cmdList->SetComputeRootSignature(rootSignature.Get());
+	////ルートシグネチャの設定
+	//cmdList->SetComputeRootSignature(rootSignature.Get());
 
-	//プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+	////プリミティブ形状を設定
+	//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+	spritecomon->SetTextureCommandsPost(textureIndex_);
 
-	spritecomon->SetTextureCommands(textureIndex_);
+	//cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//頂点バッファビューの設定コマンド
 	spritecomon->GetDxInitialize()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
