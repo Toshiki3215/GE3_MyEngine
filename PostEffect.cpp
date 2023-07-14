@@ -72,29 +72,31 @@ void PostEffect::Initialize(SpriteCommon* spritecommon_)
 
 	spritecomon->InitializePost();
 
-	////SRV用デスクリプタヒープ設定
-	//D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
-	//srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	//srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	//srvDescHeapDesc.NumDescriptors = 1;
+	{
+		////SRV用デスクリプタヒープ設定
+		//D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
+		//srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		//srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		//srvDescHeapDesc.NumDescriptors = 1;
 
-	////SRV用デスクリプタヒープを生成
-	//result = spritecomon->GetDxInitialize()->GetDevice()->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
-	//assert(SUCCEEDED(result));
+		////SRV用デスクリプタヒープを生成
+		//result = spritecomon->GetDxInitialize()->GetDevice()->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
+		//assert(SUCCEEDED(result));
 
-	////SRV設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-	//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-	//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	//srvDesc.Texture2D.MipLevels = 1;
+		////SRV設定
+		//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
+		//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		//srvDesc.Texture2D.MipLevels = 1;
 
-	////デスクリプタヒープにSRV作成
-	//spritecomon->GetDxInitialize()->GetDevice()->CreateShaderResourceView(
-	//	texBuff.Get(),	//ビューと関連付けるバッファ
-	//	&srvDesc,
-	//	descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-	//);
+		////デスクリプタヒープにSRV作成
+		//spritecomon->GetDxInitialize()->GetDevice()->CreateShaderResourceView(
+		//	texBuff.Get(),	//ビューと関連付けるバッファ
+		//	&srvDesc,
+		//	descHeapSRV->GetCPUDescriptorHandleForHeapStart()
+		//);
+	}
 
 }
 
@@ -121,34 +123,36 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		constMapMaterial->color = color;
 	}
 
-	//ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
+	{
+		//ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
 
-	////パイプラインステートの設定
-	//cmdList->SetPipelineState(pipelineState.Get());
+		////パイプラインステートの設定
+		//cmdList->SetPipelineState(pipelineState.Get());
 
-	////ルートシグネチャの設定
-	//cmdList->SetComputeRootSignature(rootSignature.Get());
+		////ルートシグネチャの設定
+		//cmdList->SetComputeRootSignature(rootSignature.Get());
 
-	////プリミティブ形状を設定
-	//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+		////プリミティブ形状を設定
+		//cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-	//// SRVヒープの設定コマンド
-	//cmdList->SetDescriptorHeaps(1, descHeapSRV.GetAddressOf());
-	//// SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeapSRV->GetGPUDescriptorHandleForHeapStart();
-	//// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
-	//srvGpuHandle.ptr += (incrementSize * textureIndex_);
+		//// SRVヒープの設定コマンド
+		//cmdList->SetDescriptorHeaps(1, descHeapSRV.GetAddressOf());
+		//// SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
+		//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeapSRV->GetGPUDescriptorHandleForHeapStart();
+		//// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+		//srvGpuHandle.ptr += (incrementSize * textureIndex_);
 
-	//cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
+		//cmdList->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
-	////頂点バッファビューの設定コマンド
-	//cmdList->IASetVertexBuffers(0, 1, &vbView);
-	//// 定数バッファビュー(CBV)の設定コマンド
-	//cmdList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-	//// 定数バッファビュー(CBV)の設定コマンド
-	//cmdList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-	//// 描画コマンド
-	//cmdList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+		////頂点バッファビューの設定コマンド
+		//cmdList->IASetVertexBuffers(0, 1, &vbView);
+		//// 定数バッファビュー(CBV)の設定コマンド
+		//cmdList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+		//// 定数バッファビュー(CBV)の設定コマンド
+		//cmdList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
+		//// 描画コマンド
+		//cmdList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+	}
 
 	spritecomon->SetTextureCommandsPost(textureIndex_);
 
