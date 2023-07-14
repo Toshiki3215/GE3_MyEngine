@@ -13,8 +13,12 @@ namespace Affin
 	// 度数法 -> ラジアン変換
 	float radConvert(float value);
 
+	Vector3 radConvert3(Vector3 value);
+
 	// ラジアン -> 度数法変換
 	float degConvert(float value);
+
+	Vector3 degConvert3(Vector3 value);
 
 	// 単位行列 set
 	Matrix4 matUnit();

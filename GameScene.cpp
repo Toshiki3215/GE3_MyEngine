@@ -89,10 +89,10 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	particleManager->Update();*/
 
 	// ---------- 3Dオブジェクト ---------- //
-	floorMD = Model::LoadFromOBJ("floor");
+	/*floorMD = Model::LoadFromOBJ("floor");
 	floor = Object3d::Create();
 	floor->SetModel(floorMD);
-	floor->wtf.position = (Vector3{ 0, -10, 0 });
+	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
 
 	skydomeMD = Model::LoadFromOBJ("skydome");
 	skydome = Object3d::Create();
@@ -111,7 +111,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//レベルデータの読み込み - jsonファイル読み込み
 	//levelEData = LevelELoader::LoadFile("level_editer");
-	levelEData = LevelELoader::LoadFile("test");
+	levelEData = LevelELoader::LoadFile("TL_test");
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objData : levelEData->objects)
@@ -123,7 +123,11 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 		//モデルを指定して3Dオブジェクトを生成
 		Object3d* newObject = Object3d::Create();
-		if (objData.fileName == "floorObj")
+		if (objData.fileName == "ship")
+		{
+			model = Model::LoadFromOBJ("ship");		//levelEditer用のモデル
+		}
+		else if (objData.fileName == "floor")
 		{
 			model = Model::LoadFromOBJ("floor");		//levelEditer用のモデル
 		}
@@ -137,7 +141,18 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 		newObject->wtf.position = objData.translation;
 
 		//回転角
-		newObject->wtf.rotation = objData.rotation;
+		newObject->wtf.rotation = Affin::radConvert3(objData.rotation);
+		//newObject->wtf.rotation = Affin::degConvert3(objData.rotation);
+		if (objData.fileName == "floor")
+		{
+			newObject->wtf.rotation.x = Affin::radConvert(objData.rotation.z);
+			newObject->wtf.rotation.y = Affin::radConvert(objData.rotation.y);
+			newObject->wtf.rotation.z = Affin::radConvert(objData.rotation.x);
+		}
+		else
+		{
+			newObject->wtf.rotation = Affin::radConvert3(objData.rotation);
+		}
 
 		//スケール
 		newObject->wtf.scale = objData.scaling;
@@ -198,7 +213,7 @@ void GameScene::Update()
 		GameScene::EffUpdate2();*/
 		
 		// ---------- 3Dオブジェクト ---------- //
-		floor->Update();
+		//floor->Update();
 		skydome->Update();
 		/*obj->Update();
 		obj2->Update();*/

@@ -47,10 +47,28 @@ float Affin::radConvert(float value)
 	return radValue;
 }
 
+Vector3 Affin::radConvert3(Vector3 value)
+{
+	Vector3 radValue;
+
+	radValue = value * (PI / 180);
+
+	return radValue;
+}
+
 // ラジアン -> 度数法
 float Affin::degConvert(float value) 
 {
 	float degValue;
+
+	degValue = value * (180 / PI);
+
+	return degValue;
+}
+
+Vector3 Affin::degConvert3(Vector3 value)
+{
+	Vector3 degValue;
 
 	degValue = value * (180 / PI);
 
