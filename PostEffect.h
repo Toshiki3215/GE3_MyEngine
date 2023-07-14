@@ -41,5 +41,7 @@ private:
     ////テクスチャ番号
     //uint32_t textureIndex_ = 0;
 
+    UINT incrementSize;
+
 };
 

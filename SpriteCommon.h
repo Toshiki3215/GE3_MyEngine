@@ -57,6 +57,8 @@ public:
 
 	void SetTextureCommands(uint32_t index);
 
+	void InitializePost();
+
 	void SetTextureCommandsPost(uint32_t index);
 
 	//Microsoft::WRL::ComPtr<ID3D12Resource> GetTexBuff(uint32_t index) { return texBuff[index]; }
@@ -123,6 +125,12 @@ private:
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath;
+
+	//テクスチャバッファ
+	ComPtr<ID3D12Resource> texBuffP;
+
+	//SRV用デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
 
 	UINT incrementSize;
 };

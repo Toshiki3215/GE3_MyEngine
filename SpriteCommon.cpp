@@ -77,16 +77,16 @@ void SpriteCommon::Initialize(DirectXInitialize* dxInit)
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
 	{
-	{ // xyz座標(1行で書いたほうが見やすい)
-		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-		D3D12_APPEND_ALIGNED_ELEMENT,
-		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-	},
-	{ // uv座標(1行で書いたほうが見やすい)
-		"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
-		D3D12_APPEND_ALIGNED_ELEMENT,
-		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-	}, // (1行で書いたほうが見やすい)
+		{ // xyz座標(1行で書いたほうが見やすい)
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+		{ // uv座標(1行で書いたほうが見やすい)
+			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		}, // (1行で書いたほうが見やすい)
 	};
 
 	// シェーダーの設定
@@ -319,19 +319,52 @@ void SpriteCommon::SetTextureCommands(uint32_t index)
 	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }
 
+void SpriteCommon::InitializePost()
+{
+	//SRV用デスクリプタヒープ設定
+	D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
+	srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	srvDescHeapDesc.NumDescriptors = 1;
+
+	//SRV用デスクリプタヒープを生成
+	result = GetDxInitialize()->GetDevice()->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
+	assert(SUCCEEDED(result));
+
+	//SRV設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
+	srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	srvDesc.Texture2D.MipLevels = 1;
+
+	//デスクリプタヒープにSRV作成
+	GetDxInitialize()->GetDevice()->CreateShaderResourceView(
+		texBuffP.Get(),	//ビューと関連付けるバッファ
+		&srvDesc,
+		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
+	);
+}
+
 void SpriteCommon::SetTextureCommandsPost(uint32_t index)
 {
+	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
+
 	// パイプラインステートとルートシグネチャの設定コマンド
 	dxInit_->GetCommandList()->SetPipelineState(pipelineState.Get());
 	dxInit_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
 
 	//プリミティブ形状の設定コマンド
 	dxInit_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);//三角リスト
+
 	// SRVヒープの設定コマンド
-	dxInit_->GetCommandList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
+	dxInit_->GetCommandList()->SetDescriptorHeaps(1, descHeapSRV.GetAddressOf());
+
 	// SRVヒープの先頭ハンドルを取得（SRVを指しているはず）
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeapSRV->GetGPUDescriptorHandleForHeapStart();
+	
 	// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 	srvGpuHandle.ptr += (incrementSize * index);
-	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+	
+	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 }
