@@ -39,41 +39,28 @@ public:
 
 	Vector3 GetPos() { return playerObj->wtf.position; };
 
-	/// <summary>
-	/// ポジション
-	/// </summary>
-	/// <param name="pos"></param>
+	// ポジション
 	void SetPos(Vector3 pos) { playerObj->wtf.position = pos; };
 	void SetCamera(Camera* cam) { camera = cam; };
 
 	//弾リストを取得
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
 
+	void SetParent(Transform parent) { playerObj->wtf = parent; }
+
 private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
 	DirectXInitialize* dxInit = nullptr;
 	
-	//待機
-	/*FBXModel* fbxModel_ = nullptr;
-	FBXObject3d* fbxObject3d_ = nullptr;*/
-
+	//自機
 	Object3d* playerObj = nullptr;
 	Model* playerMD = nullptr;
-
-	/*playerMD = Model::LoadFromOBJ("obj");
-	playerObj = Object3d::Create();
-	playerObj->SetModel(playerMD);
-	playerObj->wtf.position = (playerPos);*/
 
 	//弾発射
 	Object3d* shootObj_ = nullptr;
 	Model* shootModel_ = nullptr;
 	bool isShootFlag = false;
-
-	//ヒットボックス
-	Object3d* hitboxObj_ = nullptr;
-	Model* hitboxModel_ = nullptr;
 
 	//レティクル
 	Object3d* retObj_ = nullptr;

@@ -11,8 +11,6 @@ Player::~Player() {
 	delete playerMD;
 	delete shootObj_;
 	delete shootModel_;
-	delete hitboxObj_;
-	delete hitboxModel_;
 	delete retObj_;
 	delete retModel_;
 }
@@ -24,14 +22,8 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input) {
 
 	this->dxInit = dxInit;
 	input_ = input;
-	camTransForm = new Transform();
 
-	// デバイスをセット
-	/*FBXObject3d::SetDevice(dxCommon->GetDevice());*/
-	// グラフィックスパイプライン生成
-	//FBXObject3d::CreateGraphicsPipeline();
-
-	//待機
+	//自機
 	playerMD = Model::LoadFromOBJ("obj");
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerMD);
@@ -43,14 +35,6 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input) {
 	shootObj_->SetModel(shootModel_);
 	shootObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
 	shootObj_->wtf.scale = { 0.5f,0.5f,0.5f };
-
-	//ヒットボックス可視化
-	/*hitboxModel_ = Model::LoadFromOBJ("slash");
-	hitboxObj_ = Object3d::Create();
-	hitboxObj_->SetModel(hitboxModel_);
-	hitboxObj_->wtf.position = { fbxObject3d_->wtf.position.x,fbxObject3d_->wtf.position.y, fbxObject3d_->wtf.position.z };
-	hitboxObj_->wtf.scale = { 0.05f,0.05f,0.05f };
-	hitboxObj_->wtf.rotation = { 0.0f,80.0f,0.0f };*/
 
 	//レティクル
 	retModel_ = Model::LoadFromOBJ("obj2");
@@ -78,21 +62,11 @@ void Player::Update()
 	{
 		bullet->Update(enemylen, len, bulletSpeed, playerObj,retObj_);
 	}
-
-	//shootObj_->Update();
-	/*hitboxObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.1f, playerObj->wtf.position.z + 0.1f };
-	hitboxObj_->Update();*/
-
 }
 
 void Player::Draw() 
 {
 	playerObj->Draw();
-
-	/*if (isShootFlag == true) 
-	{
-		shootObj_->Draw();
-	}*/
 
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_) 
 	{
@@ -107,19 +81,19 @@ void Player::PlayerAction()
 	//移動(自機)
 	if (input_->PushKey(DIK_W)) 
 	{
-		playerObj->wtf.position.y += 0.05f;
+		playerObj->wtf.position.y += 0.1f;
 	}
 	else if (input_->PushKey(DIK_S)) 
 	{
-		playerObj->wtf.position.y -= 0.05f;
+		playerObj->wtf.position.y -= 0.1f;
 	}
 	else if (input_->PushKey(DIK_A)) 
 	{
-		playerObj->wtf.position.x -= 0.05f;
+		playerObj->wtf.position.x -= 0.1f;
 	}
 	else if (input_->PushKey(DIK_D)) 
 	{
-		playerObj->wtf.position.x += 0.05f;
+		playerObj->wtf.position.x += 0.1f;
 	}
 	//移動(レティクル)
 	if (input_->PushKey(DIK_T)) 
@@ -178,29 +152,7 @@ void Player::PlayerAction()
 			shotCool = true;
 			coolTimer = 10;
 		}
-
 	}
-
-	/*if (input_->PushKey(DIK_SPACE)) 
-	{
-		isShootFlag = true;
-	}
-	if (isShootFlag == true) 
-	{
-		shootObj_->wtf.position += enemylen;
-		len = enemylen;
-		len *= bulletSpeed;
-
-	}
-	else 
-	{
-		shootObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
-	}
-	if (shootObj_->wtf.position.z >= retObj_->wtf.position.z) 
-	{
-		isShootFlag = false;
-	}*/
-
 }
 
 Vector3 Player::bVelocity(Vector3& velocity, Transform& worldTransform)
@@ -223,7 +175,8 @@ Vector3 Player::bVelocity(Vector3& velocity, Transform& worldTransform)
 	return result;
 }
 
-Vector3 Player::GetWorldPosition() {
+Vector3 Player::GetWorldPosition() 
+{
 	//ワールド座標を入れる変数
 	Vector3 worldPos;
 

@@ -141,6 +141,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	player_->Initialize(dxInit, input);
 	player_->SetCamera(camera);
 	//player_->SetCamera(railCamera);
+	//player_->SetParent(railCamera->GetViewMatrix())
 
 }
 
@@ -468,8 +469,8 @@ void GameScene::CamMove2()
 	}
 
 	//視点は一定の距離
-	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
+	targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;
 
 }
 

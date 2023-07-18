@@ -34,6 +34,11 @@ public:
 		viewDirty = true;
 	}
 
+	/*inline const Transform GetWtf()
+	{
+		Transform 
+	}*/
+
 private:
 
 	// ビュー行列
@@ -46,6 +51,8 @@ private:
 	Matrix4 matProjection = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
 	// ビュー射影行列
 	Matrix4 matViewProjection;
+
+	Transform cameraWtf;
 
 	// 視点座標
 	Vector3 eye = { 0, 0, -1 };
