@@ -143,7 +143,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 		//回転角
 		newObject->wtf.rotation = Affin::radConvert3(objData.rotation);
 		//newObject->wtf.rotation = Affin::degConvert3(objData.rotation);
-		if (objData.fileName == "floor")
+		if (objData.fileName == "ship")
 		{
 			newObject->wtf.rotation.x = Affin::radConvert(objData.rotation.z);
 			newObject->wtf.rotation.y = Affin::radConvert(objData.rotation.y);
