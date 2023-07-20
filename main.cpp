@@ -119,7 +119,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		// ゲームシーンの描画
 		//gameScene->Draw();
 
-		postEffect->Draw(dxInit->GetCommandList());
+		postEffect->Draw();
 		//postEffect->Draw();
 
 		// 描画終了

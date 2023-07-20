@@ -70,37 +70,38 @@ void PostEffect::Initialize(SpriteCommon* spritecommon_)
 
 	}
 
-	spritecomon->InitializePost();
+	//spritecomon->InitializePost();
 
 	{
-		////SRV用デスクリプタヒープ設定
-		//D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
-		//srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-		//srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-		//srvDescHeapDesc.NumDescriptors = 1;
+		//SRV用デスクリプタヒープ設定
+		D3D12_DESCRIPTOR_HEAP_DESC srvDescHeapDesc = {};
+		srvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		srvDescHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		srvDescHeapDesc.NumDescriptors = 1;
 
-		////SRV用デスクリプタヒープを生成
-		//result = spritecomon->GetDxInitialize()->GetDevice()->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
-		//assert(SUCCEEDED(result));
+		//SRV用デスクリプタヒープを生成
+		result = spritecomon->GetDxInitialize()->GetDevice()->CreateDescriptorHeap(&srvDescHeapDesc, IID_PPV_ARGS(&descHeapSRV));
+		assert(SUCCEEDED(result));
 
-		////SRV設定
-		//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
-		//srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
-		//srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-		//srvDesc.Texture2D.MipLevels = 1;
+		//SRV設定
+		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};	//設定構造体
+		srvDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+		srvDesc.Texture2D.MipLevels = 1;
 
-		////デスクリプタヒープにSRV作成
-		//spritecomon->GetDxInitialize()->GetDevice()->CreateShaderResourceView(
-		//	texBuff.Get(),	//ビューと関連付けるバッファ
-		//	&srvDesc,
-		//	descHeapSRV->GetCPUDescriptorHandleForHeapStart()
-		//);
+		//デスクリプタヒープにSRV作成
+		spritecomon->GetDxInitialize()->GetDevice()->CreateShaderResourceView(
+			texBuff.Get(),	//ビューと関連付けるバッファ
+			&srvDesc,
+			descHeapSRV->GetCPUDescriptorHandleForHeapStart()
+		);
 	}
+
 
 }
 
-void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
+void PostEffect::Draw()
 {
 	matRot = Affin::matUnit();
 	matRot *= Affin::matRotateZ(XMConvertToRadians(rotation));//Z軸周りに0度回転してから
@@ -154,7 +155,7 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 		//cmdList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
 	}
 
-	spritecomon->SetTextureCommandsPost(textureIndex_);
+	spritecomon->SetTextureCommandsPost(textureIndex_,descHeapSRV);
 
 	//頂点バッファビューの設定コマンド
 	spritecomon->GetDxInitialize()->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
@@ -164,4 +165,5 @@ void PostEffect::Draw(ID3D12GraphicsCommandList* cmdList)
 	spritecomon->GetDxInitialize()->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 	// 描画コマンド
 	spritecomon->GetDxInitialize()->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+
 }

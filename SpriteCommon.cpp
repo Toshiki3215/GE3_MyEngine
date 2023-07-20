@@ -346,8 +346,10 @@ void SpriteCommon::InitializePost()
 	);
 }
 
-void SpriteCommon::SetTextureCommandsPost(uint32_t index)
+void SpriteCommon::SetTextureCommandsPost(uint32_t index, ComPtr<ID3D12DescriptorHeap> _descHeapSRV)
 {
+	descHeapSRV = _descHeapSRV;
+
 	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
 
 	// パイプラインステートとルートシグネチャの設定コマンド

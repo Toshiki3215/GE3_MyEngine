@@ -21,7 +21,7 @@ public:
     void Initialize(SpriteCommon* spritecommon_);
 
     //描画コマンドの発行
-    void Draw(ID3D12GraphicsCommandList* cmdList);
+    void Draw();
 
 private:
     // ルートシグネチャ
