@@ -140,15 +140,18 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	player_ = new Player();
 	player_->Initialize(dxInit, input);
 	player_->SetCamera(camera);
+	//player_->SetParentCamera(railCamera->GetWtf());
+	//player_->SetParentCamera(railCamera->GetEye());
 	//player_->SetCamera(railCamera);
-	//player_->SetParent(railCamera->GetViewMatrix())
+	player_->SetParent(&camWtf);
+	//player_->SetParent(&railCamera->GetWtf());
 
 }
 
 void GameScene::Reset() 
 {
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 3.0f, 0.0f };
+	camWtf.position = { 0.0f, 0.0f, 0.0f };
 
 	targetWtf.Initialize();
 	targetWtf.position = { 0.0f,0.0f,targetDistance };
@@ -186,7 +189,9 @@ void GameScene::Update()
 		// ---------- FBX ---------- //
 		//fbxObject1->Update();
 		//fbxObject2->Update();
-
+		//player_->SetParentCamera(railCamera->GetEye());
+		player_->SetParent(&camWtf);
+		//player_->SetParent(&railCamera->GetWtf());
 		player_->Update();
 
 		break;

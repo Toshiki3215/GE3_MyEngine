@@ -1,10 +1,12 @@
 ﻿#include "Player.h"
 
-Player::Player() {
+Player::Player() 
+{
 
 }
 
-Player::~Player() {
+Player::~Player() 
+{
 
 	//FBXオブジェクト解放
 	delete playerObj;
@@ -15,7 +17,8 @@ Player::~Player() {
 	delete retModel_;
 }
 
-void Player::Initialize(DirectXInitialize* dxInit, Input* input) {
+void Player::Initialize(DirectXInitialize* dxInit, Input* input) 
+{
 	// nullptrチェック
 	assert(dxInit);
 	assert(input);
@@ -46,6 +49,7 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input) {
 
 void Player::Update() 
 {
+	//playerObj->wtf.position = { 0.0f,0.0f,10.0f };
 	playerObj->Update();
 	retObj_->Update();
 	enemylen = retObj_->wtf.position - shootObj_->wtf.position;
@@ -215,4 +219,11 @@ Vector3 Player::GetRetWorldPosition()
 	RetWorldPos.z = retObj_->wtf.matWorld.m[3][2];
 
 	return RetWorldPos;
+}
+
+void Player::SetParentCamera(Vector3 cameraWtf)
+{ 
+	playerObj->wtf.position.x = cameraWtf.x; 
+	playerObj->wtf.position.y = cameraWtf.y; 
+	playerObj->wtf.position.z = cameraWtf.z + 10; 
 }

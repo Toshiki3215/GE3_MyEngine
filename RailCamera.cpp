@@ -18,6 +18,8 @@ void RailCamera::Initialize(Transform wtf)
 {
 	matView = wtf.matWorld;
 
+	railCameraWtf = wtf;
+
 	matViewProjection = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
 
 }

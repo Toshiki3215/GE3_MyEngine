@@ -34,10 +34,20 @@ public:
 		viewDirty = true;
 	}
 
-	/*inline const Transform GetWtf()
+	/*Matrix4 GetWtf()
 	{
-		Transform 
+		return matView;
 	}*/
+
+	Vector3 GetEye()
+	{
+		return eye;
+	}
+
+	Transform GetWtf()
+	{
+		return railCameraWtf;
+	}
 
 private:
 
@@ -51,8 +61,6 @@ private:
 	Matrix4 matProjection = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
 	// ビュー射影行列
 	Matrix4 matViewProjection;
-
-	Transform cameraWtf;
 
 	// 視点座標
 	Vector3 eye = { 0, 0, -1 };
@@ -68,5 +76,7 @@ private:
 
 	// ビュー行列ダーティフラグ
 	bool viewDirty = false;
+
+	Transform railCameraWtf;
 
 };

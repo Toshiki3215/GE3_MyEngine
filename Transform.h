@@ -20,5 +20,7 @@ public:
 	Vector3 position = { 0,0,0 };
 	// ローカルワールド変換行列
 	Matrix4 matWorld = Affin::matUnit();
+	//親となるワールド変換へのポインタ
+	Transform* parent_ = nullptr;
 
 };

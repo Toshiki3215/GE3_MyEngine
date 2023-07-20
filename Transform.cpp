@@ -13,6 +13,10 @@ Transform::Transform()
 
 	// ローカルワールド変換行列
 	matWorld = Affin::matUnit();
+
+	//親となるワールド変換へのポインタ
+	parent_ = nullptr;
+
 }
 
 Transform::~Transform() {}
@@ -30,6 +34,9 @@ void Transform::Initialize()
 
 	// ローカルワールド変換行列
 	matWorld = Affin::matUnit();
+
+	//親となるワールド変換へのポインタ
+	parent_ = nullptr;
 }
 
 void Transform::UpdateMat() 
@@ -47,4 +54,11 @@ void Transform::UpdateMat()
 	matWorld *= matScale; // ワールド行列にスケーリングを反映
 	matWorld *= matRot; // ワールド行列に回転を反映
 	matWorld *= matTrans; // ワールド行列に平行移動を反映
+
+	// 親行列の指定がある場合は、掛け算する
+	if (parent_) 
+	{
+		matWorld *= parent_->matWorld;
+	}
+
 }
