@@ -47,7 +47,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 3.0f, -8.0f };
+	camWtf.position = { 0.0f, 5.0f, -15.0f };
 
 	targetWtf.Initialize();
 	targetWtf.position = { 0.0f,0.0f,targetDistance };
@@ -65,23 +65,25 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	FBXObject::CreateGraphicsPipeline();
 
 	// ---------- テクスチャ ---------- //
-	//テクスチャ生成
-	/*tex1 = new Sprite();
-	tex1->Initialize(spriteCommon);
-	tex1->SetPozition({ 500,0 });
-	tex1->SetSize({256.0f, 125.0f});
+	{
+		//テクスチャ生成
+		/*tex1 = new Sprite();
+		tex1->Initialize(spriteCommon);
+		tex1->SetPozition({ 500,0 });
+		tex1->SetSize({256.0f, 125.0f});
 
-	tex2 = new Sprite();
-	tex2->Initialize(spriteCommon);
-	tex2->SetPozition({ 500,500 });
-	tex2->SetSize({ 120.0f, 120.0f });*/
+		tex2 = new Sprite();
+		tex2->Initialize(spriteCommon);
+		tex2->SetPozition({ 500,500 });
+		tex2->SetSize({ 120.0f, 120.0f });*/
 
-	//テクスチャ読込
-	/*spriteCommon->LoadTexture(0, "bb.png");
-	tex1->SetTextureIndex(0);
+		//テクスチャ読込
+		/*spriteCommon->LoadTexture(0, "bb.png");
+		tex1->SetTextureIndex(0);
 
-	spriteCommon->LoadTexture(1, "tex.png");
-	tex2->SetTextureIndex(1);*/
+		spriteCommon->LoadTexture(1, "tex.png");
+		tex2->SetTextureIndex(1);*/
+	}
 
 	// ---------- パーティクル ---------- //
 	/*particleManager = ParticleManager::Create();
@@ -89,29 +91,30 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	particleManager->Update();*/
 
 	// ---------- 3Dオブジェクト ---------- //
-	/*floorMD = Model::LoadFromOBJ("floor");
-	floor = Object3d::Create();
-	floor->SetModel(floorMD);
-	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
-
 	skydomeMD = Model::LoadFromOBJ("skydome");
 	skydome = Object3d::Create();
 	skydome->SetModel(skydomeMD);
 	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
-	/*objMD = Model::LoadFromOBJ("obj");
-	obj = Object3d::Create();
-	obj->SetModel(objMD);
-	obj->wtf.position = (Vector3{ 20, 20, 40 });
+	{
+		/*floorMD = Model::LoadFromOBJ("floor");
+		floor = Object3d::Create();
+		floor->SetModel(floorMD);
+		floor->wtf.position = (Vector3{ 0, -10, 0 });*/
 
-	obj2MD = Model::LoadFromOBJ("obj2");
-	obj2 = Object3d::Create();
-	obj2->SetModel(obj2MD);
-	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
+		/*objMD = Model::LoadFromOBJ("obj");
+		obj = Object3d::Create();
+		obj->SetModel(objMD);
+		obj->wtf.position = (Vector3{ 20, 20, 40 });
+
+		obj2MD = Model::LoadFromOBJ("obj2");
+		obj2 = Object3d::Create();
+		obj2->SetModel(obj2MD);
+		obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
+	}
 
 	//レベルデータの読み込み - jsonファイル読み込み
-	//levelEData = LevelELoader::LoadFile("level_editer");
-	levelEData = LevelELoader::LoadFile("TL_test");
+	levelEData = LevelELoader::LoadFile("levelEditer");
 
 	//レベルデータからオブジェクトを生成、配置
 	for (auto& objData : levelEData->objects)
@@ -145,9 +148,15 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 		//newObject->wtf.rotation = Affin::degConvert3(objData.rotation);
 		if (objData.fileName == "ship")
 		{
-			newObject->wtf.rotation.x = Affin::radConvert(objData.rotation.z);
+			newObject->wtf.rotation.x = Affin::radConvert(objData.rotation.x);
+			newObject->wtf.rotation.y = Affin::radConvert(objData.rotation.y) + 1.5;
+			newObject->wtf.rotation.z = Affin::radConvert(objData.rotation.z);
+		}
+		else if (objData.fileName == "floor")
+		{
+			newObject->wtf.rotation.x = Affin::radConvert(objData.rotation.x);
 			newObject->wtf.rotation.y = Affin::radConvert(objData.rotation.y);
-			newObject->wtf.rotation.z = Affin::radConvert(objData.rotation.x);
+			newObject->wtf.rotation.z = Affin::radConvert(objData.rotation.z) - 1.57;
 		}
 		else
 		{
@@ -162,19 +171,21 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	}
 
 	// ---------- FBX ---------- //
-	//モデル名を指定してファイル読み込み
-	/*fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");*/
+	{
+		//モデル名を指定してファイル読み込み
+		/*fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
+		fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");*/
 
-	//FBXオブジェクト生成とモデルのセット
-	/*fbxObject1 = new FBXObject;
-	fbxObject1->Initialize();
-	fbxObject1->SetModel(fbxModel1);
+		//FBXオブジェクト生成とモデルのセット
+		/*fbxObject1 = new FBXObject;
+		fbxObject1->Initialize();
+		fbxObject1->SetModel(fbxModel1);
 
-	fbxObject2 = new FBXObject;
-	fbxObject2->Initialize();
-	fbxObject2->SetModel(fbxModel2);
-	fbxObject2->PlayAnimation();*/
+		fbxObject2 = new FBXObject;
+		fbxObject2->Initialize();
+		fbxObject2->SetModel(fbxModel2);
+		fbxObject2->PlayAnimation();*/
+	}
 
 	//ゲームフロー
 	scene = Scene::Play;
@@ -208,15 +219,20 @@ void GameScene::Update()
 		CamUpdate();
 
 		// ---------- パーティクル ---------- //
-		/*isEffFlag = 0;
-		GameScene::EffUpdate();
-		GameScene::EffUpdate2();*/
+		{
+			/*isEffFlag = 0;
+			GameScene::EffUpdate();
+			GameScene::EffUpdate2();*/
+		}
 		
 		// ---------- 3Dオブジェクト ---------- //
-		//floor->Update();
 		skydome->Update();
-		/*obj->Update();
-		obj2->Update();*/
+
+		{
+			//floor->Update();
+			/*obj->Update();
+			obj2->Update();*/
+		}
 
 		for (auto& object : objects) 
 		{
@@ -224,8 +240,10 @@ void GameScene::Update()
 		}
 
 		// ---------- FBX ---------- //
-		/*fbxObject1->Update();
-		fbxObject2->Update();*/
+		{
+			/*fbxObject1->Update();
+			fbxObject2->Update();*/
+		}
 
 		break;
 
@@ -264,14 +282,19 @@ void GameScene::Draw()
 	case Scene::Play:
     
 		// ---------- テクスチャ ---------- //
-		/*tex1->Draw();
-		tex2->Draw();*/
+		{
+			/*tex1->Draw();
+			tex2->Draw();*/
+		}
 
 		// ---------- 3Dオブジェクト ---------- //
-		//floor->Draw();
 		skydome->Draw();
-		/*obj->Draw();
-		obj2->Draw();*/
+
+		{
+			//floor->Draw();
+			/*obj->Draw();
+			obj2->Draw();*/
+		}
 
 		for (auto& object : objects) 
 		{
@@ -279,8 +302,10 @@ void GameScene::Draw()
 		}
 		
 		// ---------- FBX ---------- //
-		/*fbxObject1->Draw(dxInit->GetCommandList());
-		fbxObject2->Draw(dxInit->GetCommandList());*/
+		{
+			/*fbxObject1->Draw(dxInit->GetCommandList());
+			fbxObject2->Draw(dxInit->GetCommandList());*/
+		}
 
 		break;
 
@@ -310,12 +335,14 @@ void GameScene::Draw()
 	case Scene::Play:
 
 		// パーティクル描画前処理
-		//ParticleManager::PreDraw(dxInit->GetCommandList());
-		//GameScene::EffDraw();
-		//GameScene::EffDraw2();
+		{
+			//ParticleManager::PreDraw(dxInit->GetCommandList());
+			//GameScene::EffDraw();
+			//GameScene::EffDraw2();
 
-		//// パーティクル描画後処理
-		//ParticleManager::PostDraw();
+			//// パーティクル描画後処理
+			//ParticleManager::PostDraw();
+		}
 
 		break;
 
