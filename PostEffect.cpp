@@ -374,22 +374,31 @@ void PostEffect::Draw()
 void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 {
 	//リソースバリアを変更(シェーダーリソース->描画可能)
-	cmdList->ResourceBarrier(
-		1,
-		&resourceBarrier
-	);
+	resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	cmdList->ResourceBarrier(1, &resourceBarrier);
 
 	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	rtvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 
 	//レンダーターゲットをセット
 	cmdList->OMSetRenderTargets(1, &rtvH, false, &dsvH);
 
 	//ビューポートの設定
-	cmdList->RSSetViewports(1, &viewPort);
+	
+	//viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height);
+	
+	//CD3DX12_VIEWPORT viewPort2;
+	//viewPort2.Width = winW;//横幅
+	//viewPort2.Height = winH;//縦幅
+	//viewPort2.TopLeftX = 0;//左上X
+	//viewPort2.TopLeftY = 0;//左上Y
+	//viewPort2.MinDepth = 0.0f;//最小深度（０でよい）
+	//viewPort2.MaxDepth = 1.0f;//最大深度（１でよい）
+
+	//cmdList->RSSetViewports(1, &);
 
 	//シザリング矩形の設定
 	cmdList->RSSetScissorRects(1, &rect);

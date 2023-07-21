@@ -56,11 +56,20 @@ private:
 
     CD3DX12_CLEAR_VALUE clearValue = CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
-    CD3DX12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,D3D12_RESOURCE_STATE_RENDER_TARGET);
+    CD3DX12_RESOURCE_BARRIER resourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(), D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE, D3D12_RESOURCE_STATE_RENDER_TARGET);
 
     CD3DX12_VIEWPORT viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height);
+    //CD3DX12_VIEWPORT viewPort{};
+
+    static const int winW = WinApp::window_width;
+
+    static const int winH = WinApp::window_height;
 
     CD3DX12_RECT rect = CD3DX12_RECT(0, 0, WinApp::window_width, WinApp::window_height);
+
+    D3D12_CPU_DESCRIPTOR_HANDLE rtvH;
+
+    D3D12_CPU_DESCRIPTOR_HANDLE dsvH;
 
     ////テクスチャ番号
     //uint32_t textureIndex_ = 0;

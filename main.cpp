@@ -114,7 +114,6 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 #pragma region グラフィックスコマンド
 
 		//4.描画コマンドここから
-		dxInit->PreDraw();
 
 		postEffect->PreDrawScene(dxInit->GetCommandList());
 
@@ -122,6 +121,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		gameScene->Draw();
 
 		postEffect->PostDrawScene(dxInit->GetCommandList());
+
+		dxInit->PreDraw();
 
 		postEffect->Draw();
 		//postEffect->Draw();
