@@ -7,7 +7,6 @@ Player::Player()
 
 Player::~Player() 
 {
-
 	//FBXオブジェクト解放
 	delete playerObj;
 	delete playerMD;

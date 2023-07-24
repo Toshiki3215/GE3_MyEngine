@@ -140,11 +140,14 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	player_ = new Player();
 	player_->Initialize(dxInit, input);
 	player_->SetCamera(camera);
-	//player_->SetParentCamera(railCamera->GetWtf());
-	//player_->SetParentCamera(railCamera->GetEye());
-	//player_->SetCamera(railCamera);
+	{
+		//player_->SetParentCamera(railCamera->GetWtf());
+		//player_->SetParentCamera(railCamera->GetEye());
+		//player_->SetCamera(railCamera);
+		//player_->SetParent(&railCamera->GetWtf());
+	}
+
 	player_->SetParent(&camWtf);
-	//player_->SetParent(&railCamera->GetWtf());
 
 }
 
