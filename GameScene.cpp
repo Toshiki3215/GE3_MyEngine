@@ -183,6 +183,7 @@ void GameScene::Update()
 		GameScene::EffUpdate();
 		GameScene::EffUpdate2();
 		
+
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Update();
 		skydome->Update();
