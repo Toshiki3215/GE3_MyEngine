@@ -182,7 +182,6 @@ void GameScene::Update()
 		isEffFlag = 0;
 		GameScene::EffUpdate();
 		GameScene::EffUpdate2();
-		
 
 		// ---------- 3Dオブジェクト ---------- //
 		//floor->Update();
