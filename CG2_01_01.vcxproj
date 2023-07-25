@@ -147,6 +147,7 @@
     <ClCompile Include="FBXObject.cpp" />
     <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="ImguiManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix4.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="FBXObject.h" />
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ImguiManager.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Model.h" />

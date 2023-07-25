@@ -4,6 +4,7 @@
 #include "FPS.h"
 #include "FBXLoader.h"
 #include "GameScene.h"
+#include "ImguiManager.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -17,6 +18,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	FPS* fps = new FPS;
 	Input* input = nullptr;
 	GameScene* gameScene = nullptr;
+	ImguiManager* imguiManager = nullptr;
 
 	//windowsAPIの初期化
 	winApp = new WinApp();
@@ -29,6 +31,10 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//入力の初期化　
 	input = new Input();
 	input->Initialize(winApp);
+
+	//Imguiの初期化
+	imguiManager = new ImguiManager();
+	imguiManager->Initialize(winApp,dxInit);
 
 	//FBX初期化
 	FBXLoader::GetInstance()->Initialize(dxInit->GetDevice());
@@ -128,6 +134,8 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 	//WindowsAPI解放
 	delete winApp;
 	delete dxInit;
+
+	delete imguiManager;
 
 	//FBX解放
 	FBXLoader::GetInstance()->Finalize();

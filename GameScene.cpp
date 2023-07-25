@@ -308,6 +308,7 @@ void GameScene::EffUpdate()
 		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+
 		//速度
 		//X,Y,Z全て[-0.05f,+0.05f]でランダムに分布
 		const float rnd_vel = 0.1f;
@@ -315,6 +316,7 @@ void GameScene::EffUpdate()
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
 		//重力に見立ててYのみ[-0.001f,0]でランダムに分布
 		const float rnd_acc = 0.00001f;
 		Vector3 acc{};
@@ -340,6 +342,7 @@ void GameScene::EffUpdate2()
 		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
+
 		//速度
 		//X,Y,Z全て[-0.05f,+0.05f]でランダムに分布
 		const float rnd_vel = 0.1f;
@@ -347,6 +350,7 @@ void GameScene::EffUpdate2()
 		vel.x = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * rnd_vel - rnd_vel / 2.0f;
+
 		//重力に見立ててYのみ[-0.001f,0]でランダムに分布
 		const float rnd_acc = 0.00001f;
 		Vector3 acc{};
@@ -450,6 +454,7 @@ void GameScene::CamMove()
 		//更新
 		camWtf.rotation = theta;
 	}
+
 	//視点は一定の距離
 	targetWtf.position.z = cosf(targetTheta) * targetDistance;
 	targetWtf.position.y = sinf(targetTheta) * targetDistance;
@@ -548,6 +553,7 @@ void GameScene::CamUpdate()
 	//camera->SetTarget({0,20,0 });
 
 	camera->Update();
+	railCamera->Update(camWtf);
 }
 
 void GameScene::CamUpdate2()

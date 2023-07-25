@@ -26,6 +26,9 @@ void RailCamera::Initialize(Transform wtf)
 
 void RailCamera::Update(Transform wtf)
 {
+	matView = wtf.matWorld;
+	railCameraWtf = wtf;
+
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 	matViewProjection = matView * matProjection;
