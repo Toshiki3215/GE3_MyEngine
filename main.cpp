@@ -5,12 +5,12 @@
 #include "FBXLoader.h"
 #include "GameScene.h"
 #include "ImguiManager.h"
+#include "Imgui/imgui.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
 
 #pragma region WindowsAPI初期化処理
-
 
 	//ポインタ
 	WinApp* winApp = nullptr;
@@ -105,8 +105,19 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		//4.描画コマンドここから
 		dxInit->PreDraw();
 
+		// Imgui受付開始
+		imguiManager->Begin();
+
 		// ゲームシーンの描画
 		gameScene->Draw();
+
+		ImGui::ShowDemoWindow();
+
+		// Imgui受付終了
+		imguiManager->End();
+
+		// Imgui描画
+		imguiManager->Draw();
 
 		// 描画終了
 		dxInit->PostDraw();
@@ -127,6 +138,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//WindowsAPIの終了処理
 	winApp->Finalize();
+	imguiManager->Finalize();
 
 	//入力解放
 	delete input;
