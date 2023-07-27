@@ -21,8 +21,6 @@ PostEffect::PostEffect()
 
 void PostEffect::Initialize(SpriteCommon* spritecommon_)
 {
-	HRESULT result;
-
 	spritecomon = spritecommon_;
 
 	//基底クラスとしての初期化
@@ -378,7 +376,7 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 	cmdList->ResourceBarrier(1, &resourceBarrier);
 
 	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
-	rtvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	rtvH = descHeapRTV->GetCPUDescriptorHandleForHeapStart();
 
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
@@ -388,7 +386,7 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 
 	//ビューポートの設定
 	
-	//viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height);
+	viewPort = CD3DX12_VIEWPORT(0.0f, 0.0f, WinApp::window_width, WinApp::window_height);
 	
 	//CD3DX12_VIEWPORT viewPort2;
 	//viewPort2.Width = winW;//横幅
@@ -398,7 +396,7 @@ void PostEffect::PreDrawScene(ID3D12GraphicsCommandList* cmdList)
 	//viewPort2.MinDepth = 0.0f;//最小深度（０でよい）
 	//viewPort2.MaxDepth = 1.0f;//最大深度（１でよい）
 
-	//cmdList->RSSetViewports(1, &);
+	cmdList->RSSetViewports(1, &viewPort);
 
 	//シザリング矩形の設定
 	cmdList->RSSetScissorRects(1, &rect);

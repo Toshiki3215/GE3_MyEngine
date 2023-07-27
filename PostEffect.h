@@ -40,6 +40,8 @@ public:
     void PostDrawScene(ID3D12GraphicsCommandList* cmdList);
 
 private:
+    HRESULT result;
+
     // ルートシグネチャ
     ComPtr<ID3D12RootSignature> rootSignature;
 
