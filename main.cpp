@@ -125,6 +125,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		dxInit->PreDraw();
 
 		postEffect->Draw();
+		//gameScene->Draw();
 
 		// 描画終了
 		dxInit->PostDraw();

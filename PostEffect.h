@@ -39,6 +39,9 @@ public:
     //シーン描画後処理
     void PostDrawScene(ID3D12GraphicsCommandList* cmdList);
 
+    //パイプライン生成
+    void CreateGraphicsPipelineState();
+
 private:
     HRESULT result;
 

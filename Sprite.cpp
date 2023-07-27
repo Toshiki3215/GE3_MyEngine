@@ -221,7 +221,6 @@ void Sprite::Draw()
 	matWorld *= matRot;//ワールド行列にスケーリングを反映
 	matWorld *= matTrans;
 
-
 	// 定数バッファにデータ転送
 	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);
 	if (SUCCEEDED(result)) 
