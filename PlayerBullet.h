@@ -28,7 +28,7 @@ public:
 
 	Vector3 GetWorldPos();
 
-	//void OnCollision();
+	void OnCollision();
 
 private:
 	

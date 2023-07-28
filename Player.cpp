@@ -226,3 +226,8 @@ void Player::SetParentCamera(Vector3 cameraWtf)
 	playerObj->wtf.position.y = cameraWtf.y; 
 	playerObj->wtf.position.z = cameraWtf.z + 10; 
 }
+
+void Player::OnCollision()
+{
+
+}

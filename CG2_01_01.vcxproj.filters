@@ -64,6 +64,12 @@
     <Filter Include="ソース ファイル\Engine\Imgui">
       <UniqueIdentifier>{5b2a1fbb-f5f0-4229-99e0-18c4cf6b3890}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Application\Enemy">
+      <UniqueIdentifier>{9f077a1f-eaeb-4f88-93d6-85355a30a626}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Application\Enemy">
+      <UniqueIdentifier>{a4e61ebd-1e54-45b9-b171-569742833ee5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SpriteShaderHeader.hlsli">
@@ -199,6 +205,9 @@
     <ClCompile Include="ImguiManager.cpp">
       <Filter>ソース ファイル\Engine\Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\Application\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -278,6 +287,9 @@
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\Application\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

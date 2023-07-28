@@ -101,10 +101,10 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	skydome->SetModel(skydomeMD);
 	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
-	playerMD = Model::LoadFromOBJ("obj");
+	/*playerMD = Model::LoadFromOBJ("obj");
 	playerObj = Object3d::Create();
 	playerObj->SetModel(playerMD);
-	playerObj->wtf.position = (playerPos);
+	playerObj->wtf.position = (playerPos);*/
 
 	/*objMD = Model::LoadFromOBJ("obj");
 	obj = Object3d::Create();
@@ -190,11 +190,12 @@ void GameScene::Update()
 		obj2->Update();*/
 
 		// ---------- FBX ---------- //
+		
 		//fbxObject1->Update();
 		//fbxObject2->Update();
 		//player_->SetParentCamera(railCamera->GetEye());
-		player_->SetParent(&camWtf);
 		//player_->SetParent(&railCamera->GetWtf());
+		player_->SetParent(&camWtf);
 		player_->Update();
 
 		break;
@@ -246,6 +247,7 @@ void GameScene::Draw()
 		player_->Draw();
 		
 		// ---------- FBX ---------- //
+		
 		//fbxObject1->Draw(dxInit->GetCommandList());
 		//fbxObject2->Draw(dxInit->GetCommandList());
 		//playerFbx->Draw(dxInit->GetCommandList());
@@ -446,6 +448,7 @@ void GameScene::CamMove()
 		//更新
 		camWtf.position += eyeVelocity;
 	}
+
 	Vector3 theta;
 
 	if (input->PushKey(DIK_1))
@@ -549,8 +552,8 @@ void GameScene::CamUpdate()
 	}
 
 	//camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
-	camera->SetTarget(playerPos);
 	//camera->SetTarget({0,20,0 });
+	camera->SetTarget(playerPos);
 
 	camera->Update();
 	railCamera->Update(camWtf);

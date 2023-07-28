@@ -13,6 +13,7 @@
 #include "ParticleManager.h"
 #include "FBXObject.h"
 #include "Player.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -138,6 +139,8 @@ private:	//メンバ変数
 	Vector3 playerPos;
 
 	Player* player_ = nullptr;
+
+	Enemy* enemy_ = nullptr;
 
 	bool railCameraSwitch = false;
 

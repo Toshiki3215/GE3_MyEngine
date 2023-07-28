@@ -57,3 +57,8 @@ Vector3 PlayerBullet::GetWorldPos()
 {
 	return bulletObj->wtf.position;
 }
+
+void PlayerBullet::OnCollision()
+{
+	isDead_ = true;
+}

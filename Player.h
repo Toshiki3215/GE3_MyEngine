@@ -51,6 +51,8 @@ public:
 
 	void SetParent(Transform* parent) { playerObj->wtf.parent_ = parent; }
 
+	void OnCollision();
+
 private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
