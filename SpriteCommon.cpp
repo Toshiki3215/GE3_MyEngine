@@ -319,9 +319,13 @@ void SpriteCommon::SetTextureCommands(uint32_t index)
 	dxInit_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }
 
-void SpriteCommon::SetTextureCommandsPost(uint32_t index, ComPtr<ID3D12DescriptorHeap> _descHeapSRV)
+void SpriteCommon::SetTextureCommandsPost(uint32_t index, ComPtr<ID3D12DescriptorHeap> _descHeapSRV, ComPtr <ID3D12PipelineState> _pipelineState, ComPtr<ID3D12RootSignature> _rootSignature)
 {
 	descHeapSRV = _descHeapSRV;
+
+	pipelineState = _pipelineState;
+
+	rootSignature = _rootSignature;
 
 	ID3D12DescriptorHeap* ppHeap[] = { descHeapSRV.Get() };
 

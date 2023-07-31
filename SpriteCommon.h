@@ -57,7 +57,7 @@ public:
 
 	void SetTextureCommands(uint32_t index);
 
-	void SetTextureCommandsPost(uint32_t index, ComPtr<ID3D12DescriptorHeap> descHeapSRV);
+	void SetTextureCommandsPost(uint32_t index, ComPtr<ID3D12DescriptorHeap> descHeapSRV, ComPtr <ID3D12PipelineState> _pipelineState, ComPtr<ID3D12RootSignature> rootSignature);
 
 	//Microsoft::WRL::ComPtr<ID3D12Resource> GetTexBuff(uint32_t index) { return texBuff[index]; }
 
