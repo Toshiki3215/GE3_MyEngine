@@ -193,8 +193,8 @@ void GameScene::Update()
 		
 		//fbxObject1->Update();
 		//fbxObject2->Update();
-		//player_->SetParentCamera(railCamera->GetEye());
 		//player_->SetParent(&railCamera->GetWtf());
+		player_->SetParentCamera(railCamera->GetEye());
 		player_->SetParent(&camWtf);
 		player_->Update();
 
@@ -462,12 +462,15 @@ void GameScene::CamMove()
 	targetWtf.position.z = cosf(targetTheta) * targetDistance;
 	targetWtf.position.y = sinf(targetTheta) * targetDistance;
 
+	/*targetWtf.position.z = playerObj->wtf.position.z;
+	targetWtf.position.y = playerObj->wtf.position.y;*/
+
 }
 
 void GameScene::CamMove2()
 {
 	//カメラの移動
-	Vector3 eyeVelocity = { 0,0,-0.5 };
+	Vector3 eyeVelocity = { 0,0,+0.5 };
 
 	if (input->PushKey(DIK_Q))
 	{
@@ -482,11 +485,21 @@ void GameScene::CamMove2()
 	{
 		//更新
 		camWtf.position += eyeVelocity;
+
+		targetWtf.position.z = cosf(targetTheta) * targetDistance + eyeVelocity.z;
+		targetWtf.position.y = sinf(targetTheta) * targetDistance + eyeVelocity.y;
+	}
+	else 
+	{
+		targetWtf.position.z = cosf(targetTheta) * targetDistance;
+		targetWtf.position.y = sinf(targetTheta) * targetDistance;
 	}
 
 	//視点は一定の距離
-	targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;
+	/*targetWtf.position.z = playerObj->wtf.position.z;
+	targetWtf.position.y = playerObj->wtf.position.y;*/
+	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
 
 }
 

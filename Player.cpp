@@ -222,9 +222,10 @@ Vector3 Player::GetRetWorldPosition()
 
 void Player::SetParentCamera(Vector3 cameraWtf)
 { 
-	playerObj->wtf.position.x = cameraWtf.x; 
-	playerObj->wtf.position.y = cameraWtf.y; 
-	playerObj->wtf.position.z = cameraWtf.z + 10; 
+	/*playerObj->wtf.position.x = cameraWtf.x; 
+	playerObj->wtf.position.y = cameraWtf.y; */
+	playerObj->wtf.position.z = cameraWtf.z + 15; 
+	retObj_->wtf.position.z = cameraWtf.z + 25;
 }
 
 void Player::OnCollision()
