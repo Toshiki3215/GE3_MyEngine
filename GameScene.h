@@ -133,9 +133,6 @@ private:	//ƒƒ“ƒo•Ï”
 
 	FBXObject* fbxObject2 = nullptr;
 
-	/*FBXModel* playerModel = nullptr;
-	FBXObject* playerFbx = nullptr;*/
-
 	Vector3 playerPos;
 
 	Player* player_ = nullptr;

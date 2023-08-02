@@ -462,15 +462,12 @@ void GameScene::CamMove()
 	targetWtf.position.z = cosf(targetTheta) * targetDistance;
 	targetWtf.position.y = sinf(targetTheta) * targetDistance;
 
-	/*targetWtf.position.z = playerObj->wtf.position.z;
-	targetWtf.position.y = playerObj->wtf.position.y;*/
-
 }
 
 void GameScene::CamMove2()
 {
 	//カメラの移動
-	Vector3 eyeVelocity = { 0,0,+0.5 };
+	Vector3 eyeVelocity = { 0,0,-0.5 };
 
 	if (input->PushKey(DIK_Q))
 	{
