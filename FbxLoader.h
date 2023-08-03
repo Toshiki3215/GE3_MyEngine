@@ -1,19 +1,23 @@
 ﻿#pragma once
-
-#include "fbxsdk.h"
+#include <fbxsdk.h>
 #include "FBXModel.h"
-
 #include <d3d12.h>
 #include <d3dx12.h>
-
 #include <string>
 
-#include "Vector3.h"
-#include "Matrix4.h"
-#include "Affin.h"
 
 class FBXLoader
 {
+private: // エイリアス
+	// std::を省略
+	using string = std::string;
+
+public: // 定数
+	// モデル格納ルートパス
+	static const string baseDirectory;
+	// テクスチャがない場合の標準テクスチャファイル名
+	static const string defaultTextureFileName;
+
 public:
 	/// <summary>
 	/// シングルトンインスタンスの取得
@@ -21,11 +25,42 @@ public:
 	/// <returns>インスタンス</returns>
 	static FBXLoader* GetInstance();
 
-	//初期化
+public:
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="device">D3D12デバイス</param>
 	void Initialize(ID3D12Device* device);
 
-	//後始末
+	/// <summary>
+	/// 後始末
+	/// </summary>
 	void Finalize();
+
+	/// <summary>
+	/// ファイルからFBXモデル読込
+	/// </summary>
+	/// <param name="modelName">モデル名</param>
+	FBXModel* LoadModelFromFile(const string& modelName);
+
+	/// <summary>
+	/// FBXの行列XMMatrixに変換
+	/// </summary>
+	/// <param name="dst">書き込み先</param>
+	/// <param name="src">元となるFBX行列</param>
+	static void ConvertMatrixFromFbx(DirectX::XMMATRIX* dst, const FbxAMatrix& src);
+
+	//スキニング情報の読み取り
+	void ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh);
+
+
+private:
+	// D3D12デバイス
+	ID3D12Device* device = nullptr;
+	// FBXマネージャ
+	FbxManager* fbxManager = nullptr;
+	// FBXインポータ
+	FbxImporter* fbxImporter = nullptr;
 
 private:
 	// privateなコンストラクタ（シングルトンパターン）
@@ -37,55 +72,34 @@ private:
 	// コピー代入演算子を禁止（シングルトンパターン）
 	void operator=(const FBXLoader& obj) = delete;
 
-	//D3D12デバイス
-	ID3D12Device* device = nullptr;
+	/// <summary>
+	/// 再帰的にノード構成を解析
+	/// </summary>
+	/// <param name="model">読み込み先モデルオブジェクト</param>
+	/// <param name="fbxNode">解析対象のノード</param>
+	/// <param name="parent">親ノード</param>
+	void ParseNodeRecursive(FBXModel* fbxmodel, FbxNode* fbxNode, Node* parent = nullptr);
 
-	//FBXマネージャ	---	FBX SDKを使うのに必要
-	FbxManager* fbxManager = nullptr;
+	/// <summary>
+	/// メッシュ読み取り
+	/// </summary>
+	/// <param name="model">読み込み先モデルオブジェクト</param>
+	/// <param name="fbxNode">解析対象のノード</param>
+	void ParseMesh(FBXModel* fbxmodel, FbxNode* fbxNode);
 
-	//FBXコンバータ	---	.fbxファイルを読み込むのに必要
-	FbxImporter* fbxImporter = nullptr;
+	// 頂点座標読み取り
+	void ParseMeshVertices(FBXModel* fbxmodel, FbxMesh* fbxMesh);
 
-	//std::を省略
-	using string = std::string;
+	// 面情報読み取り
+	void ParseMeshFaces(FBXModel* fbxmodel, FbxMesh* fbxMesh);
 
-public:
+	// マテリアル読み取り
+	void ParseMaterial(FBXModel* fbxmodel, FbxNode* fbxNode);
 
-	//モデル格納ルートパス
-	static const string baseDirectory;
+	// テクスチャ読み込み
+	void LoadTexture(FBXModel* fbxmodel, const std::string& fullpath);
 
-	//テクスチャがない場合の標準テクスチャファイル名
-	static const string defaultTextureFileName;
-
-	//ファイルからFBXモデル読み込み
-	//void LoadModelFronmFile(const string& modelName);
-	FBXModel* LoadModelFronmFile(const string& modelName);
-
-	//再帰的にノード構成を解析
-	void ParseNodeRecursive(FBXModel* fbxModel, FbxNode* fbxNode, Node* parent = nullptr);
-
-	//メッシュ読み取り
-	void ParseMesh(FBXModel* fbxModel, FbxNode* fbxNode);
-
-	//頂点座標読み取リ
-	void ParseMeshVertices(FBXModel* fbxModel, FbxMesh* fbxMesh);
-
-	//面情報読み取り
-	void ParseMeshFaces(FBXModel* fbxModel, FbxMesh* fbxMesh);
-
-	//マテリアル読み取り
-	void ParseMaterial(FBXModel* fbxModel, FbxNode* fbxNode);
-
-	//テクスチャ読み込み
-	void LoadTexture(FBXModel* fbxModel, const std::string& fullpath);
-
-	//ディレクトリを含んだファイルパスからファイル名を抽出する
+	// ディレクトリを含んだファイルパスからファイル名を抽出する
 	std::string ExtractFileName(const std::string& path);
-
-	//FBXの行列をXMMatrixに変換
-	static void ConvertMatrixFromFbx(Matrix4* dst, const FbxAMatrix& src);
-
-	//スキニング情報の読み取り
-	void ParseSkin(FBXModel* fbxModel, FbxMesh* fbxMesh);
 
 };

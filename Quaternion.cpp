@@ -141,6 +141,7 @@ Quaternion& Quaternion::operator+=(const Quaternion& v)
 	this->z += v.z;
 	this->w += v.w;
 	return *this;
+	// TODO: return ステートメントをここに挿入します
 }
 
 Quaternion& Quaternion::operator-=(const Quaternion& v)
@@ -150,6 +151,7 @@ Quaternion& Quaternion::operator-=(const Quaternion& v)
 	this->z -= v.z;
 	this->w -= v.w;
 	return *this;
+	// TODO: return ステートメントをここに挿入します
 }
 
 Quaternion& Quaternion::operator*=(float s)
@@ -159,6 +161,7 @@ Quaternion& Quaternion::operator*=(float s)
 	this->z *= s;
 	this->w *= s;
 	return *this;
+	// TODO: return ステートメントをここに挿入します
 }
 
 Quaternion& Quaternion::operator/=(float s)
@@ -168,6 +171,7 @@ Quaternion& Quaternion::operator/=(float s)
 	this->z /= s;
 	this->w /= s;
 	return *this;
+	// TODO: return ステートメントをここに挿入します
 }
 
 Vector3 MatVector(const Vector3& vector, const Matrix4& matrix)
@@ -210,14 +214,12 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 
 	//内積
 	float dot = (r0.x * r1.x) + (r0.y * r1.y) + (r0.z * r1.z) + (r0.w * r1.w);
-
 	//反転処理
 	if (dot < 0)
 	{
 		r0 = -r0;//もう片方の回転を利用する
 		dot = -dot;//内積も反転
 	}
-
 	//なす角を求める
 	float theta = std::acos(dot);
 
@@ -226,6 +228,7 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t)
 
 
 	//数学の公式 sin(1-t)*Θ / sinΘ*q0 + sin(tΘ) / sinΘ * q1;
+
 	//thetaとsinを使って補間係数を求める
 	scale0 = sinf((1 - t) * theta) / sinf(theta);
 
@@ -251,16 +254,12 @@ Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 
 	//正規化して内積をとる
 	float dot = v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
-
 	//外積をとる
 	Vector3 Cross = v1.cross(v2);
-
 	//とった外積を正規化
 	Vector3 axis = Cross.nomalize();
-
 	//為す角を求める
 	float theta = std::acos(dot);
-
 	//axisとthetaで任意軸回転を使って値を返す
 	ans = MakeAxisAngle(axis, theta);
 	return ans;

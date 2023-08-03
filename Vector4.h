@@ -1,5 +1,6 @@
 #pragma once
 
+//4次元ベクトル
 class Vector4
 {
 public:
@@ -12,6 +13,7 @@ public:
 	//コンストラクタ
 	Vector4();//零ベクトル
 	Vector4(float x, float y, float z, float w);//成分を指定して生成
+
 
 	float Length()const;//ノルムを求める
 	float LengthSquared()const;
@@ -32,6 +34,7 @@ public:
 };
 
 //2項演算子オーバーロード
+//※いろんな引数のパターンに対応(引数の順序)するため、以下のように準備してい
 const Vector4 operator+(const Vector4& v1, const Vector4& v2);
 
 const Vector4 operator-(const Vector4& v1, const Vector4& v2);

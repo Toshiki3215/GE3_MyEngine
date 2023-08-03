@@ -8,15 +8,13 @@ class ConvertXM
 {
 
 public:
-
-	static Matrix4 ConvertXMMATtoMat4( XMMATRIX XMMat);
+	static Matrix4 ConvertXMMATtoMat4(XMMATRIX XMMat);
 	static XMMATRIX ConvertMat4toXMMAT(Matrix4 Mat4);
 
 	static Vector3 ConvertXMFlo3toVec3(XMFLOAT3 XMFlo3);
 	static XMFLOAT3 ConvertVec3toXMFlo3(Vector3 vec3);
-
 private:
-	
+
 	XMMATRIX xmMat;
 	Matrix4 mat4;
 
@@ -24,4 +22,3 @@ private:
 	Vector3 vec3;
 
 };
-

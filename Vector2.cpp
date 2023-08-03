@@ -18,15 +18,13 @@ float Vector2::length()const
 	return sqrt(x * x + y * y);
 }
 
-Vector2& Vector2::nomalize() 
+Vector2& Vector2::nomalize()
 {
 	float len = length();
-
 	if (len != 0) 
 	{
 		return *this /= len;
 	}
-
 	return *this;
 }
 
@@ -35,7 +33,7 @@ float Vector2::dot(const Vector2& v) const
 	return (this->x * v.x) + (this->y * v.y);
 }
 
-float Vector2::cross(const Vector2& v)const 
+float Vector2::cross(const Vector2& v)const
 {
 	return (this->x * v.y) - (this->y * v.x);
 }
@@ -47,10 +45,10 @@ Vector2 Vector2::operator+()const
 
 Vector2 Vector2::operator-()const 
 {
-	return Vector2(-(*this)); 
+	return Vector2(-(*this));
 }
 
-Vector2& Vector2::operator+=(const Vector2& v) 
+Vector2& Vector2::operator+=(const Vector2& v)
 {
 	this->x += v.x;
 	this->y += v.y;
@@ -78,6 +76,7 @@ Vector2& Vector2::operator/=(float s)
 	return *this;
 }
 
+//Vector2D　クラスに属さない関数群
 //二項演算子
 const Vector2 operator+(const Vector2& v1, const Vector2& v2) 
 {

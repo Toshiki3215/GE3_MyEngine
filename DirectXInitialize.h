@@ -3,15 +3,12 @@
 #include <dxgi1_6.h>
 #include <wrl.h>
 #include "WindowsApp.h"
-#include <vector>
+#include <DirectXTex.h>
 
+//DirectX基盤
 class DirectXInitialize
 {
 public://メンバ関数
-
-	// Microsoft::WRL::を省略
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
 	//初期化
 	void Initialize(WinApp* winApp);
 
@@ -38,19 +35,22 @@ public://メンバ関数
 	//コマンドリスト取得
 	ID3D12GraphicsCommandList* GetCommandList()const { return commandList.Get(); }
 
+	//デスクリプタヒープ
+	ID3D12DescriptorHeap* GetDsvHeap() const { return dsvHeap.Get(); }
+
+	//デプスバッファ
+	ID3D12Resource* GetDepthBuff() const { return depthBuff.Get(); }
+
 	//バックバッファの数を取得
 	size_t GetBackBufferCount() const { return backBuffers.size(); }
 
 private:
-
 	//DirectX12デバイス
-	ComPtr<ID3D12Device> device;
-
+	Microsoft::WRL::ComPtr<ID3D12Device> device;
 	//DXGIファクトリ
-	ComPtr<IDXGIFactory7> dxgiFactory;
-
+	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory;
 	//バックバッファ
-	std::vector<ComPtr<ID3D12Resource>> backBuffers;
+	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers;
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
 
@@ -60,15 +60,15 @@ private:
 	WinApp* winApp_ = nullptr;
 
 	HRESULT result;
-	ComPtr<IDXGISwapChain4> swapChain;
-	ComPtr<ID3D12CommandAllocator> cmdAllocator;
-	ComPtr<ID3D12GraphicsCommandList> commandList;
-	ComPtr<ID3D12CommandQueue> commandQueue;
-	ComPtr<ID3D12DescriptorHeap> rtvHeap;
-	ComPtr<ID3D12Fence> fence;
+	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain;
+	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> cmdAllocator;
+	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList;
+	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap;
+	Microsoft::WRL::ComPtr<ID3D12Fence> fence;
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc{};
-	ComPtr<ID3D12DescriptorHeap> dsvHeap;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap;
 	D3D12_RESOURCE_BARRIER barrierDesc{};
 	UINT64 fenceVal = 0;
-	ComPtr<ID3D12Resource> depthBuff;
+	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff;
 };

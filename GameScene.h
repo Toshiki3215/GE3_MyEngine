@@ -1,24 +1,31 @@
 #pragma once
 
 #include "DirectXInitialize.h"
+#include <DirectXMath.h>
 #include "Input.h"
-#include <string>
 #include "Object3d.h"
 #include "SpriteCommon.h"
 #include "Sprite.h"
 #include "Model.h"
-#include "Matrix4.h"
-#include "Camera.h"
+#include <string>
 #include "ParticleManager.h"
 #include "FBXObject.h"
+#include "FbxLoader.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene
 {
-private: // 静的メンバ変数
-	//static const int debugTextTexNumber = 0;
+private: // エイリアス
+	// Microsoft::WRL::を省略
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	// DirectX::を省略
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 
 public: // メンバ関数
 
@@ -37,8 +44,6 @@ public: // メンバ関数
 	/// </summary>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
 
-	void Reset();
-
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -49,78 +54,22 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void CamMove();
-	void CamRota();
-	void CamUpdate();
-
-	void EffUpdate();
-	void EffDraw();
-
-	void EffUpdate2();
-	void EffDraw2();
-
-
-	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
-	
-private: // メンバ変数 (固定)
+private: // メンバ変数
 	DirectXInitialize* dxInit = nullptr;
+	//FBXで使うカメラ(ビュープロジェクション?みたいな)
+	Camera* camera = nullptr;
 	Input* input = nullptr;
-
 	SpriteCommon* spriteCommon = nullptr;
+	
+
+	/// <summary>
+	/// ゲームシーン用
+	/// </summary>
 
 	//パーティクルクラスの初期化 
-	ParticleManager* particleManager = nullptr;
-
-private:	//メンバ変数
-	const float PI = 3.141592;
-
-	//カメラ
-	Camera* camera = nullptr;
-	Transform camWtf;
-	Transform targetWtf;
-	float targetTheta;
-	float targetDistance = 10;
-	float camMoveSpeed = 0.1f;
-	float camRotaSpeed = PI/180;
-
-
-	//背景や床
-	Object3d* floor = nullptr;
-	Model* floorMD = nullptr;
-	/*Object3d* skydome = nullptr;
-	Model* skydomeMD = nullptr;*/
-
-	Object3d* obj = nullptr;
-	Model* objMD = nullptr;
-
-	Object3d* obj2 = nullptr;
-	Model* obj2MD = nullptr;
-
-	Sprite* tex1 = nullptr;
-	Sprite* tex2 = nullptr;
-
-	//ゲームフロー
-	enum class Scene
-	{
-			Title,
-			Select,
-			Play,
-			Clear,
-			Gameover,
-	};
-
-	Scene scene;
-
-	int stage;
-
-	int isEffFlag;
+	//ParticleManager* particleManager = nullptr;
 
 	FBXModel* fbxModel1 = nullptr;
-
 	FBXObject* fbxObject1 = nullptr;
-	
-	FBXModel* fbxModel2 = nullptr;
-
-	FBXObject* fbxObject2 = nullptr;
 
 };

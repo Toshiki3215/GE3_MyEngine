@@ -3,16 +3,17 @@
 #include "Vector3.h"
 #include "ConvertXM.h"
 
-// アフィン行列 （角度指定：度数法）
-namespace Affin 
-{
+//#include "WorldTransform.h"
+
+/// <summary>
+/// アフィン行列 （角度指定：度数法）
+/// </summary>
+namespace Affin {
 
 	//円周率
 	const float PI = 3.141592654f;
-
 	// 度数法 -> ラジアン変換
 	float radConvert(float value);
-
 	// ラジアン -> 度数法変換
 	float degConvert(float value);
 
@@ -52,4 +53,4 @@ namespace Affin
 	//sin、cosを両方出す
 	void SinCos(float& sin_, float& cos_, float angle);
 
-} // namespace Affin
+}

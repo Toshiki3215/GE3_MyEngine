@@ -5,13 +5,13 @@
 
 Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f)
 {
-
 }
 
 Vector4::Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w)
 {
-
 }
+
+
 
 float Vector4::Length() const
 {
@@ -29,7 +29,6 @@ Vector4 Vector4::Normalization() const
 	Vector4 tmp(*this);
 
 	float len = Length();
-
 	if (len != 0)
 	{
 		return tmp /= len;
@@ -42,7 +41,6 @@ Vector4 Vector4::Normalization() const
 Vector4& Vector4::Normal()
 {
 	float len = Length();
-
 	if (len != 0)
 	{
 		return *this /= len;
