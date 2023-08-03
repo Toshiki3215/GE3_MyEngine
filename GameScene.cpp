@@ -30,7 +30,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input) {
 	camera = new Camera(1280, 720);
 	FBXObject::SetCamera(camera);
 
-	fbxModel1 = FBXLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxModel1 = FBXLoader::GetInstance()->LoadModelFromFile("boneTest");
 
 	// デバイスをセット
 	FBXObject::SetDevice(dxInit->GetDevice());
@@ -42,7 +42,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input) {
 	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
 	fbxObject1->SetModel(fbxModel1);
-	fbxObject1->SetScale({ 4.08,4.08,4.08 });
+	fbxObject1->SetScale({ 5.0,5.0,5.0 });
 	fbxObject1->SetPosition({ 0,-15,40 });
 	fbxObject1->PlayAnimation();
 	

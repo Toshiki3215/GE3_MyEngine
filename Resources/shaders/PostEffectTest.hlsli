@@ -1,20 +1,20 @@
-//マテリアル
-cbuffer ConstBufferDataMaterial : register(b0)
-{
-	float4 color; // 色(RGBA)
-};
-
 //頂点シェーダーの出力構造体
-//(頂点シェーダーからピクセルシェーダーへのやり取りに使用する)
-struct VSOutput {
+//（頂点シェーダーからピクセルシェーダーへのやり取りに使用する）
+struct VSOutput
+{
 	//システム用頂点座標
 	float4 svpos : SV_POSITION;
-	//UV値
-	float2 uv : TEXCOORD;
+	// uv値
+	float2 uv :TEXCOORD;
 };
 
-//3D変換行列
-cbuffer ConstBufferDataTransform:register(b1)
+cbuffer GPUData:register(b0)//送られてきた情報
 {
-	matrix mat;
+	int shadeNumber;
+	int KernelSize;
+	float2 center;
+	float intensity;
+	int samples;
+	float _AngleDeg;
+	float _AngleDeg2;
 }
