@@ -52,7 +52,8 @@ FBXModel* FBXLoader::LoadModelFromFile(const string& modelName)
     const string fullpath = directoryPath + fileName;
 
     // ファイル名を指定してFBXファイルを読み込む
-    if (!fbxImporter->Initialize(fullpath.c_str(), -1, fbxManager->GetIOSettings())) {
+    if (!fbxImporter->Initialize(fullpath.c_str(), -1, fbxManager->GetIOSettings())) 
+    {
         assert(0);
     }
 
@@ -96,7 +97,8 @@ void FBXLoader::ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh)
 {
     FbxSkin* fbxSkin = static_cast<FbxSkin*>(fbxMesh->GetDeformer(0, FbxDeformer::eSkin));
 
-    if (fbxSkin == nullptr) {
+    if (fbxSkin == nullptr) 
+    {
 
         //各頂点について処理
         for (int i = 0; i < fbxmodel->vertices.size(); i++) 
@@ -114,7 +116,8 @@ void FBXLoader::ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh)
     int clusterCount = fbxSkin->GetClusterCount();
     bones.reserve(clusterCount);
 
-    for (int i = 0; i < clusterCount; i++) {
+    for (int i = 0; i < clusterCount; i++) 
+    {
 
         FbxCluster* fbxCluster = fbxSkin->GetCluster(i);
 
@@ -135,14 +138,16 @@ void FBXLoader::ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh)
 
     }
 
-    struct WeightSet {
+    struct WeightSet 
+    {
         UINT index;
         float weight;
     };
 
     std::vector<std::list<WeightSet>> weightLists(fbxmodel->vertices.size());
 
-    for (int i = 0; i < clusterCount; i++) {
+    for (int i = 0; i < clusterCount; i++) 
+    {
 
         FbxCluster* fbxCluster = fbxSkin->GetCluster(i);
 
@@ -151,7 +156,8 @@ void FBXLoader::ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh)
         int* controlPointIndices = fbxCluster->GetControlPointIndices();
         double* controlPointWeights = fbxCluster->GetControlPointWeights();
 
-        for (int j = 0; j < controlPointIndicesCount; j++) {
+        for (int j = 0; j < controlPointIndicesCount; j++) 
+        {
             int vertIndex = controlPointIndices[j];
 
             float weight = (float)controlPointWeights[j];
@@ -162,26 +168,31 @@ void FBXLoader::ParseSkin(FBXModel* fbxmodel, FbxMesh* fbxMesh)
 
     auto& vertices = fbxmodel->vertices;
 
-    for (int i = 0; i < vertices.size(); i++) {
+    for (int i = 0; i < vertices.size(); i++) 
+    {
 
         auto& weightList = weightLists[i];
 
-        weightList.sort([](auto const& lhs, auto const& rhs) {
+        weightList.sort([](auto const& lhs, auto const& rhs)
+            {
 
             return lhs.weight > rhs.weight;
             });
 
         int weightArrayIndex = 0;
 
-        for (auto& weightSet : weightList) {
+        for (auto& weightSet : weightList) 
+        {
 
             vertices[i].boneIndex[weightArrayIndex] = weightSet.index;
             vertices[i].boneWeight[weightArrayIndex] = weightSet.weight;
 
-            if (++weightArrayIndex >= FBXModel::MAX_BONE_INDICES) {
+            if (++weightArrayIndex >= FBXModel::MAX_BONE_INDICES)
+            {
                 float weight = 0.0f;
 
-                for (int j = 1; j < FBXModel::MAX_BONE_INDICES; j++) {
+                for (int j = 1; j < FBXModel::MAX_BONE_INDICES; j++) 
+                {
                     weight += vertices[i].boneWeight[j];
                 }
                 vertices[i].boneWeight[0] = 1.0f - weight;
@@ -234,7 +245,8 @@ void FBXLoader::ParseNodeRecursive(FBXModel* fbxmodel, FbxNode* fbxNode, Node* p
 
     //グローバル変形行列の計算
     node.globalTransform = node.transform;
-    if (parent) {
+    if (parent) 
+    {
         node.parent = parent;
         // 親の変形を乗算
         node.globalTransform *= parent->globalTransform;
@@ -243,7 +255,8 @@ void FBXLoader::ParseNodeRecursive(FBXModel* fbxmodel, FbxNode* fbxNode, Node* p
     // FBXノードのメッシュ情報を解析
     FbxNodeAttribute* fbxNodeAttribute = fbxNode->GetNodeAttribute();
 
-    if (fbxNodeAttribute) {
+    if (fbxNodeAttribute) 
+    {
         if (fbxNodeAttribute->GetAttributeType() == FbxNodeAttribute::eMesh)
         {
             fbxmodel->meshNode = &node;
@@ -252,7 +265,8 @@ void FBXLoader::ParseNodeRecursive(FBXModel* fbxmodel, FbxNode* fbxNode, Node* p
     }
 
     // 子ノードに対して再帰呼び出し
-    for (int i = 0; i < fbxNode->GetChildCount(); i++) {
+    for (int i = 0; i < fbxNode->GetChildCount(); i++)
+    {
         ParseNodeRecursive(fbxmodel, fbxNode->GetChild(i), &node);
     }
 }
@@ -287,7 +301,8 @@ void FBXLoader::ParseMeshVertices(FBXModel* fbxmodel, FbxMesh* fbxMesh)
     FbxVector4* pCoord = fbxMesh->GetControlPoints();
 
     // FBXメッシュの全頂点座標をモデル内の配列にコピーする。
-    for (int i = 0; i < controlPointsCount; i++) {
+    for (int i = 0; i < controlPointsCount; i++) 
+    {
         FBXModel::VertexPosNormalUv& vertex = vertices[i];
         // 座標のコピー
         vertex.pos.x = (float)pCoord[i][0];
@@ -315,13 +330,15 @@ void FBXLoader::ParseMeshFaces(FBXModel* fbxmodel, FbxMesh* fbxMesh)
     fbxMesh->GetUVSetNames(uvNames);
 
     // 面ごとの情報読み取り
-    for (int i = 0; i < polygonCount; i++) {
+    for (int i = 0; i < polygonCount; i++) 
+    {
         // 面を構成する頂点の数を取得（3なら三角形ポリゴン)
         const int polygonSize = fbxMesh->GetPolygonSize(i);
         assert(polygonSize <= 4);
 
         // 1頂点ずつ処理
-        for (int j = 0; j < polygonSize; j++) {
+        for (int j = 0; j < polygonSize; j++) 
+        {
             // FBX頂点配列のインデックス
             int index = fbxMesh->GetPolygonVertex(i, j);
             assert(index >= 0);
@@ -329,18 +346,21 @@ void FBXLoader::ParseMeshFaces(FBXModel* fbxmodel, FbxMesh* fbxMesh)
             // 頂点法線読込
             FBXModel::VertexPosNormalUv& vertex = vertices[index];
             FbxVector4 normal;
-            if (fbxMesh->GetPolygonVertexNormal(i, j, normal)) {
+            if (fbxMesh->GetPolygonVertexNormal(i, j, normal)) 
+            {
                 vertex.normal.x = (float)normal[0];
                 vertex.normal.y = (float)normal[1];
                 vertex.normal.z = (float)normal[2];
             }
 
             // テクスチャUV読込
-            if (textureUVCount > 0) {
+            if (textureUVCount > 0)
+            {
                 FbxVector2 uvs;
                 bool lUnmappedUV;
                 // 0番決め打ちで読込
-                if (fbxMesh->GetPolygonVertexUV(i, j, uvNames[0], uvs, lUnmappedUV)) {
+                if (fbxMesh->GetPolygonVertexUV(i, j, uvNames[0], uvs, lUnmappedUV)) 
+                {
                     vertex.uv.x = (float)uvs[0];
                     vertex.uv.y = (float)uvs[1];
                 }
@@ -349,12 +369,14 @@ void FBXLoader::ParseMeshFaces(FBXModel* fbxmodel, FbxMesh* fbxMesh)
 
             // インデックス配列に頂点インデックス追加
             // 3頂点目までなら
-            if (j < 3) {
+            if (j < 3) 
+            {
                 // 1点追加し、他の2点と三角形を構築する
                 indices.push_back(index);
             }
             // 4頂点目
-            else {
+            else 
+            {
                 // 3点追加し、四角形の0,1,2,3の内 2,3,0で三角形を構築する
                 int index2 = indices[indices.size() - 1];
                 int index3 = index;

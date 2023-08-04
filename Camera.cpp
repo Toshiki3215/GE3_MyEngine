@@ -17,7 +17,8 @@ Camera::Camera(int window_width, int window_height)
 
 void Camera::Update()
 {
-	if (viewDirty || projectionDirty) {
+	if (viewDirty || projectionDirty) 
+	{
 		// 再計算必要なら
 		if (viewDirty) {
 			// ビュー行列更新

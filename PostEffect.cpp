@@ -474,7 +474,8 @@ void PostEffect::SetShadeNumber(int SetShadeNumber)
 	dataMap->shadeNumber = SetShadeNumber;
 }
 
-void PostEffect::SetKernelSize(int range) {
+void PostEffect::SetKernelSize(int range) 
+{
 
 	dataMap->kernelSize = range;
 
