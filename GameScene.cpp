@@ -51,7 +51,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	railCamera = new RailCamera(WinApp::window_width, WinApp::window_height);
 
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 3.0f, -8.0f };
+	camWtf.position = { 0.0f, 0.0f, -8.0f };
 
 	railCamera->Initialize(camWtf);
 
@@ -101,11 +101,6 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	skydome->SetModel(skydomeMD);
 	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
 
-	/*playerMD = Model::LoadFromOBJ("obj");
-	playerObj = Object3d::Create();
-	playerObj->SetModel(playerMD);
-	playerObj->wtf.position = (playerPos);*/
-
 	/*objMD = Model::LoadFromOBJ("obj");
 	obj = Object3d::Create();
 	obj->SetModel(objMD);
@@ -133,32 +128,44 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	fbxObject2->PlayAnimation();*/
 
 	//ゲームフロー
-	scene = Scene::Play;
+	scene = Scene::Title;
 
 	//自キャラの生成
 	//プレイヤー
 	player_ = new Player();
 	player_->Initialize(dxInit, input);
-	player_->SetCamera(camera);
-	{
-		//player_->SetParentCamera(railCamera->GetWtf());
-		//player_->SetParentCamera(railCamera->GetEye());
-		//player_->SetCamera(railCamera);
-		//player_->SetParent(&railCamera->GetWtf());
-	}
 
 	player_->SetParent(&camWtf);
+	player_->SetPos(Vector3{ 0, 0, 20 });
+
+	enemy_ = new Enemy();
+	enemy_->Initilize(Vector3{ -10, 10, 70 });
+
+	enemy2_ = new Enemy();
+	enemy2_->Initilize(Vector3{ 10, 0, 80 });
 
 }
 
 void GameScene::Reset() 
 {
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 0.0f, 0.0f };
+	camWtf.position = { 0.0f, 0.0f, -8.0f };
+
+	railCamera->Initialize(camWtf);
 
 	targetWtf.Initialize();
-	targetWtf.position = { 0.0f,0.0f,targetDistance };
+	targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
 
+	//自キャラの生成
+	//プレイヤー
+	player_->Initialize(dxInit, input);
+
+	//player_->SetParent(&camWtf);
+	player_->SetPos(Vector3{ 0, 0, 20 });
+
+	enemy_->Initilize(Vector3{ -10, 10, 70 });
+
+	enemy2_->Initilize(Vector3{ 10, 0, 80 });
 }
 
 // ----- 毎フレーム処理 ----- //
@@ -167,6 +174,11 @@ void GameScene::Update()
 	switch (scene)
 	{
 	case Scene::Title:
+		if (input->PushKey(DIK_SPACE))
+		{
+			scene = Scene::Play;
+		}
+		Reset();
 
 		break;
 
@@ -191,17 +203,26 @@ void GameScene::Update()
 
 		// ---------- FBX ---------- //
 		
-		//fbxObject1->Update();
-		//fbxObject2->Update();
-		//player_->SetParent(&railCamera->GetWtf());
 		player_->SetParentCamera(railCamera->GetEye());
-		player_->SetParent(&camWtf);
 		player_->Update();
+		
+		enemy_->Update(player_->GetPos());
+		enemy2_->Update(player_->GetPos());
+
+		if (input->PushKey(DIK_L))
+		{
+			scene = Scene::Clear;
+		}
 
 		break;
 
 	case Scene::Clear:
-		
+
+		if (input->PushKey(DIK_SPACE))
+		{
+			scene = Scene::Title;
+		}
+
 		break;
 
 	case Scene::Gameover:
@@ -245,6 +266,9 @@ void GameScene::Draw()
 		obj2->Draw();*/
 
 		player_->Draw();
+
+		enemy_->Draw();
+		enemy2_->Draw();
 		
 		// ---------- FBX ---------- //
 		
@@ -454,6 +478,7 @@ void GameScene::CamMove()
 	if (input->PushKey(DIK_1))
 	{
 		theta.y = -5;
+
 		//更新
 		camWtf.rotation = theta;
 	}
@@ -467,7 +492,7 @@ void GameScene::CamMove()
 void GameScene::CamMove2()
 {
 	//カメラの移動
-	Vector3 eyeVelocity = { 0,0,-0.5 };
+	Vector3 eyeVelocity = { 0,0,-1.0 };
 
 	if (input->PushKey(DIK_Q))
 	{

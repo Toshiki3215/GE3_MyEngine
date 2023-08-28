@@ -17,7 +17,7 @@ public:
 	// X,Y,Z軸回りのローカル回転角
 	Vector3 rotation = { 0,0,0 };
 	// ローカル座標
-	Vector3 position = { 0,0,0 };
+	Vector3 position = { 0,0,-1.0 };
 	// ローカルワールド変換行列
 	Matrix4 matWorld = Affin::matUnit();
 	//親となるワールド変換へのポインタ

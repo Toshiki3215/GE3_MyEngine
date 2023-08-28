@@ -3,7 +3,7 @@
 void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj)
 {
 	//Ž©‹@‚Ì’e
-	bulletModel = Model::LoadFromOBJ("obj");
+	bulletModel = Model::LoadFromOBJ("obj4");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);
 	bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
@@ -40,11 +40,6 @@ void PlayerBullet::Update(Vector3 enemylen, Vector3 len, float shootSpeed, Objec
 	}
 
 	bulletObj->Update();
-
-	/*if (bulletObj->wtf.position.z >= retObj->wtf.position.z)
-	{
-		isDead_ = false;
-	}*/
 
 }
 

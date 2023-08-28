@@ -143,6 +143,7 @@
     <ClCompile Include="ConvertXM.cpp" />
     <ClCompile Include="DirectXInitialize.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="FbxLoader.cpp" />
     <ClCompile Include="FBXModel.cpp" />
     <ClCompile Include="FBXObject.cpp" />
@@ -177,9 +178,11 @@
   <ItemGroup>
     <ClInclude Include="Affin.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider.h" />
     <ClInclude Include="ConvertXM.h" />
     <ClInclude Include="DirectXInitialize.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="FBXLoader.h" />
     <ClInclude Include="FBXModel.h" />
     <ClInclude Include="FBXObject.h" />

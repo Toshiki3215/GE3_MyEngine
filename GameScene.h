@@ -138,6 +138,7 @@ private:	//ƒƒ“ƒo•Ï”
 	Player* player_ = nullptr;
 
 	Enemy* enemy_ = nullptr;
+	Enemy* enemy2_ = nullptr;
 
 	bool railCameraSwitch = false;
 

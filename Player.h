@@ -41,7 +41,6 @@ public:
 
 	// ポジション
 	void SetPos(Vector3 pos) { playerObj->wtf.position = pos; }
-	void SetCamera(Camera* cam) { camera = cam; }
 
 	void SetParentCamera(Matrix4 cameraWtf) { playerObj->wtf.matWorld = cameraWtf; }
 	void SetParentCamera(Vector3 cameraWtf);
@@ -50,7 +49,7 @@ public:
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
 
 	void SetParent(Transform* parent) { playerObj->wtf.parent_ = parent; }
-
+	
 	void OnCollision();
 
 private:
@@ -61,6 +60,7 @@ private:
 	//自機
 	Object3d* playerObj = nullptr;
 	Model* playerMD = nullptr;
+	Model* playerMD2 = nullptr;
 
 	//弾発射
 	Object3d* shootObj_ = nullptr;
@@ -91,6 +91,8 @@ private:
 
 	bool isAliveFlag = true;
 
+	bool modeChange = false;
+
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
@@ -100,5 +102,9 @@ private:
 
 	static const int32_t shotCoolTime = 0;
 	int32_t coolTimer = shotCoolTime;
+
+	float rotaTime = 0.0f;
+
+	float rSpeed = 0.0f;
 
 };
