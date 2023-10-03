@@ -16,6 +16,11 @@ struct Vertex
 class Sprite 
 {
 public:
+	//コンストラクタ
+	Sprite();
+
+	Sprite(uint32_t num, Vector2 pos, Vector2 size, Vector4 color, Vector2 anchorpoint, bool FlipX, bool FlipY);
+
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -109,7 +114,7 @@ private:
 	Matrix4 matScale;//スケーリング行列
 	Matrix4 matWorld;
 	Matrix4 matRot;//回転行列
-	Matrix4  matTrans;//平行移動行列
+	Matrix4 matTrans;//平行移動行列
 
 	//座標
 	Vector3 scale{ 0.5f, 0.5f, 1.0f };

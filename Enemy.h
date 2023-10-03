@@ -62,4 +62,12 @@ private:
 
 	bool shootFlg = true;
 
+public:
+
+	void SetParent(Transform* parent) { enemyObj->wtf.parent_ = parent; }
+
+	void SetParentCamera(Vector3 cameraWtf);
+
+	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+
 };

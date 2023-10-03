@@ -62,6 +62,13 @@ private:
 	Model* playerMD = nullptr;
 	Model* playerMD2 = nullptr;
 
+	//ビット
+	Object3d* bitObj1 = nullptr;
+	Model* bitModel1 = nullptr;
+
+	Object3d* bitObj2 = nullptr;
+	Model* bitModel2 = nullptr;
+
 	//弾発射
 	Object3d* shootObj_ = nullptr;
 	Model* shootModel_ = nullptr;
@@ -96,14 +103,20 @@ private:
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
 
+	std::list<std::unique_ptr<PlayerBullet>> bitBullets1;
+	std::list<std::unique_ptr<PlayerBullet>> bitBullets2;
+
 	float bulletSpeed = 0.05f;
 
 	bool shotCool = false;
+
+	Vector3 bulletScale = { 0.1f,0.1f,0.1f };
 
 	static const int32_t shotCoolTime = 0;
 	int32_t coolTimer = shotCoolTime;
 
 	float rotaTime = 0.0f;
+	float bitRotaTime = 20.0f;
 
 	float rSpeed = 0.0f;
 

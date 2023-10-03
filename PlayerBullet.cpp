@@ -1,13 +1,13 @@
 #include "PlayerBullet.h"
 
-void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj)
+void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj,Vector3 scale)
 {
 	//Ž©‹@‚Ì’e
 	bulletModel = Model::LoadFromOBJ("obj4");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);
 	bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
-	bulletObj->wtf.scale = { 0.5f,0.5f,0.5f };
+	bulletObj->wtf.scale = scale;
 
 	target = retObj->wtf.position - playerObj->wtf.position;
 	target.nomalize();

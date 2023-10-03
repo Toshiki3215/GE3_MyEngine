@@ -11,7 +11,7 @@ public:
 	/// </summary>
 	/// <param name="model">モデル</param>
 	/// <param name="position">初期座標</param>
-	void Initilize(Object3d* playerObj, Object3d* retObj);
+	void Initilize(Object3d* playerObj, Object3d* retObj, Vector3 scale);
 
 	/// <summary>
 	/// 更新

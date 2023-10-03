@@ -1,11 +1,56 @@
 #include"Sprite.h"
 
+Sprite::Sprite()
+{
+	//テクスチャ番号
+	textureIndex_ = 0;
+
+	//テクスチャ左上座標
+	textureLeftTop = { 0.0f,0.0f };
+
+	//テクスチャ切り出しサイズ
+	textureSize = { 100.0f,100.0f };
+
+	color = { 1,1,1,1 };
+
+	anchorPoint = { 0.0f,0.0f };
+
+	// 左右反転
+	isFlipX = false;
+
+	// 上下反転
+	isFlipY = false;
+}
+
+Sprite::Sprite(uint32_t num, Vector2 pos, Vector2 size, Vector4 Color, Vector2 anchorpoint, bool FlipX, bool FlipY)
+{
+	//テクスチャ番号
+	textureIndex_ = num;
+
+	//テクスチャ左上座標
+	textureLeftTop = pos;
+
+	//テクスチャ切り出しサイズ
+	textureSize = size;
+
+	color = Color;
+
+	anchorPoint = anchorpoint;
+
+	// 左右反転
+	isFlipX = FlipX;
+
+	// 上下反転
+	isFlipY = FlipY;
+}
+
 void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 {
 	spritecomon = spritecommon_;
 
 	//テクスチャサイズをイメージに合わせる
-	if (textureIndex != UINT32_MAX) {
+	if (textureIndex != UINT32_MAX) 
+	{
 		textureIndex_ = textureIndex;
 		AdjustTextureSize();
 		//テクスチャサイズをスプライトのサイズに適用
@@ -30,7 +75,8 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	for (int i = 0; i < _countof(vertices); i++) {
+	for (int i = 0; i < _countof(vertices); i++) 
+	{
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
 	// 繋がりを解除
@@ -49,6 +95,7 @@ void Sprite::Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex)
 		// ヒープ設定
 		D3D12_HEAP_PROPERTIES cbHeapProp{};
 		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;                   // GPUへの転送用
+
 		// リソース設定
 		D3D12_RESOURCE_DESC cbResourceDesc{};
 		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -127,13 +174,15 @@ void Sprite::Update()
 	float bottom = (1.0f - anchorpoint.x) * size_.y;
 
 	if (isFlipX)
-	{// 左右入れ替え
+	{
+		// 左右入れ替え
 		left = -left;
 		right = -right;
 	}
 
 	if (isFlipY)
-	{// 上下入れ替え
+	{
+		// 上下入れ替え
 		top = -top;
 		bottom = -bottom;
 	}
@@ -153,6 +202,7 @@ void Sprite::Update()
 		float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
 		float tex_top = textureLeftTop.y / resDesc.Height;
 		float texbottom = (textureLeftTop.y + textureSize.y) / resDesc.Height;
+
 		//頂点UVに反映する
 		vertices[LB].uv = { tex_left,texbottom };
 		vertices[LT].uv = { tex_left,tex_top };

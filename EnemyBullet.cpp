@@ -31,9 +31,9 @@ void EnemyBullet::Update(Vector3 len, float shootSpeed, Object3d* enemyObj)
 	{
 		//target.z = bulletObj->wtf.position.z + 10;
 
-		bulletObj->wtf.position -= len;
-		len = target;
-		len *= -shootSpeed;
+		bulletObj->wtf.position += len;
+		//len = target;
+		len *= shootSpeed;
 	}
 
 	bulletObj->Update();

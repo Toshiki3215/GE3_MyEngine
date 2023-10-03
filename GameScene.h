@@ -14,6 +14,7 @@
 #include "FBXObject.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "TitleScene.h"
 
 /// <summary>
 /// ゲームシーン
@@ -64,8 +65,9 @@ public: // メンバ関数
 	void EffUpdate2();
 	void EffDraw2();
 
-
 	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
+
+	void CheckAllCollisions();
 	
 private: // メンバ変数 (固定)
 	DirectXInitialize* dxInit = nullptr;
@@ -90,24 +92,12 @@ private:	//メンバ変数
 
 	RailCamera* railCamera = nullptr;
 
-
-	//背景や床
-	Object3d* floor = nullptr;
-	Model* floorMD = nullptr;
+	//モデル
 	Object3d* skydome = nullptr;
 	Model* skydomeMD = nullptr;
 
-	Object3d* obj = nullptr;
-	Model* objMD = nullptr;
-
-	Object3d* obj2 = nullptr;
-	Model* obj2MD = nullptr;
-
 	Object3d* playerObj = nullptr;
 	Model* playerMD = nullptr;
-
-	Sprite* tex1 = nullptr;
-	Sprite* tex2 = nullptr;
 
 	//ゲームフロー
 	enum class Scene
@@ -141,5 +131,7 @@ private:	//メンバ変数
 	Enemy* enemy2_ = nullptr;
 
 	bool railCameraSwitch = false;
+
+	TitleScene* titleScene = nullptr;
 
 };

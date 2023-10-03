@@ -55,22 +55,28 @@
     <Filter Include="ヘッダー ファイル\Application">
       <UniqueIdentifier>{8570a485-57fc-4897-9fbb-2bde8b76db47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Application\player">
-      <UniqueIdentifier>{cbb046a6-48c0-4c6c-8e84-8931300a8585}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Application\player">
-      <UniqueIdentifier>{36115ca5-804c-4830-b765-c860d44c42cc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Engine\Imgui">
       <UniqueIdentifier>{5b2a1fbb-f5f0-4229-99e0-18c4cf6b3890}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Application\Enemy">
+    <Filter Include="ソース ファイル\Application\PlayScene">
+      <UniqueIdentifier>{96015353-6f9b-4f96-9eae-2c798a236751}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Application\PlayScene\Enemy">
       <UniqueIdentifier>{9f077a1f-eaeb-4f88-93d6-85355a30a626}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Application\Enemy">
+    <Filter Include="ソース ファイル\Application\PlayScene\player">
+      <UniqueIdentifier>{36115ca5-804c-4830-b765-c860d44c42cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Application\PlayScene">
+      <UniqueIdentifier>{4a1fafad-c3ac-4e77-afad-334058456c73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Application\PlayScene\Enemy">
       <UniqueIdentifier>{a4e61ebd-1e54-45b9-b171-569742833ee5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Application\Scene">
+    <Filter Include="ヘッダー ファイル\Application\PlayScene\player">
+      <UniqueIdentifier>{cbb046a6-48c0-4c6c-8e84-8931300a8585}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Application\SceneManager">
       <UniqueIdentifier>{479e42b7-8b4e-4d81-be32-694740cdcfdb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -179,10 +185,10 @@
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
-      <Filter>ソース ファイル\Application\player</Filter>
+      <Filter>ソース ファイル\Application\PlayScene\player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerBullet.cpp">
-      <Filter>ソース ファイル\Application\player</Filter>
+      <Filter>ソース ファイル\Application\PlayScene\player</Filter>
     </ClCompile>
     <ClCompile Include="Imgui\imgui.cpp">
       <Filter>ソース ファイル\Engine\Imgui</Filter>
@@ -209,10 +215,13 @@
       <Filter>ソース ファイル\Engine\Imgui</Filter>
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
-      <Filter>ソース ファイル\Application\Enemy</Filter>
+      <Filter>ソース ファイル\Application\PlayScene\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBullet.cpp">
-      <Filter>ソース ファイル\Application\Enemy</Filter>
+      <Filter>ソース ファイル\Application\PlayScene\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,25 +292,28 @@
       <Filter>ヘッダー ファイル\Engine\base</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
-      <Filter>ヘッダー ファイル\Application\player</Filter>
+      <Filter>ヘッダー ファイル\Application\PlayScene\player</Filter>
     </ClInclude>
     <ClInclude Include="PlayerBullet.h">
-      <Filter>ヘッダー ファイル\Application\player</Filter>
+      <Filter>ヘッダー ファイル\Application\PlayScene\player</Filter>
     </ClInclude>
     <ClInclude Include="ImguiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Enemy.h">
-      <Filter>ヘッダー ファイル\Application\Enemy</Filter>
+      <Filter>ヘッダー ファイル\Application\PlayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>ヘッダー ファイル\Application\Scene</Filter>
+      <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Collider.h">
-      <Filter>ヘッダー ファイル\Application\Scene</Filter>
+      <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="EnemyBullet.h">
-      <Filter>ヘッダー ファイル\Application\Enemy</Filter>
+      <Filter>ヘッダー ファイル\Application\PlayScene\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

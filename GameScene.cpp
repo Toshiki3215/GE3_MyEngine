@@ -17,12 +17,6 @@ GameScene::~GameScene()
 {
 	delete spriteCommon;
 	delete camera;
-	delete obj;
-	delete obj2;
-	delete playerObj;
-	delete tex1;
-	delete tex2;
-	//delete floor;
 	delete skydome;
 	delete fbxObject1;
 	delete fbxModel1;
@@ -73,15 +67,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	// ---------- テクスチャ ---------- //
 	//テクスチャ生成
 
-	/*tex1 = new Sprite();
-	tex1->Initialize(spriteCommon);
-	tex1->SetPozition({ 500,0 });
-	tex1->SetSize({256.0f, 125.0f});*/
-
 	//テクスチャ読込
-
-	/*spriteCommon->LoadTexture(0, "bb.png");
-	tex1->SetTextureIndex(0);*/
 
 	// ---------- パーティクル ---------- //
 
@@ -91,31 +77,15 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	// ---------- 3Dオブジェクト ---------- //
 
-	/*floorMD = Model::LoadFromOBJ("floor");
-	floor = Object3d::Create();
-	floor->SetModel(floorMD);
-	floor->wtf.position = (Vector3{ 0, -10, 0 });*/
-
 	skydomeMD = Model::LoadFromOBJ("skydome");
 	skydome = Object3d::Create();
 	skydome->SetModel(skydomeMD);
-	skydome->wtf.scale = (Vector3{ 1000, 1000, 1000 });
-
-	/*objMD = Model::LoadFromOBJ("obj");
-	obj = Object3d::Create();
-	obj->SetModel(objMD);
-	obj->wtf.position = (Vector3{ 20, 20, 40 });
-
-	obj2MD = Model::LoadFromOBJ("obj2");
-	obj2 = Object3d::Create();
-	obj2->SetModel(obj2MD);
-	obj2->wtf.position = (Vector3{ 50, 0, 20 });*/
+	skydome->wtf.scale = (Vector3{ 2000, 2000, 2000 });
 
 	// ---------- FBX ---------- //
 	
 	//モデル名を指定してファイル読み込み
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	//fbxModel2 = FBXLoader::GetInstance()->LoadModelFronmFile("boneTest");
 	
 	//FBXオブジェクト生成とモデルのセット
 	fbxObject1 = new FBXObject;
@@ -127,8 +97,14 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	fbxObject2->SetModel(fbxModel2);
 	fbxObject2->PlayAnimation();*/
 
+	//シーン
+
 	//ゲームフロー
 	scene = Scene::Title;
+
+	//タイトルシーン
+	titleScene = new TitleScene();
+	titleScene->Initialize(dxInit);
 
 	//自キャラの生成
 	//プレイヤー
@@ -138,11 +114,14 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	player_->SetParent(&camWtf);
 	player_->SetPos(Vector3{ 0, 0, 20 });
 
+	//エネミー
 	enemy_ = new Enemy();
 	enemy_->Initilize(Vector3{ -10, 10, 70 });
+	enemy_->SetParent(&camWtf);
 
 	enemy2_ = new Enemy();
 	enemy2_->Initilize(Vector3{ 10, 0, 80 });
+	enemy2_->SetParent(&camWtf);
 
 }
 
@@ -174,11 +153,13 @@ void GameScene::Update()
 	switch (scene)
 	{
 	case Scene::Title:
+		titleScene->Update();
 		if (input->PushKey(DIK_SPACE))
 		{
 			scene = Scene::Play;
 		}
 		Reset();
+		skydome->Update();
 
 		break;
 
@@ -196,16 +177,15 @@ void GameScene::Update()
 		GameScene::EffUpdate2();
 
 		// ---------- 3Dオブジェクト ---------- //
-		//floor->Update();
 		skydome->Update();
-		/*obj->Update();
-		obj2->Update();*/
 
 		// ---------- FBX ---------- //
 		
 		player_->SetParentCamera(railCamera->GetEye());
 		player_->Update();
 		
+		enemy_->SetParentCamera(railCamera->GetEye());
+		enemy2_->SetParentCamera(railCamera->GetEye());
 		enemy_->Update(player_->GetPos());
 		enemy2_->Update(player_->GetPos());
 
@@ -246,6 +226,8 @@ void GameScene::Draw()
 	switch (scene)
 	{
 	case Scene::Title:
+		titleScene->Draw();
+		//skydome->Draw();
 
 		break;
 
@@ -256,14 +238,9 @@ void GameScene::Draw()
 	case Scene::Play:
     
 		// ---------- テクスチャ ---------- //
-		/*tex1->Draw();
-		tex2->Draw();*/
 
 		// ---------- 3Dオブジェクト ---------- //
-		//floor->Draw();
 		skydome->Draw();
-		/*obj->Draw();
-		obj2->Draw();*/
 
 		player_->Draw();
 
@@ -518,8 +495,6 @@ void GameScene::CamMove2()
 	}
 
 	//視点は一定の距離
-	/*targetWtf.position.z = playerObj->wtf.position.z;
-	targetWtf.position.y = playerObj->wtf.position.y;*/
 	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
 	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
 
@@ -635,4 +610,12 @@ Vector3 GameScene::bVelocity(Vector3& velocity, Transform& worldTransform)
 		velocity.z * worldTransform.matWorld.m[2][1];
 
 	return result;
+}
+
+void GameScene::CheckAllCollisions()
+{
+	Vector3 posA, posB;
+
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+
 }
