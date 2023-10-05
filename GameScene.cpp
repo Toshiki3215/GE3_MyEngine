@@ -104,7 +104,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//タイトルシーン
 	titleScene = new TitleScene();
-	titleScene->Initialize(dxInit);
+	titleScene->Initialize(dxInit,input);
 
 	//自キャラの生成
 	//プレイヤー
@@ -153,13 +153,15 @@ void GameScene::Update()
 	switch (scene)
 	{
 	case Scene::Title:
+
 		titleScene->Update();
-		if (input->PushKey(DIK_SPACE))
+		skydome->Update();
+
+		if (titleScene->GetStartF() == TRUE)
 		{
 			scene = Scene::Play;
 		}
 		Reset();
-		skydome->Update();
 
 		break;
 
@@ -223,11 +225,12 @@ void GameScene::Draw()
 	Object3d::PreDraw(dxInit->GetCommandList());
 
 	// ----- 3Dオブクジェクトの描画 ----- //
+	skydome->Draw();
+
 	switch (scene)
 	{
 	case Scene::Title:
 		titleScene->Draw();
-		//skydome->Draw();
 
 		break;
 
@@ -240,7 +243,7 @@ void GameScene::Draw()
 		// ---------- テクスチャ ---------- //
 
 		// ---------- 3Dオブジェクト ---------- //
-		skydome->Draw();
+		//skydome->Draw();
 
 		player_->Draw();
 

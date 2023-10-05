@@ -17,15 +17,26 @@ public:
 	TitleScene();
 	~TitleScene();
 
-	void Initialize(DirectXInitialize* dxInit);
+	void Initialize(DirectXInitialize* dxInit, Input* input);
 	void Update();
 	void Draw();
 
+	bool GetStartF() { return  startFlg; }
+
 private:
+	Input* input_ = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
 	Sprite* titleTex = nullptr;
+	Sprite* selectBar = nullptr;
+	Sprite* text1 = nullptr;
+	Sprite* text2 = nullptr;
 
-	Object3d* titlePlayer = nullptr;
-	Model* titlePlayerMD = nullptr;
+	float selectBarPosX = -400.0f;
+	float selectBarPosY = 459.0f;
+
+	float posMax = 459.0f;
+	float posMin = 588.0f;
+
+	bool startFlg = FALSE;
 
 };

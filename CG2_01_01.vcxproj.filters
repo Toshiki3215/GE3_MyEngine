@@ -313,7 +313,7 @@
       <Filter>ヘッダー ファイル\Application\PlayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>ヘッダー ファイル\Application</Filter>
+      <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
