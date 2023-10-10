@@ -60,6 +60,7 @@
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <AdditionalIncludeDirectories>$(ProjectDir)Application\playScene\Player;$(ProjectDir)Application\playScene\Enemy;$(ProjectDir)Application\playScene;$(ProjectDir)Application;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\ImGui;$(ProjectDir)Engine\camera;$(ProjectDir)Engine\base;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\2d;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,6 +86,7 @@
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(ProjectDir)Application\playScene\Player;$(ProjectDir)Application\playScene\Enemy;$(ProjectDir)Application\playScene;$(ProjectDir)Application;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\ImGui;$(ProjectDir)Engine\camera;$(ProjectDir)Engine\base;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\2d;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,6 +169,7 @@
     <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="RailCamera.cpp" />
+    <ClCompile Include="SceneTransition.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteCommon.cpp" />
     <ClCompile Include="TitleScene.cpp" />
@@ -199,6 +202,7 @@
     <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="RailCamera.h" />
+    <ClInclude Include="SceneTransition.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteCommon.h" />
     <ClInclude Include="TitleScene.h" />

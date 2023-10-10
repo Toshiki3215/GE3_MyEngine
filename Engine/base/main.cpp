@@ -5,7 +5,7 @@
 #include "FBXLoader.h"
 #include "GameScene.h"
 #include "ImguiManager.h"
-#include "Imgui/imgui.h"
+#include "imgui.h"
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {
@@ -117,11 +117,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		imguiManager->End();
 
 		// Imgui描画
-		#ifdef _DEBUG
-
 		imguiManager->Draw();
-
-		#endif // DEBUG
 
 		// 描画終了
 		dxInit->PostDraw();

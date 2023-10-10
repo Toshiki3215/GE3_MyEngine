@@ -106,9 +106,6 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	titleScene = new TitleScene();
 	titleScene->Initialize(dxInit,input);
 
-	sceneTrans = new SceneTransition();
-	sceneTrans->Initialize(dxInit, input);
-
 	//自キャラの生成
 	//プレイヤー
 	player_ = new Player();
@@ -153,7 +150,6 @@ void GameScene::Reset()
 // ----- 毎フレーム処理 ----- //
 void GameScene::Update() 
 {
-	//skydome->Update();
 	switch (scene)
 	{
 	case Scene::Title:
@@ -163,13 +159,9 @@ void GameScene::Update()
 
 		if (titleScene->GetStartF() == TRUE)
 		{
-			sceneTrans->UpdateStart();
-			if (sceneTrans->GetTransF() == FALSE)
-			{
-				scene = Scene::Play;
-				Reset();
-			}
+			scene = Scene::Play;
 		}
+		Reset();
 
 		break;
 
@@ -178,7 +170,6 @@ void GameScene::Update()
 		break;
 
 	case Scene::Play:
-		sceneTrans->UpdateEnd();
 		CamUpdate();
 		CamUpdate2();
 
@@ -240,6 +231,7 @@ void GameScene::Draw()
 	{
 	case Scene::Title:
 		titleScene->Draw();
+
 		break;
 
 	case Scene::Select:
@@ -251,11 +243,12 @@ void GameScene::Draw()
 		// ---------- テクスチャ ---------- //
 
 		// ---------- 3Dオブジェクト ---------- //
+		//skydome->Draw();
 
 		player_->Draw();
 
-		/*enemy_->Draw();
-		enemy2_->Draw();*/
+		enemy_->Draw();
+		enemy2_->Draw();
 		
 		// ---------- FBX ---------- //
 		
@@ -273,8 +266,6 @@ void GameScene::Draw()
 
 		break;
 	}
-
-	sceneTrans->Draw();
 
 	//3Dオブジェクト描画後処理
 	Object3d::PostDraw();

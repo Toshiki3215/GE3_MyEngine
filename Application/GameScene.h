@@ -15,7 +15,6 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "TitleScene.h"
-#include "SceneTransition.h"
 
 /// <summary>
 /// ゲームシーン
@@ -134,7 +133,5 @@ private:	//メンバ変数
 	bool railCameraSwitch = false;
 
 	TitleScene* titleScene = nullptr;
-
-	SceneTransition* sceneTrans = nullptr;
 
 };

@@ -223,6 +223,9 @@
     <ClCompile Include="TitleScene.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
+    <ClCompile Include="SceneTransition.cpp">
+      <Filter>ソース ファイル\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -313,6 +316,9 @@
       <Filter>ヘッダー ファイル\Application\PlayScene\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
+      <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneTransition.h">
       <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
     </ClInclude>
   </ItemGroup>

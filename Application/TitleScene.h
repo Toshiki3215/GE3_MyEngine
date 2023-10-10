@@ -28,8 +28,6 @@ private:
 	SpriteCommon* spriteCommon = nullptr;
 	Sprite* titleTex = nullptr;
 	Sprite* selectBar = nullptr;
-	Sprite* selectBar2 = nullptr;
-	Sprite* selectBar3 = nullptr;
 	Sprite* text1 = nullptr;
 	Sprite* text2 = nullptr;
 
@@ -40,7 +38,5 @@ private:
 	float posMin = 588.0f;
 
 	bool startFlg = FALSE;
-
-	int animeTimer = 0;
 
 };

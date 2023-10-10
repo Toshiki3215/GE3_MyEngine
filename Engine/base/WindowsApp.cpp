@@ -1,6 +1,6 @@
 #include "WindowsApp.h"
 #include <tchar.h>
-#include "Imgui/imgui_impl_win32.h"
+#include "imgui_impl_win32.h"
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -61,7 +61,7 @@ void WinApp::Initialize()
 
 	//ウィンドウオブジェクトの生成
 	hwnd = CreateWindow(w.lpszClassName,//クラス名指定
-		_T("CROSS"),	//タイトルバーの文字
+		_T("MyEngine"),	//タイトルバーの文字
 		WS_OVERLAPPEDWINDOW,			//タイトルバーと境界線があるウィンドウ
 		CW_USEDEFAULT,					//表示x座標はOSにお任せ
 		CW_USEDEFAULT,					//表示y座標はOSにお任せ
