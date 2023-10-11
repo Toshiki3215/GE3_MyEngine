@@ -9,6 +9,10 @@ TitleScene::~TitleScene()
 {
 	delete titleTex;
 	delete selectBar;
+	delete selectBar2;
+	delete selectBar3;
+	delete text1;
+	delete text2;
 }
 
 void TitleScene::Initialize(DirectXInitialize* dxInit, Input* input)

@@ -106,6 +106,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	titleScene = new TitleScene();
 	titleScene->Initialize(dxInit,input);
 
+	//シーン遷移
 	sceneTrans = new SceneTransition();
 	sceneTrans->Initialize(dxInit, input);
 
@@ -153,7 +154,6 @@ void GameScene::Reset()
 // ----- 毎フレーム処理 ----- //
 void GameScene::Update() 
 {
-	//skydome->Update();
 	switch (scene)
 	{
 	case Scene::Title:

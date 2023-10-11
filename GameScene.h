@@ -112,9 +112,7 @@ private:	//ƒƒ“ƒo•Ï”
 
 	Scene scene;
 
-	int stage;
-
-	int isEffFlag;
+	int isEffFlag = 0;
 
 	FBXModel* fbxModel1 = nullptr;
 

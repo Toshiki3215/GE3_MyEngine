@@ -38,8 +38,16 @@ private:
 
 	bool isTrans = TRUE;
 
-	float sceneChangeSpead = 100.0f;
-
 	float startTimer = 40.0f;
+	float animeTimer = 0.0f;
+	float maxTime = 1200.0f;
+
+public:
+	
+	float easeIn(float time, float startPos, float endPos, float maxTime);
+
+	float easeOut(float time, float startPos, float endPos, float maxTime);
+
+	float pow3(float x);
 
 };

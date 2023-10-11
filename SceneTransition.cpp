@@ -7,7 +7,8 @@ SceneTransition::SceneTransition()
 
 SceneTransition::~SceneTransition()
 {
-
+	delete transTex1;
+	delete transTex2;
 }
 
 void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
@@ -40,10 +41,11 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 
 void SceneTransition::UpdateStart()
 {
+	animeTimer++;
 
 	if (leftTransPos < defaultPos)
 	{
-		leftTransPos += sceneChangeSpead;
+		leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 		if (leftTransPos >= defaultPos)
 		{
 			leftTransPos = defaultPos;
@@ -52,44 +54,19 @@ void SceneTransition::UpdateStart()
 
 	if (rightTransPos > defaultPos)
 	{
-		rightTransPos -= sceneChangeSpead;
+		rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 		if (rightTransPos <= defaultPos)
 		{
 			rightTransPos = defaultPos;
 		}
 	}
 
-	if (leftTransPos >= defaultPos || rightTransPos <= defaultPos)
+	if (leftTransPos >= defaultPos && rightTransPos <= defaultPos)
 	{
 		startTimer = 40.0f;
+		animeTimer = 0;
 		isTrans = FALSE;
 	}
-
-	/*if (isTrans == FALSE)
-	{
-		startTimer--;
-		if (startTimer <= 0.0f)
-		{
-			startTimer = 0.0f;
-			if (leftTransPos >= -defaultPos2)
-			{
-				leftTransPos -= sceneChangeSpead;
-				if (leftTransPos <= -defaultPos2)
-				{
-					leftTransPos = -defaultPos2;
-				}
-			}
-
-			if (rightTransPos <= defaultPos2)
-			{
-				rightTransPos += sceneChangeSpead;
-				if (rightTransPos >= defaultPos2)
-				{
-					rightTransPos = defaultPos2;
-				}
-			}
-		}
-	}*/
 
 	transTex1->SetPozition({ leftTransPos,defaultPos });
 	transTex2->SetPozition({ rightTransPos,defaultPos });
@@ -102,10 +79,11 @@ void SceneTransition::UpdateEnd()
 	startTimer--;
 	if (startTimer <= 0.0f)
 	{
+		animeTimer++;
 		startTimer = 0.0f;
 		if (leftTransPos >= -defaultPos2)
 		{
-			leftTransPos -= sceneChangeSpead;
+			leftTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (leftTransPos <= -defaultPos2)
 			{
 				leftTransPos = -defaultPos2;
@@ -114,7 +92,7 @@ void SceneTransition::UpdateEnd()
 
 		if (rightTransPos <= defaultPos2)
 		{
-			rightTransPos += sceneChangeSpead;
+			rightTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (rightTransPos >= defaultPos2)
 			{
 				rightTransPos = defaultPos2;
@@ -130,4 +108,27 @@ void SceneTransition::Draw()
 {
 	transTex1->Draw();
 	transTex2->Draw();
+}
+
+float SceneTransition::easeIn(float time, float startPos, float endPos, float maxTime)
+{
+	float x = time / maxTime;
+	float v = pow3(x);
+	float ret = endPos * v + startPos;
+
+	return ret;
+}
+
+float SceneTransition::easeOut(float time, float startPos, float endPos, float maxTime)
+{
+	float x = time / maxTime;
+	float v = 1 - pow3(1 - x);
+	float ret = endPos * v + startPos;
+
+	return ret;
+}
+
+float SceneTransition::pow3(float x)
+{
+	return x * x * x;
 }
