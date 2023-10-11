@@ -135,4 +135,6 @@ private:	//ƒƒ“ƒo•Ï”
 
 	SceneTransition* sceneTrans = nullptr;
 
+	float rSpeed = 0.0f;
+
 };

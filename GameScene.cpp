@@ -5,7 +5,7 @@
 /// <summary>
 	/// コンストクラタ
 	/// </summary>
-GameScene::GameScene() 
+GameScene::GameScene()
 {
 
 }
@@ -13,7 +13,7 @@ GameScene::GameScene()
 /// <summary>
 /// デストラクタ
 /// </summary>
-GameScene::~GameScene() 
+GameScene::~GameScene()
 {
 	delete spriteCommon;
 	delete camera;
@@ -83,10 +83,10 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	skydome->wtf.scale = (Vector3{ 2000, 2000, 2000 });
 
 	// ---------- FBX ---------- //
-	
+
 	//モデル名を指定してファイル読み込み
 	fbxModel1 = FBXLoader::GetInstance()->LoadModelFronmFile("cube");
-	
+
 	//FBXオブジェクト生成とモデルのセット
 	fbxObject1 = new FBXObject;
 	fbxObject1->Initialize();
@@ -104,7 +104,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//タイトルシーン
 	titleScene = new TitleScene();
-	titleScene->Initialize(dxInit,input);
+	titleScene->Initialize(dxInit, input);
 
 	//シーン遷移
 	sceneTrans = new SceneTransition();
@@ -129,7 +129,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 }
 
-void GameScene::Reset() 
+void GameScene::Reset()
 {
 	camWtf.Initialize();
 	camWtf.position = { 0.0f, 0.0f, -8.0f };
@@ -152,13 +152,17 @@ void GameScene::Reset()
 }
 
 // ----- 毎フレーム処理 ----- //
-void GameScene::Update() 
+void GameScene::Update()
 {
 	switch (scene)
 	{
 	case Scene::Title:
 
 		titleScene->Update();
+
+		rSpeed = 3.14f / 1000;
+		skydome->wtf.rotation.y -= rSpeed;
+
 		skydome->Update();
 
 		if (titleScene->GetStartF() == TRUE)
@@ -191,10 +195,10 @@ void GameScene::Update()
 		skydome->Update();
 
 		// ---------- FBX ---------- //
-		
+
 		player_->SetParentCamera(railCamera->GetEye());
 		player_->Update();
-		
+
 		enemy_->SetParentCamera(railCamera->GetEye());
 		enemy2_->SetParentCamera(railCamera->GetEye());
 		enemy_->Update(player_->GetPos());
@@ -217,7 +221,7 @@ void GameScene::Update()
 		break;
 
 	case Scene::Gameover:
-		
+
 		break;
 	}
 }
@@ -247,7 +251,7 @@ void GameScene::Draw()
 		break;
 
 	case Scene::Play:
-    
+
 		// ---------- テクスチャ ---------- //
 
 		// ---------- 3Dオブジェクト ---------- //
@@ -256,9 +260,9 @@ void GameScene::Draw()
 
 		/*enemy_->Draw();
 		enemy2_->Draw();*/
-		
+
 		// ---------- FBX ---------- //
-		
+
 		//fbxObject1->Draw(dxInit->GetCommandList());
 		//fbxObject2->Draw(dxInit->GetCommandList());
 		//playerFbx->Draw(dxInit->GetCommandList());
@@ -283,7 +287,7 @@ void GameScene::Draw()
 	switch (scene)
 	{
 	case Scene::Title:
-		
+
 		break;
 
 	case Scene::Select:
@@ -315,7 +319,7 @@ void GameScene::Draw()
 void GameScene::EffUpdate()
 {
 	//パーティクル範囲
-	for (int i = 0; i < 20; i++) 
+	for (int i = 0; i < 20; i++)
 	{
 		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
 		const float rnd_pos = 0.01f;
@@ -349,7 +353,7 @@ void GameScene::EffUpdate()
 void GameScene::EffUpdate2()
 {
 	//パーティクル範囲
-	for (int i = 0; i < 40; i++) 
+	for (int i = 0; i < 40; i++)
 	{
 		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
 		const float rnd_pos = 0.01f;
@@ -382,12 +386,12 @@ void GameScene::EffUpdate2()
 
 void GameScene::EffDraw()
 {
-	if (isEffFlag == 1) 
+	if (isEffFlag == 1)
 	{
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
 	}
-	else 
+	else
 	{
 
 	}
@@ -400,16 +404,16 @@ void GameScene::EffDraw2()
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
 	}
-	else 
+	else
 	{
 
 	}
 }
 
-void GameScene::CamMove() 
+void GameScene::CamMove()
 {
 	//左右移動
-	if (input->PushKey(DIK_RIGHT)) 
+	if (input->PushKey(DIK_RIGHT))
 	{
 		//カメラの移動
 		Vector3 eyeVelocity = { 1.0,0,0 };
@@ -500,7 +504,7 @@ void GameScene::CamMove2()
 		targetWtf.position.z = cosf(targetTheta) * targetDistance + eyeVelocity.z;
 		targetWtf.position.y = sinf(targetTheta) * targetDistance + eyeVelocity.y;
 	}
-	else 
+	else
 	{
 		targetWtf.position.z = cosf(targetTheta) * targetDistance;
 		targetWtf.position.y = sinf(targetTheta) * targetDistance;
@@ -512,18 +516,18 @@ void GameScene::CamMove2()
 
 }
 
-void GameScene::CamRota() 
+void GameScene::CamRota()
 {
 	//視点移動
 
 	//左右
 	Vector3 theta;
-	if (input->PushKey(DIK_A)) 
+	if (input->PushKey(DIK_A))
 	{
 
 		theta.y = -camRotaSpeed;
 	}
-	else if (input->PushKey(DIK_D)) 
+	else if (input->PushKey(DIK_D))
 	{
 		theta.y = camRotaSpeed;
 	}
@@ -531,31 +535,31 @@ void GameScene::CamRota()
 	camWtf.rotation += theta;
 
 	//上下
-	if (input->PushKey(DIK_W)) 
+	if (input->PushKey(DIK_W))
 	{
 		targetTheta += camRotaSpeed;
 	}
-	else if (input->PushKey(DIK_S)) 
+	else if (input->PushKey(DIK_S))
 	{
 		targetTheta += -camRotaSpeed;
 	}
-	
+
 	//角度制限
-	if (targetTheta < -PI / 5 * 2) 
+	if (targetTheta < -PI / 5 * 2)
 	{
 		targetTheta = -PI / 5 * 2;
 	}
 	else if (targetTheta > PI / 3)
-	{ 
+	{
 		targetTheta = PI / 3;
 	}
-	
+
 	//視点は一定の距離
 	targetWtf.position.z = cosf(targetTheta) * targetDistance;
 	targetWtf.position.y = sinf(targetTheta) * targetDistance;
 }
 
-void GameScene::CamUpdate() 
+void GameScene::CamUpdate()
 {
 	CamMove();
 	//CamRota();
@@ -568,7 +572,7 @@ void GameScene::CamUpdate()
 	targetWtf.matWorld *= camWtf.matWorld;
 
 	//y方向の制限
-	if (targetWtf.matWorld.m[3][1] < 0) 
+	if (targetWtf.matWorld.m[3][1] < 0)
 	{
 		targetWtf.matWorld.m[3][1] = 0;
 	}
@@ -600,7 +604,7 @@ void GameScene::CamUpdate2()
 	}
 
 	railCamera->SetTarget(playerPos);
-	
+
 	railCamera->Update(camWtf);
 }
 
