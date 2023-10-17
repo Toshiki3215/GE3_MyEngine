@@ -112,7 +112,8 @@ float SceneTransition::easeIn(float time, float startPos, float endPos, float ma
 {
 	float x = time / maxTime;
 	float v = pow3(x);
-	float ret = endPos * v + startPos;
+	float z = endPos - startPos;
+	float ret = z * v + startPos;
 
 	return ret;
 }
@@ -121,7 +122,6 @@ float SceneTransition::easeOut(float time, float startPos, float endPos, float m
 {
 	float x = time / maxTime;
 	float v = 1 - pow3(1 - x);
-	//float v = 1 - pow5(1 - x);
 	float z = endPos - startPos;
 	float ret = z * v + startPos;
 
