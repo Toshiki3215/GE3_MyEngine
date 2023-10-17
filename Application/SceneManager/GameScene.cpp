@@ -204,9 +204,9 @@ void GameScene::Update()
 		enemy_->Update(player_->GetPos());
 		enemy2_->Update(player_->GetPos());
 
-		if (input->PushKey(DIK_L))
+		if (input->PushKey(DIK_R))
 		{
-			scene = Scene::Clear;
+			scene = Scene::Title;
 		}
 
 		break;

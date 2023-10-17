@@ -40,7 +40,7 @@ private:
 
 	float startTimer = 40.0f;
 	float animeTimer = 0.0f;
-	float maxTime = 1200.0f;
+	float maxTime = 2400.0f;
 
 public:
 	

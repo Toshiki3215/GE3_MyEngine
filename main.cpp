@@ -5,7 +5,7 @@
 #include "FBXLoader.h"
 #include "GameScene.h"
 #include "ImguiManager.h"
-#include "Imgui/imgui.h"
+#include <imgui.h>
 
 int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 {

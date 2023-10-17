@@ -53,7 +53,7 @@ public:
 	void LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	//setter
-	static void SetDevice(ID3D12Device* device) { Model::device = device; }
+	static void SetDevice(ID3D12Device* device_) { Model::device = device_; }
 
 private:
 	

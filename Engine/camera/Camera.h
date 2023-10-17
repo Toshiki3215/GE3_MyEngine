@@ -99,9 +99,9 @@ public: // メンバ関数
 	/// 視点座標の設定
 	/// </summary>
 	/// <param name="eye">座標</param>
-	inline void SetEye(Vector3 eye) 
+	inline void SetEye(Vector3 eye_) 
 	{
-		this->eye = eye; viewDirty = true;
+		this->eye = eye_; viewDirty = true;
 	}
 
 	/// <summary>
@@ -117,9 +117,9 @@ public: // メンバ関数
 	/// 注視点座標の設定
 	/// </summary>
 	/// <param name="target">座標</param>
-	inline void SetTarget(Vector3 target) 
+	inline void SetTarget(Vector3 target_) 
 	{
-		this->target = target; viewDirty = true;
+		this->target = target_; viewDirty = true;
 	}
 
 	/// <summary>
@@ -135,9 +135,9 @@ public: // メンバ関数
 	/// 上方向ベクトルの設定
 	/// </summary>
 	/// <param name="up">上方向ベクトル</param>
-	inline void SetUp(Vector3 up) 
+	inline void SetUp(Vector3 up_) 
 	{
-		this->up = up; viewDirty = true;
+		this->up = up_; viewDirty = true;
 	}
 
 	// sensor
@@ -145,18 +145,18 @@ public: // メンバ関数
 	{
 		return sensor;
 	}
-	inline void SetSensor(float sensor) 
+	inline void SetSensor(float sensor_) 
 	{
-		this->sensor = sensor; viewDirty = true;
+		this->sensor = sensor_; viewDirty = true;
 	}
 	// FL
 	inline const float& GetForcalLengs() 
 	{
 		return focalLengs;
 	}
-	inline void SetFocalLengs(float focalLengs) 
+	inline void SetFocalLengs(float focalLengs_) 
 	{
-		this->focalLengs = focalLengs; viewDirty = true;
+		this->focalLengs = focalLengs_; viewDirty = true;
 	}
 
 

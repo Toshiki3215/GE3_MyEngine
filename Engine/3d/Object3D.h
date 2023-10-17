@@ -101,11 +101,11 @@ public:
 
 	Object3d* GetParent() const { return parent; }
 
-	void SetParent(Object3d* parent) { this->parent = parent; }
-	static void SetCamera(Camera* camera) { Object3d::camera = camera; }
+	void SetParent(Object3d* parent_) { this->parent = parent_; }
+	static void SetCamera(Camera* camera_) { Object3d::camera = camera_; }
 
 	//setter
-	void SetModel(Model* model) { this->model = model; }
+	void SetModel(Model* model_) { this->model = model_; }
 
 private: 
 	// ƒƒ“ƒo•Ï”
