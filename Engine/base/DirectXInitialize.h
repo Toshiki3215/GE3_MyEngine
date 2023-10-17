@@ -1,3 +1,6 @@
+// DirectXInitialize.h
+// DirectX‚Ì‰Šú‰»ˆ—‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 #include <d3d12.h>
 #include <dxgi1_6.h>

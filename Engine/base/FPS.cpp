@@ -1,3 +1,6 @@
+// FPS.cpp
+// FPS‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #include "FPS.h"
 
 void FPS::FpsControlBegin() 

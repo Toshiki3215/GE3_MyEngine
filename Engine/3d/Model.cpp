@@ -1,3 +1,6 @@
+// Model.cpp
+// モデルの管理、objファイルからデータを読み込み
+
 #include "Model.h"
 #include <cassert>
 #include <fstream>

@@ -1,3 +1,6 @@
+// TitleScene.h
+// タイトルシーンを管理している
+
 #pragma once
 
 #include "DirectXInitialize.h"

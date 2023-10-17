@@ -1,3 +1,6 @@
+// RailCamera.cpp
+// 自作のカメラ用ヘッダー(レールカメラ)
+
 #include "RailCamera.h"
 
 RailCamera::RailCamera(int window_width, int window_height)

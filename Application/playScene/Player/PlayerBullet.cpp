@@ -1,3 +1,6 @@
+// PlayerBullet.cpp
+// ƒvƒŒƒCƒ„[‚ÌUŒ‚(’e)‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #include "PlayerBullet.h"
 
 void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj,Vector3 scale)

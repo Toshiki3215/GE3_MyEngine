@@ -1,3 +1,6 @@
+// Model.h
+// モデルの管理、objファイルからデータを読み込み
+
 #pragma once
 #include <vector>
 #include <d3d12.h>

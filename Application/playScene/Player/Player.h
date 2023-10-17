@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿// Player.h
+// Playerの処理を管理している
+
+#pragma once
 
 #include "DirectXInitialize.h"
 #include "Object3d.h"

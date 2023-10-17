@@ -1,3 +1,6 @@
+// Camera.cpp
+// 自作のカメラ用ヘッダー
+
 #include "Camera.h"
 
 using namespace DirectX;

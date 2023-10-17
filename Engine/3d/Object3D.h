@@ -1,3 +1,6 @@
+// Object3D.h
+// モデルの初期化、更新処理、描画などの管理
+
 #pragma once
 
 #include <Windows.h>

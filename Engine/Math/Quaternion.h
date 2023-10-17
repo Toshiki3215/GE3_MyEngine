@@ -1,3 +1,6 @@
+// Quatenion.h
+// クォータニオン用ヘッダー
+
 #pragma once
 #include"vector3.h"
 #include"Matrix4.h"

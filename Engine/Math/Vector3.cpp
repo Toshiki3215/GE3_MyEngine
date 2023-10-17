@@ -1,3 +1,6 @@
+// Vector3.cpp
+// 自作の数学用ヘッダー(三次元ベクトル)
+
 #include "Vector3.h"
 #include <cmath>
 

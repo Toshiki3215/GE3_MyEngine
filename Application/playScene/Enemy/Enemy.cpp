@@ -1,3 +1,6 @@
+// Enemy.cpp
+// Enemy‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #include "Enemy.h"
 #include "Matrix4.h"
 #include <cassert>

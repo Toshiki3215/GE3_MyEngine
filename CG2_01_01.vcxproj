@@ -199,6 +199,7 @@
     <ClCompile Include="Engine\base\WindowsApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\Math\Affin.h" />
     <ClInclude Include="Engine\camera\Camera.h" />
     <ClInclude Include="Application\SceneManager\Collider.h" />
@@ -222,7 +223,6 @@
     <ClInclude Include="Engine\Math\Quaternion.h" />
     <ClInclude Include="Engine\camera\RailCamera.h" />
     <ClInclude Include="Application\SceneManager\SceneTransition.h" />
-    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Engine\2d\SpriteCommon.h" />
     <ClInclude Include="Application\SceneManager\TitleScene.h" />
     <ClInclude Include="Engine\Math\Transform.h" />

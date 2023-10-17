@@ -1,3 +1,6 @@
+// Input.cpp
+// ƒL[“ü—Í‚Ìæ“¾‚È‚Ç‚ÌŠÇ—
+
 #include "Input.h"
 #include <cassert>
 #pragma comment(lib, "dinput8.lib")

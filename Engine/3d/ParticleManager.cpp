@@ -1,3 +1,6 @@
+// ParticleManager.cpp
+// パーティクルの管理をしている
+
 #include "ParticleManager.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>

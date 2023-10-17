@@ -1,3 +1,6 @@
+// TitleScene.cpp
+// タイトルシーンを管理している
+
 #include "TitleScene.h"
 
 TitleScene::TitleScene()

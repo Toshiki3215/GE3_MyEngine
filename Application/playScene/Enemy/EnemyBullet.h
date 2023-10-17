@@ -1,3 +1,6 @@
+// EnemyBullet.h
+// Enemy‚ÌUŒ‚(’e)‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 #include "Model.h"
 #include "Object3D.h"

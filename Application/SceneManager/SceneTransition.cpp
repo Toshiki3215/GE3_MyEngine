@@ -1,3 +1,6 @@
+// SceneTransition.cpp
+// ƒV[ƒ“‘JˆÚ‚ÌŠÇ—
+
 #include "SceneTransition.h"
 
 SceneTransition::SceneTransition()

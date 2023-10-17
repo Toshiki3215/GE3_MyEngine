@@ -1,3 +1,6 @@
+// DirectXInitialize.cpp
+// DirectX‚Ì‰Šú‰»ˆ—‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #include "DirectXInitialize.h"
 #include <cassert>
 #include <vector>

@@ -1,3 +1,6 @@
+// Matrix4.h
+// 自作の数学用ヘッダー(行列)
+
 #pragma once
 #include "Vector3.h"
 #include "Vector4.h"

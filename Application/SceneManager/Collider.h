@@ -1,3 +1,6 @@
+// Collider.h
+// ƒQ[ƒ€ƒV[ƒ“‚Ì“–‚½‚è”»’è‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 
 class Collider

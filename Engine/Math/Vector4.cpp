@@ -1,3 +1,6 @@
+// Vector4.cpp
+// 自作の数学用ヘッダー(四次元ベクトル)
+
 #include "Vector4.h"
 #include "Vector3.h"
 #include <math.h>

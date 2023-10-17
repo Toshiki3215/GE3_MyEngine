@@ -1,3 +1,6 @@
+// Sprite.cpp
+// スプライトの読み込み、更新、描画処理
+
 #include"Sprite.h"
 
 Sprite::Sprite()

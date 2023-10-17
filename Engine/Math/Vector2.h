@@ -1,3 +1,6 @@
+// Vector2.h
+// 自作の数学用ヘッダー(二次元ベクトル)
+
 #pragma once
 class Vector2
 {

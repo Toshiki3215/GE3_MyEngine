@@ -1,3 +1,6 @@
+// ImguiManager.h
+// Imgui‚Ì‰Šú‰»ˆ—‚È‚Ç‚ÌŠÇ—
+
 #pragma once
 #include "WindowsApp.h"
 #include "DirectXInitialize.h"

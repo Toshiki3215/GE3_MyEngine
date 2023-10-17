@@ -249,9 +249,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Sprite.h">
-      <Filter>ヘッダー ファイル\Engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\2d\SpriteCommon.h">
       <Filter>ヘッダー ファイル\Engine\2d</Filter>
     </ClInclude>
@@ -341,6 +338,9 @@
     </ClInclude>
     <ClInclude Include="Application\SceneManager\SceneTransition.h">
       <Filter>ヘッダー ファイル\Application\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\2d\Sprite.h">
+      <Filter>ヘッダー ファイル\Engine\2d</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

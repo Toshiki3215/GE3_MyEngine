@@ -1,3 +1,6 @@
+// Affin.cpp
+// アフィン行列用ヘッダーファイル
+
 #include "Affin.h"
 #include "math.h"
 #include <cmath>

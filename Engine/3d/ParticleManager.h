@@ -1,3 +1,6 @@
+// ParticleManager.h
+// パーティクルの管理をしている
+
 #pragma once
 
 #include <Windows.h>

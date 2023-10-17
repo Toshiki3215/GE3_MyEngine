@@ -1,3 +1,6 @@
+// Quatenion.cpp
+// クォータニオン用ヘッダー
+
 #include "Quaternion.h"
 #include<cmath>
 #include "Affin.h"

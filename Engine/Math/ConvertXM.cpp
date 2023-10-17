@@ -1,3 +1,6 @@
+// ConvertXM.cpp
+// DirectXMath‚Æ©ì‚Ì”ŠwƒNƒ‰ƒX‚Ì•ÏŠ·
+
 #include "ConvertXM.h"
 
 Matrix4 ConvertXM::ConvertXMMATtoMat4(XMMATRIX XMMat) 

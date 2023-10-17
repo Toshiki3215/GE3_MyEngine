@@ -1,3 +1,6 @@
+// FPS.h
+// FPS‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 #include <fstream>
 #include <sstream>

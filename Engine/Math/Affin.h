@@ -1,3 +1,6 @@
+// Affin.h
+// アフィン行列用ヘッダーファイル
+
 #pragma once
 #include "Matrix4.h"
 #include "Vector3.h"

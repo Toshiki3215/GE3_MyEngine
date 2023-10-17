@@ -1,3 +1,6 @@
+// WindowsApp.h
+// WindowsAPI‚ğŠÇ—‚µ‚Ä‚é
+
 #pragma once
 #include <Windows.h>
 

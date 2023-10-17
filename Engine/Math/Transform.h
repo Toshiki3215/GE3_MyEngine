@@ -1,3 +1,6 @@
+// Transform.h
+// ƒ[ƒ‹ƒhÀ•W(WorldTransform)‚Ìì¬
+
 #pragma once
 
 #include "Matrix4.h"

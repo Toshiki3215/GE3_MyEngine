@@ -1,4 +1,7 @@
-﻿#include "GameScene.h"
+﻿// GameScene.cpp
+// ゲームシーンを管理している
+
+#include "GameScene.h"
 #include "FBXLoader.h"
 #include "FBXObject.h"
 

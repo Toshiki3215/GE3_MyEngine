@@ -1,3 +1,6 @@
+// Matrix4.cpp
+// 自作の数学用ヘッダー(行列)
+
 #include "Matrix4.h"
 #include "Affin.h"
 

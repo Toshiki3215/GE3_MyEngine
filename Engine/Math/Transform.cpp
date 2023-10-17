@@ -1,3 +1,6 @@
+// Transform.cpp
+// ƒ[ƒ‹ƒhÀ•W(WorldTransform)‚Ìì¬
+
 #include "Transform.h"
 
 Transform::Transform() 

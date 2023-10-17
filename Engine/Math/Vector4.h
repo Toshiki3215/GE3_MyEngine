@@ -1,3 +1,6 @@
+// Vector4.h
+// 自作の数学用ヘッダー(四次元ベクトル)
+
 #pragma once
 
 class Vector4

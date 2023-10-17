@@ -1,3 +1,6 @@
+// Vector2.cpp
+// 自作の数学用ヘッダー(二次元ベクトル)
+
 #include "Vector2.h"
 #include <cmath>
 

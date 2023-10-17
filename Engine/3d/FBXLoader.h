@@ -1,4 +1,7 @@
-﻿#pragma once
+﻿// FBXLoader.h
+// FBXファイルの読み込みを管理している
+
+#pragma once
 
 #include "fbxsdk.h"
 #include "FBXModel.h"

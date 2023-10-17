@@ -1,3 +1,6 @@
+// Enemy.h
+// Enemy‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 #include "DirectXInitialize.h"
 #include "Object3D.h"

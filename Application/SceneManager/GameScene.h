@@ -1,3 +1,6 @@
+// GameScene.h
+// ƒQ[ƒ€ƒV[ƒ“‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #pragma once
 
 #include "DirectXInitialize.h"

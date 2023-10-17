@@ -1,3 +1,6 @@
+// Object3D.cpp
+// モデルの初期化、更新処理、描画などの管理
+
 #include "Object3d.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>

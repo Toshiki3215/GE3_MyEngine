@@ -1,3 +1,6 @@
+// FBXModel.cpp
+// FBX‚Ìƒ‚ƒfƒ‹‚ğŠÇ—
+
 #include "FBXModel.h"
 
 FBXModel::~FBXModel()

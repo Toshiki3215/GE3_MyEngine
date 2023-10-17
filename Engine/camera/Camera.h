@@ -1,3 +1,6 @@
+// Camera.h
+// 自作のカメラ用ヘッダー
+
 #pragma once
 
 #include "Vector3.h"

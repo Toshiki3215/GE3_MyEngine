@@ -1,3 +1,6 @@
+// SceneTransition.h
+// ƒV[ƒ“‘JˆÚ‚ÌŠÇ—
+
 #pragma once
 
 #include "DirectXInitialize.h"

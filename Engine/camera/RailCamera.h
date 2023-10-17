@@ -1,3 +1,6 @@
+// RailCamera.h
+// 自作のカメラ用ヘッダー(レールカメラ)
+
 #pragma once
 #include "Vector3.h"
 #include "Matrix4.h"

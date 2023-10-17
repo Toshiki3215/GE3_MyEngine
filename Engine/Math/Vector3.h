@@ -1,5 +1,7 @@
-#pragma once
+// Vector3.h
+// 自作の数学用ヘッダー(三次元ベクトル)
 
+#pragma once
 #include <DirectXMath.h>
 
 class Vector3

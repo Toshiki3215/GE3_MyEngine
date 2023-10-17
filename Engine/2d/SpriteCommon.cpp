@@ -1,3 +1,6 @@
+// SpriteCommon.cpp
+//　スプライトの描画準備
+
 #include"SpriteCommon.h"
 #include <string>
 #include <d3dcompiler.h>

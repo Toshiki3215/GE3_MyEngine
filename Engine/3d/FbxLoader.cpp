@@ -1,4 +1,7 @@
-﻿#include "FbxLoader.h"
+﻿// FBXLoader.cpp
+// FBXファイルの読み込みを管理している
+
+#include "FbxLoader.h"
 #include <cassert>
 
 using namespace DirectX;

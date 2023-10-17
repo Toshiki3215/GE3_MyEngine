@@ -1,3 +1,6 @@
+// Sprite.h
+// スプライトの読み込み、更新、描画処理
+
 #pragma once
 #include"SpriteCommon.h"
 #include "Vector2.h"

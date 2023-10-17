@@ -1,3 +1,6 @@
+// Input.h
+// ƒL[“ü—Í‚Ìæ“¾‚È‚Ç‚ÌŠÇ—
+
 #pragma once
 #include <windows.h>
 #include <wrl.h>

@@ -1,3 +1,7 @@
+// FBXObject.cpp
+// FBXModelクラスからモデル情報をもらい初期化、生成
+
+
 #include "FBXObject.h"
 
 #include <d3dcompiler.h>

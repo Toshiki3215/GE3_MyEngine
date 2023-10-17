@@ -1,3 +1,6 @@
+// SpriteCommon.h
+//　スプライトの描画準備
+
 #pragma once
 #include"DirectXInitialize.h"
 #include <DirectXTex.h>

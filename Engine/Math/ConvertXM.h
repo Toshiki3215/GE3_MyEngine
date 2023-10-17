@@ -1,3 +1,6 @@
+// ConvertXM.h
+// DirectXMath‚Æ©ì‚Ì”ŠwƒNƒ‰ƒX‚Ì•ÏŠ·
+
 #pragma once
 #include <DirectXMath.h>
 #include "Matrix4.h"

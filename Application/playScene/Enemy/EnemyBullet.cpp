@@ -1,3 +1,6 @@
+// EnemyBullet.cpp
+// Enemy‚ÌUŒ‚(’e)‚ğŠÇ—‚µ‚Ä‚¢‚é
+
 #include "EnemyBullet.h"
 
 void EnemyBullet::Initilize(Object3d* enemyObj)
