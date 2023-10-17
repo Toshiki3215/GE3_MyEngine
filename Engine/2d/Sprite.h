@@ -52,16 +52,22 @@ public:
 	//初期化
 	void Initialize(SpriteCommon* spritecommon_, uint32_t textureIndex = UINT32_MAX);
 
+	//更新
 	void Update();
 
+	//描画
 	void Draw();
 
+	//描画座標セット
 	void SetPozition(const Vector2& position_);
 
+	//ポジションの取得(ゲッター)
 	const Vector2& GetPosition() const { return position; }
 
+	//ポジションの変更(セッター)
 	void SetRotation(float rotation_);
 
+	//回転角
 	float GetRotation() { return rotation; }
 
 	void SetColor(const Vector4& color_) { color = color_; }

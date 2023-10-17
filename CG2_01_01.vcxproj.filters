@@ -142,9 +142,6 @@
     <ClCompile Include="Engine\2d\SpriteCommon.cpp">
       <Filter>ソース ファイル\Engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="Object3D.cpp">
-      <Filter>ソース ファイル\Engine\3d</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\3d\FbxLoader.cpp">
       <Filter>ソース ファイル\Engine\3d</Filter>
     </ClCompile>
@@ -246,6 +243,9 @@
     </ClCompile>
     <ClCompile Include="Application\SceneManager\TitleScene.cpp">
       <Filter>ソース ファイル\Application\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\3d\Object3D.cpp">
+      <Filter>ソース ファイル\Engine\3d</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

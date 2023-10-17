@@ -74,7 +74,7 @@
       </ShaderType>
     </FxCompile>
     <FxCompile>
-      <ShaderModel>4.0_level_9_3</ShaderModel>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -101,7 +101,7 @@
       </ShaderType>
     </FxCompile>
     <FxCompile>
-      <ShaderModel>4.0_level_9_3</ShaderModel>
+      <ShaderModel>5.0</ShaderModel>
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -159,6 +159,7 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\3d\Object3D.cpp" />
     <ClCompile Include="Engine\Math\Affin.cpp" />
     <ClCompile Include="Engine\camera\Camera.cpp" />
     <ClCompile Include="Engine\Math\ConvertXM.cpp" />
@@ -182,7 +183,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Engine\Math\Matrix4.cpp" />
     <ClCompile Include="Engine\3d\Model.cpp" />
-    <ClCompile Include="Object3D.cpp" />
     <ClCompile Include="Engine\3d\ParticleManager.cpp" />
     <ClCompile Include="Application\playScene\Player\Player.cpp" />
     <ClCompile Include="Application\playScene\Player\PlayerBullet.cpp" />
