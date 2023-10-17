@@ -46,27 +46,22 @@ void SceneTransition::UpdateStart()
 {
 	animeTimer++;
 
-	if (leftTransPos < defaultPos)
+
+	leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	if (leftTransPos >= defaultPos)
 	{
-		leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
-		if (leftTransPos >= defaultPos)
-		{
-			leftTransPos = defaultPos;
-		}
+		leftTransPos = defaultPos;
 	}
 
-	if (rightTransPos > defaultPos)
+	rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	if (rightTransPos <= defaultPos)
 	{
-		rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
-		if (rightTransPos <= defaultPos)
-		{
-			rightTransPos = defaultPos;
-		}
+		rightTransPos = defaultPos;
 	}
 
 	if (leftTransPos >= defaultPos && rightTransPos <= defaultPos)
 	{
-		startTimer = 40.0f;
+		startTimer = 60.0f;
 		animeTimer = 0;
 		isTrans = FALSE;
 	}
@@ -126,7 +121,9 @@ float SceneTransition::easeOut(float time, float startPos, float endPos, float m
 {
 	float x = time / maxTime;
 	float v = 1 - pow3(1 - x);
-	float ret = endPos * v + startPos;
+	//float v = 1 - pow5(1 - x);
+	float z = endPos - startPos;
+	float ret = z * v + startPos;
 
 	return ret;
 }
@@ -134,4 +131,9 @@ float SceneTransition::easeOut(float time, float startPos, float endPos, float m
 float SceneTransition::pow3(float x)
 {
 	return x * x * x;
+}
+
+float SceneTransition::pow5(float x)
+{
+	return x * x * x * x * x;
 }

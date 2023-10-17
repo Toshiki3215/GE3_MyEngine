@@ -53,7 +53,8 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	railCamera->Initialize(camWtf);
 
 	targetWtf.Initialize();
-	targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
+	//targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
+	targetWtf.position = { 0,0,targetDistance };
 
 	ParticleManager::SetCamera(camera);
 	Object3d::SetCamera(camera);
@@ -164,7 +165,7 @@ void GameScene::Update()
 		titleScene->Update();
 
 		rSpeed = 3.14f / 1000;
-		skydome->wtf.rotation.y -= rSpeed;
+		skydome->wtf.rotation.y += rSpeed;
 
 		skydome->Update();
 
@@ -423,6 +424,7 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
+		targetWtf.position += eyeVelocity;
 	}
 	if (input->PushKey(DIK_LEFT))
 	{
@@ -431,6 +433,7 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
+		targetWtf.position += eyeVelocity;
 	}
 
 	//前後移動
@@ -441,6 +444,7 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
+		targetWtf.position += eyeVelocity;
 	}
 	if (input->PushKey(DIK_DOWN))
 	{
@@ -449,6 +453,7 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
+		targetWtf.position += eyeVelocity;
 	}
 
 	//上下移動
@@ -459,6 +464,7 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
+		targetWtf.position += eyeVelocity;
 	}
 	if (input->PushKey(DIK_J))
 	{
@@ -467,21 +473,12 @@ void GameScene::CamMove()
 
 		//更新
 		camWtf.position += eyeVelocity;
-	}
-
-	Vector3 theta;
-
-	if (input->PushKey(DIK_1))
-	{
-		theta.y = -5;
-
-		//更新
-		camWtf.rotation = theta;
+		targetWtf.position += eyeVelocity;
 	}
 
 	//視点は一定の距離
-	targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;
+	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
+	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
 
 }
 
@@ -580,9 +577,9 @@ void GameScene::CamUpdate()
 		targetWtf.matWorld.m[3][1] = 0;
 	}
 
-	//camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
+	camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
 	//camera->SetTarget({0,20,0 });
-	camera->SetTarget(playerPos);
+	//camera->SetTarget(playerPos);
 
 	camera->Update();
 	railCamera->Update(camWtf);
@@ -606,9 +603,19 @@ void GameScene::CamUpdate2()
 		targetWtf.matWorld.m[3][1] = 0;
 	}
 
-	railCamera->SetTarget(playerPos);
+	//railCamera->SetTarget(playerPos);
 
 	railCamera->Update(camWtf);
+}
+
+void GameScene::CameraMove()
+{
+
+}
+
+void GameScene::CameraUpdate()
+{
+
 }
 
 Vector3 GameScene::bVelocity(Vector3& velocity, Transform& worldTransform)

@@ -41,9 +41,9 @@ private:
 
 	bool isTrans = TRUE;
 
-	float startTimer = 40.0f;
+	float startTimer = 60.0f;
 	float animeTimer = 0.0f;
-	float maxTime = 2400.0f;
+	float maxTime = 1200.0f;
 
 public:
 	
@@ -52,5 +52,6 @@ public:
 	float easeOut(float time, float startPos, float endPos, float maxTime);
 
 	float pow3(float x);
+	float pow5(float x);
 
 };

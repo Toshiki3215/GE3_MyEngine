@@ -63,6 +63,9 @@ public: // ƒƒ“ƒoŠÖ”
 	void CamUpdate();
 	void CamUpdate2();
 
+	void CameraMove();
+	void CameraUpdate();
+
 	void EffUpdate();
 	void EffDraw();
 
