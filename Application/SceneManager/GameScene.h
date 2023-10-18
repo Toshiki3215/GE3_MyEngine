@@ -57,22 +57,26 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	void CamMove();
-	void CamMove2();
-	void CamRota();
-	void CamUpdate();
-	void CamUpdate2();
-
+	/// <summary>
+	/// デバッグカメラ
+	/// </summary>
 	void CameraMove();
+
+	/// <summary>
+	/// カメラの更新処理
+	/// </summary>
 	void CameraUpdate();
+
+	/// <summary>
+	/// スタート演出
+	/// </summary>
+	void GameStartEfe();
 
 	void EffUpdate();
 	void EffDraw();
 
 	void EffUpdate2();
 	void EffDraw2();
-
-	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
 
 	void CheckAllCollisions();
 	
@@ -92,7 +96,7 @@ private:	//メンバ変数
 	Camera* camera = nullptr;
 	Transform camWtf;
 	Transform targetWtf;
-	float targetTheta;
+	float targetTheta = 0.0f;
 	float targetDistance = 10;
 	float camMoveSpeed = 0.1f;
 	float camRotaSpeed = PI/180;
@@ -103,8 +107,8 @@ private:	//メンバ変数
 	Object3d* skydome = nullptr;
 	Model* skydomeMD = nullptr;
 
-	Object3d* playerObj = nullptr;
-	Model* playerMD = nullptr;
+	Object3d* targetObj = nullptr;
+	Model* targetMD = nullptr;
 
 	//ゲームフロー
 	enum class Scene
@@ -116,7 +120,7 @@ private:	//メンバ変数
 			Gameover,
 	};
 
-	Scene scene;
+	Scene scene = Scene::Title;
 
 	int isEffFlag = 0;
 
@@ -142,5 +146,7 @@ private:	//メンバ変数
 	SceneTransition* sceneTrans = nullptr;
 
 	float rSpeed = 0.0f;
+
+	Vector3 cameraMoveSpeed = { 0,0,0 };
 
 };

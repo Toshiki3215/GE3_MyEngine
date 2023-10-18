@@ -150,6 +150,15 @@ void Player::PlayerAction()
 	{
 		playerObj->wtf.position.x += 0.1f;
 	}
+	else if (input_->PushKey(DIK_Q))
+	{
+		playerObj->wtf.position.z += 0.1f;
+	}
+	else if (input_->PushKey(DIK_E))
+	{
+		playerObj->wtf.position.z -= 0.1f;
+	}
+
 	//移動(レティクル)
 	if (input_->PushKey(DIK_T))
 	{

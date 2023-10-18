@@ -170,6 +170,12 @@ public: // メンバ関数
 	void MoveEyeVector(const Vector3& move);
 
 	/// <summary>
+	/// ベクトルによる注視点移動
+	/// </summary>
+	/// <param name="move">移動量</param>
+	void MoveTargetVector(const Vector3& move);
+
+	/// <summary>
 	/// ベクトルによる移動
 	/// </summary>
 	/// <param name="move">移動量</param>
@@ -193,9 +199,9 @@ protected: // メンバ変数
 	// 射影行列ダーティフラグ
 	bool projectionDirty = false;
 	// 視点座標
-	Vector3 eye = { 0, 0, -1 };
+	Vector3 eye = { 0, 0, 0 };
 	// 注視点座標
-	Vector3 target = { 0, 0, 0 };
+	Vector3 target = { 0, 0, 30 };
 	// 上方向ベクトル
 	Vector3 up = { 0, 1, 0 };
 	// アスペクト比

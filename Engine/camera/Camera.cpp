@@ -218,6 +218,18 @@ void Camera::MoveEyeVector(const Vector3& move)
 	SetEye(eye_moved);
 }
 
+void Camera::MoveTargetVector(const Vector3& move)
+{
+	//注視点座標を移動し、反映
+	Vector3 target_moved = GetTarget();
+
+	target_moved.x += move.x;
+	target_moved.y += move.y;
+	target_moved.z += move.z;
+
+	SetTarget(target_moved);
+}
+
 void Camera::MoveVector(const Vector3& move)
 {
 	// 視点と注視点座標を移動し、反映

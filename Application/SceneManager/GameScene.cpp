@@ -48,7 +48,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	railCamera = new RailCamera(WinApp::window_width, WinApp::window_height);
 
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 0.0f, -8.0f };
+	camWtf.position = camera->GetEye();
 
 	railCamera->Initialize(camWtf);
 
@@ -85,6 +85,11 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	skydome = Object3d::Create();
 	skydome->SetModel(skydomeMD);
 	skydome->wtf.scale = (Vector3{ 2000, 2000, 2000 });
+
+	targetMD = Model::LoadFromOBJ("obj");
+	targetObj = Object3d::Create();
+	targetObj->SetModel(targetMD);
+	targetObj->wtf.position = { targetWtf.position };
 
 	// ---------- FBX ---------- //
 
@@ -136,12 +141,12 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 void GameScene::Reset()
 {
 	camWtf.Initialize();
-	camWtf.position = { 0.0f, 0.0f, -8.0f };
+	camWtf.position = camera->GetEye();
 
 	railCamera->Initialize(camWtf);
 
 	targetWtf.Initialize();
-	targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
+	//targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
 
 	//自キャラの生成
 	//プレイヤー
@@ -186,9 +191,9 @@ void GameScene::Update()
 		break;
 
 	case Scene::Play:
+
 		sceneTrans->UpdateEnd();
-		CamUpdate();
-		CamUpdate2();
+		CameraUpdate();
 
 		// ---------- パーティクル ---------- //
 		isEffFlag = 0;
@@ -197,14 +202,16 @@ void GameScene::Update()
 
 		// ---------- 3Dオブジェクト ---------- //
 		skydome->Update();
+		targetObj->wtf.position = camera->GetTarget();
+		targetObj->Update();
 
 		// ---------- FBX ---------- //
 
-		player_->SetParentCamera(railCamera->GetEye());
+		player_->SetParentCamera(camera->GetEye());
 		player_->Update();
 
-		enemy_->SetParentCamera(railCamera->GetEye());
-		enemy2_->SetParentCamera(railCamera->GetEye());
+		enemy_->SetParentCamera(camera->GetEye());
+		enemy2_->SetParentCamera(camera->GetEye());
 		enemy_->Update(player_->GetPos());
 		enemy2_->Update(player_->GetPos());
 
@@ -247,7 +254,9 @@ void GameScene::Draw()
 	switch (scene)
 	{
 	case Scene::Title:
+
 		titleScene->Draw();
+
 		break;
 
 	case Scene::Select:
@@ -261,6 +270,7 @@ void GameScene::Draw()
 		// ---------- 3Dオブジェクト ---------- //
 
 		player_->Draw();
+		targetObj->Draw();
 
 		/*enemy_->Draw();
 		enemy2_->Draw();*/
@@ -317,6 +327,94 @@ void GameScene::Draw()
 	case Scene::Gameover:
 
 		break;
+	}
+}
+
+void GameScene::CameraMove()
+{
+	//左右移動
+	if (input->PushKey(DIK_RIGHT))
+	{
+		cameraMoveSpeed = { 1,0,0 };
+	}
+	else if (input->PushKey(DIK_LEFT))
+	{
+		cameraMoveSpeed = { -1,0,0 };
+	}
+	else if (input->PushKey(DIK_UP))
+	{
+		cameraMoveSpeed = { 0,0,1 };
+	}
+	else if (input->PushKey(DIK_DOWN))
+	{
+		cameraMoveSpeed = { 0,0,-1 };
+	}
+	else
+	{
+		cameraMoveSpeed = { 0,0,0 };
+	}
+
+	//注視点移動
+	//camera->MoveTargetVector(cameraMoveSpeed);
+	
+	//視点移動 
+	//camera->MoveEyeVector(cameraMoveSpeed);
+
+	//注視点、視点両方移動
+	camera->MoveVector(cameraMoveSpeed);
+
+}
+
+void GameScene::CameraUpdate()
+{
+	CameraMove();
+
+	camera->Update();
+
+}
+
+void GameScene::GameStartEfe()
+{
+	Vector3 targetPos = { 0,0,0 };
+	camera->SetTarget(targetPos);
+
+	Vector3 eyePos = { 0,30,0 };
+	camera->SetEye(eyePos);
+
+	camera->Update();
+}
+
+void GameScene::CheckAllCollisions()
+{
+	Vector3 posA, posB;
+
+	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+
+}
+
+void GameScene::EffDraw()
+{
+	if (isEffFlag == 1)
+	{
+		// 3Dオブクジェクトの描画
+		particleManager->Draw();
+	}
+	else
+	{
+
+	}
+}
+
+void GameScene::EffDraw2()
+{
+	if (isEffFlag == 1)
+	{
+		// 3Dオブクジェクトの描画
+		particleManager->Draw();
+	}
+	else
+	{
+
 	}
 }
 
@@ -385,263 +483,5 @@ void GameScene::EffUpdate2()
 
 		particleManager->Update();
 	}
-
-}
-
-void GameScene::EffDraw()
-{
-	if (isEffFlag == 1)
-	{
-		// 3Dオブクジェクトの描画
-		particleManager->Draw();
-	}
-	else
-	{
-
-	}
-}
-
-void GameScene::EffDraw2()
-{
-	if (isEffFlag == 1)
-	{
-		// 3Dオブクジェクトの描画
-		particleManager->Draw();
-	}
-	else
-	{
-
-	}
-}
-
-void GameScene::CamMove()
-{
-	//左右移動
-	if (input->PushKey(DIK_RIGHT))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { 1.0,0,0 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-	if (input->PushKey(DIK_LEFT))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { -1.0,0,0 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-
-	//前後移動
-	if (input->PushKey(DIK_UP))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { 0,0,1 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-	if (input->PushKey(DIK_DOWN))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { 0,0,-1 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-
-	//上下移動
-	if (input->PushKey(DIK_U))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { 0,1,0 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-	if (input->PushKey(DIK_J))
-	{
-		//カメラの移動
-		Vector3 eyeVelocity = { 0,-1,0 };
-
-		//更新
-		camWtf.position += eyeVelocity;
-		targetWtf.position += eyeVelocity;
-	}
-
-	//視点は一定の距離
-	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
-
-}
-
-void GameScene::CamMove2()
-{
-	//カメラの移動
-	Vector3 eyeVelocity = { 0,0,-1.0 };
-
-	if (input->PushKey(DIK_Q))
-	{
-		railCameraSwitch = true;
-	}
-	else if (input->PushKey(DIK_E))
-	{
-		railCameraSwitch = false;
-	}
-
-	if (railCameraSwitch == true)
-	{
-		//更新
-		camWtf.position += eyeVelocity;
-
-		targetWtf.position.z = cosf(targetTheta) * targetDistance + eyeVelocity.z;
-		targetWtf.position.y = sinf(targetTheta) * targetDistance + eyeVelocity.y;
-	}
-	else
-	{
-		targetWtf.position.z = cosf(targetTheta) * targetDistance;
-		targetWtf.position.y = sinf(targetTheta) * targetDistance;
-	}
-
-	//視点は一定の距離
-	/*targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;*/
-
-}
-
-void GameScene::CamRota()
-{
-	//視点移動
-
-	//左右
-	Vector3 theta;
-	if (input->PushKey(DIK_A))
-	{
-
-		theta.y = -camRotaSpeed;
-	}
-	else if (input->PushKey(DIK_D))
-	{
-		theta.y = camRotaSpeed;
-	}
-
-	camWtf.rotation += theta;
-
-	//上下
-	if (input->PushKey(DIK_W))
-	{
-		targetTheta += camRotaSpeed;
-	}
-	else if (input->PushKey(DIK_S))
-	{
-		targetTheta += -camRotaSpeed;
-	}
-
-	//角度制限
-	if (targetTheta < -PI / 5 * 2)
-	{
-		targetTheta = -PI / 5 * 2;
-	}
-	else if (targetTheta > PI / 3)
-	{
-		targetTheta = PI / 3;
-	}
-
-	//視点は一定の距離
-	targetWtf.position.z = cosf(targetTheta) * targetDistance;
-	targetWtf.position.y = sinf(targetTheta) * targetDistance;
-}
-
-void GameScene::CamUpdate()
-{
-	CamMove();
-	//CamRota();
-
-	camWtf.UpdateMat();
-
-	camera->SetEye(camWtf.position);
-
-	targetWtf.UpdateMat();
-	targetWtf.matWorld *= camWtf.matWorld;
-
-	//y方向の制限
-	if (targetWtf.matWorld.m[3][1] < 0)
-	{
-		targetWtf.matWorld.m[3][1] = 0;
-	}
-
-	camera->SetTarget({ targetWtf.matWorld.m[3][0],targetWtf.matWorld.m[3][1] ,targetWtf.matWorld.m[3][2] });
-	//camera->SetTarget({0,20,0 });
-	//camera->SetTarget(playerPos);
-
-	camera->Update();
-	railCamera->Update(camWtf);
-}
-
-void GameScene::CamUpdate2()
-{
-	CamMove2();
-	//CamRota();
-
-	camWtf.UpdateMat();
-
-	railCamera->SetEye(camWtf.position);
-
-	targetWtf.UpdateMat();
-	targetWtf.matWorld *= camWtf.matWorld;
-
-	//y方向の制限
-	if (targetWtf.matWorld.m[3][1] < 0)
-	{
-		targetWtf.matWorld.m[3][1] = 0;
-	}
-
-	//railCamera->SetTarget(playerPos);
-
-	railCamera->Update(camWtf);
-}
-
-void GameScene::CameraMove()
-{
-
-}
-
-void GameScene::CameraUpdate()
-{
-
-}
-
-Vector3 GameScene::bVelocity(Vector3& velocity, Transform& worldTransform)
-{
-	Vector3 result = { 0,0,0 };
-
-	//内積
-	result.z = velocity.x * worldTransform.matWorld.m[0][2] +
-		velocity.y * worldTransform.matWorld.m[1][2] +
-		velocity.z * worldTransform.matWorld.m[2][2];
-
-	result.x = velocity.x * worldTransform.matWorld.m[0][0] +
-		velocity.y * worldTransform.matWorld.m[1][0] +
-		velocity.z * worldTransform.matWorld.m[2][0];
-
-	result.y = velocity.x * worldTransform.matWorld.m[0][1] +
-		velocity.y * worldTransform.matWorld.m[1][1] +
-		velocity.z * worldTransform.matWorld.m[2][1];
-
-	return result;
-}
-
-void GameScene::CheckAllCollisions()
-{
-	Vector3 posA, posB;
-
-	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
 
 }
