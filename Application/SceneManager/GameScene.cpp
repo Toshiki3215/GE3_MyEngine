@@ -270,7 +270,7 @@ void GameScene::Draw()
 		// ---------- 3Dオブジェクト ---------- //
 
 		player_->Draw();
-		targetObj->Draw();
+		//targetObj->Draw();
 
 		/*enemy_->Draw();
 		enemy2_->Draw();*/
