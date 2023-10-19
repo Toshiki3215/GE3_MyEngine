@@ -70,28 +70,37 @@ public:
 	//回転角
 	float GetRotation() { return rotation; }
 
+	//セッター(色)
 	void SetColor(const Vector4& color_) { color = color_; }
 
+	//ゲッター(色)
 	Vector4 GetColor() { return color; }
 
+	//セッター(スケール)
 	void SetScale(const Vector3& scale_) { scale = scale_; }
 
+	//ゲッター(スケール)
 	Vector3 GetScale() { return scale; }
 
+	//セッター(アンカーポイント)
 	void SetAnchorPoint(const Vector2& anchorPoint_) { anchorPoint = anchorPoint_; }
 
+	//ゲッター(アンカーポイント)
 	Vector2 GetAnchorPoint() { return anchorPoint; }
 
+	//セッター(テクスチャインデックス)
 	void SetTextureIndex(uint32_t texNmb) { textureIndex_ = texNmb; AdjustTextureSize(); }
 
+	//ゲッター(テクスチャインデックス)
 	uint32_t GetTextureIndex() { return textureIndex_; }
 
+	//セッター(テクスチャサイズ)
 	void SetTexSize(Vector2 texSize) { textureSize = texSize; }
 
+	//ゲッター(テクスチャサイズ)
 	Vector2 GetTexSize() { return textureSize; }
 
-	Vector2 GetSize() { return size_; }
-
+	//セッター(サイズ)
 	void SetSize(Vector2 size);
 
 	/// 上下反転の設定

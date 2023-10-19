@@ -13,40 +13,70 @@ class RailCamera
 public:
 	RailCamera(int window_width, int window_height);
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="wtf"></param>
 	void Initialize(Transform wtf);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="wtf"></param>
 	void Update(Transform wtf);
 
+	/// <summary>
+	/// ビュー行列を更新
+	/// </summary>
 	void UpdateViewMatrix();
 
+	/// <summary>
+	/// ビュー行列を更新
+	/// </summary>
+	/// <param name="newEye"></param>
 	void UpdateViewMatrix(Vector3 newEye);
 
+	/// <summary>
+	/// 射影行列を更新
+	/// </summary>
 	void UpdateProjectionMatrix();
+
 
 	float FieldOfViewY();
 
+	/// <summary>
+	/// 視点座標の設定
+	/// </summary>
+	/// <param name="eye"></param>
 	inline void SetEye(Vector3 eye)
 	{
 		this->eye = eye; 
 		viewDirty = true;
 	}
 
+	/// <summary>
+	/// 注視点座標の設定
+	/// </summary>
+	/// <param name="eye"></param>
 	inline void SetTarget(Vector3 target)
 	{
 		this->target = target;
 		viewDirty = true;
 	}
 
-	/*Matrix4 GetWtf()
-	{
-		return matView;
-	}*/
-
+	/// <summary>
+	/// 視点座標の取得
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetEye()
 	{
 		return eye;
 	}
 
+	/// <summary>
+	/// 注視点座標の取得
+	/// </summary>
+	/// <returns></returns>
 	Transform GetWtf()
 	{
 		return railCameraWtf;

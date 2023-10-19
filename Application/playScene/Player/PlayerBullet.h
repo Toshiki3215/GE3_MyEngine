@@ -27,10 +27,21 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw();
 
+	/// <summary>
+	/// ’e‚Ì¶‘¶
+	/// </summary>
+	/// <returns></returns>
 	bool IsDead() const { return isDead_; }
 
+	/// <summary>
+	/// ƒ[ƒ‹ƒhÀ•Wæ“¾
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetWorldPos();
 
+	/// <summary>
+	/// “–‚½‚è”»’è
+	/// </summary>
 	void OnCollision();
 
 private:

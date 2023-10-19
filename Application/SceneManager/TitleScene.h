@@ -20,10 +20,27 @@ public:
 	TitleScene();
 	~TitleScene();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dxInit"></param>
+	/// <param name="input"></param>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// タイトルシーンからゲームシーンに移動するか
+	/// </summary>
+	/// <returns></returns>
 	bool GetStartF() { return  startFlg; }
 
 private:

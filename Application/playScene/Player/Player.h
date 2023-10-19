@@ -20,16 +20,30 @@ public:
 	Player();
 	~Player();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dxCommon"></param>
+	/// <param name="input"></param>
 	void Initialize(DirectXInitialize* dxCommon, Input* input);
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
 	void Update();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// FBXの描画
+	/// </summary>
 	void FbxDraw();
 
 	//プレイヤーの行動一覧
 	void PlayerAction();
-
-	Vector3 bVelocity(Vector3& velocity, Transform& worldTransform);
 
 	////ワールド座標を取得
 	Vector3 GetWorldPosition();
@@ -40,19 +54,37 @@ public:
 	//ワールド座標を取得(レティクル)
 	Vector3 GetRetWorldPosition();
 
+	/// <summary>
+	/// ゲッター(ワールド座標)
+	/// </summary>
+	/// <returns></returns>
 	Vector3 GetPos() { return playerObj->wtf.position; }
 
-	// ポジション
+	/// <summary>
+	/// セッター(ワールド座標)
+	/// </summary>
+	/// <param name="pos"></param>
 	void SetPos(Vector3 pos) { playerObj->wtf.position = pos; }
 
+	/// <summary>
+	/// 親子化(カメラ)
+	/// </summary>
+	/// <param name="cameraWtf"></param>
 	void SetParentCamera(Matrix4 cameraWtf) { playerObj->wtf.matWorld = cameraWtf; }
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//弾リストを取得
 	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
 
+	/// <summary>
+	/// 親子化
+	/// </summary>
+	/// <param name="parent"></param>
 	void SetParent(Transform* parent) { playerObj->wtf.parent_ = parent; }
 	
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
 	void OnCollision();
 
 private:

@@ -21,12 +21,13 @@ public: // メンバ関数
 	// 更新
 	void Update();
 
+	// キーを押したか
 	bool PushKey(BYTE keyNumber);
 
 	//トリガー
 	bool TriggerKey(BYTE keyNumber);
 
-	//離したか
+	//キーを離したか
 	bool ReleaseKey(BYTE keyNumber);
 
 private: // メンバ変数

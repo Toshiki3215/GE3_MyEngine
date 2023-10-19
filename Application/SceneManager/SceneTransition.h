@@ -21,11 +21,32 @@ public:
 
 	~SceneTransition();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="dxInit"></param>
+	/// <param name="input"></param>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
+
+	/// <summary>
+	/// 更新処理(演出のはじめ部分)
+	/// </summary>
 	void UpdateStart();
+
+	/// <summary>
+	/// 更新処理(演出の終わり部分)
+	/// </summary>
 	void UpdateEnd();
+
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
+	/// <summary>
+	/// 遷移演出が始まったか
+	/// </summary>
+	/// <returns></returns>
 	bool GetTransF() { return  isTrans; }
 
 private:
@@ -47,11 +68,38 @@ private:
 
 public:
 	
+	/// <summary>
+	/// イーズイン関数
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="startPos"></param>
+	/// <param name="endPos"></param>
+	/// <param name="maxTime"></param>
+	/// <returns></returns>
 	float easeIn(float time, float startPos, float endPos, float maxTime);
 
+	/// <summary>
+	/// イーズアウト関数
+	/// </summary>
+	/// <param name="time"></param>
+	/// <param name="startPos"></param>
+	/// <param name="endPos"></param>
+	/// <param name="maxTime"></param>
+	/// <returns></returns>
 	float easeOut(float time, float startPos, float endPos, float maxTime);
 
+	/// <summary>
+	/// 累乗(3乗)ーイージング用
+	/// </summary>
+	/// <param name="x"></param>
+	/// <returns></returns>
 	float pow3(float x);
+
+	/// <summary>
+	/// 累乗(5乗)ーイージング用
+	/// </summary>
+	/// <param name="x"></param>
+	/// <returns></returns>
 	float pow5(float x);
 
 };

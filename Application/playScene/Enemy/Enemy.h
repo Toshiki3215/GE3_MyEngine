@@ -21,6 +21,7 @@ public:
 	// •`‰æ
 	void Draw();
 
+	//“–‚½‚è”»’è
 	void OnCollision();
 
 private:
@@ -67,10 +68,13 @@ private:
 
 public:
 
+	//eqŠÖŒW
 	void SetParent(Transform* parent) { enemyObj->wtf.parent_ = parent; }
 
+	//ƒJƒƒ‰‚Æ‚ÌeqŠÖŒW
 	void SetParentCamera(Vector3 cameraWtf);
 
+	//“G‚Ì’eƒŠƒXƒg
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
 };

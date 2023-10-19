@@ -9,15 +9,31 @@ class ImguiManager
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="winApp"></param>
+	/// <param name="dxInit"></param>
 	void Initialize(WinApp* winApp, DirectXInitialize* dxInit);
 
-	//終了
+	/// <summary>
+	/// 終了
+	/// </summary>
 	void Finalize();
 
+	/// <summary>
+	/// Imguiフレーム開始
+	/// </summary>
 	void Begin();
 
+	/// <summary>
+	/// 描画前準備
+	/// </summary>
 	void End();
 
+	/// <summary>
+	/// 描画
+	/// </summary>
 	void Draw();
 
 private:

@@ -15,23 +15,47 @@ public://メンバ関数
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//初期化
+	//-----初期化-----//
+	
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="winApp"></param>
 	void Initialize(WinApp* winApp);
 
+	/// <summary>
+	/// デバイスの初期化
+	/// </summary>
 	void InitializeDevice();
 
+	/// <summary>
+	/// コマンドリストの初期化
+	/// </summary>
 	void InitializeCommand();
 
+	/// <summary>
+	/// スワップチェーンの初期化
+	/// </summary>
 	void InitializeSwapchain();
 
+	/// <summary>
+	/// レンダーターゲットビューの初期化
+	/// </summary>
 	void InitializeRenderTargetView();
 
+	/// <summary>
+	/// デプスバッファの初期化
+	/// </summary>
 	void InitializeDepthBuffer();
 
+	/// <summary>
+	/// フェンスの初期化
+	/// </summary>
 	void InitializeFence();
 
 	//描画前処理
 	void PreDraw();
+
 	//描画後処理
 	void PostDraw();
 

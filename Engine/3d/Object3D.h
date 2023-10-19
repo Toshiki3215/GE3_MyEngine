@@ -40,14 +40,35 @@ private:
 
 public: 
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="window_width"></param>
+	/// <param name="window_height"></param>
 	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	/// <param name="cmdList"></param>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	static void PostDraw();
 
+	/// <summary>
+	/// オブジェクト生成
+	/// </summary>
+	/// <returns></returns>
 	static Object3d* Create();
 
+	/// <summary>
+	/// 生存しているか
+	/// </summary>
+	/// <returns></returns>
 	bool IsDead() const { return  isDead_; }
 
 private:
@@ -91,23 +112,41 @@ public:
 	Object3d();
 	~Object3d();
 
+	//初期化
 	bool Initialize();
 
 	// 毎フレーム処理
 	void Update();
 	void Update(Transform* parentWtf);
 
+	//行列の更新
 	void UpdateMat();
 
 	// 描画
 	void Draw();
 
+	/// <summary>
+	/// ゲッター(親子関係)
+	/// </summary>
+	/// <returns></returns>
 	Object3d* GetParent() const { return parent; }
 
+	/// <summary>
+	/// セッター(親子関係)
+	/// </summary>
+	/// <param name="parent_"></param>
 	void SetParent(Object3d* parent_) { this->parent = parent_; }
+
+	/// <summary>
+	/// セッター(カメラ)
+	/// </summary>
+	/// <param name="camera_"></param>
 	static void SetCamera(Camera* camera_) { Object3d::camera = camera_; }
 
-	//setter
+	/// <summary>
+	/// セッター(モデル)
+	/// </summary>
+	/// <param name="model_"></param>
 	void SetModel(Model* model_) { this->model = model_; }
 
 private: 

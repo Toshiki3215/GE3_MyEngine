@@ -11,7 +11,15 @@ class Transform
 public:
 	Transform();
 	~Transform();
+
+	/// <summary>
+	/// ‰Šú‰»
+	/// </summary>
 	void Initialize();
+
+	/// <summary>
+	/// s—ñXV
+	/// </summary>
 	void UpdateMat();
 
 public:

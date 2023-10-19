@@ -82,12 +82,29 @@ private:
 
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="device"></param>
+	/// <param name="window_width"></param>
+	/// <param name="window_height"></param>
 	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
+	/// <summary>
+	/// 描画前処理
+	/// </summary>
+	/// <param name="cmdList"></param>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
+	/// <summary>
+	/// 描画後処理
+	/// </summary>
 	static void PostDraw();
 
+	/// <summary>
+	/// パーティクル作成
+	/// </summary>
+	/// <returns></returns>
 	static ParticleManager* Create();
 
 
@@ -141,34 +158,50 @@ private:
 
 private:
 
+	/// <summary>
+	/// デスクリプタヒープの初期化
+	/// </summary>
 	static void InitializeDescriptorHeap();
 
+	/// <summary>
+	/// グラフィックスパイプラインの初期化
+	/// </summary>
 	static void InitializeGraphicsPipeline();
 
+	/// <summary>
+	/// モデル生成
+	/// </summary>
 	static void CreateModel();
 
 
 public:
 
+	/// <summary>
+	/// テクスチャ読み込み
+	/// </summary>
+	/// <param name="fileName"></param>
 	static void LoadTexture(const std::string& fileName);
 
 	ParticleManager();
 	~ParticleManager();
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <returns></returns>
 	bool Initialize();
 	
 	// 毎フレーム処理
 	void Update();
 
-	
 	// 描画
 	void Draw();
 
-	
 	// パーティクルの追加
 	//生存時間,初期座標,速度,加速度
 	void Add(int life, Vector3 position, Vector3 velociy, Vector3 accel, float start_scale, float end_scale);
 
+	//セッター(カメラ)
 	static void SetCamera(Camera* camera) { ParticleManager::camera = camera; }
 
 private:

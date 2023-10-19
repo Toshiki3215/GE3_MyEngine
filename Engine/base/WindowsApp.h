@@ -7,13 +7,24 @@
 class WinApp
 {
 public:
+
+	/// <summary>
+	/// ウィンドウプロシージャ
+	/// </summary>
+	/// <param name="hwnd"></param>
+	/// <param name="msg"></param>
+	/// <param name="wparam"></param>
+	/// <param name="lparam"></param>
+	/// <returns></returns>
 	static LRESULT WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	//getter
+	//ゲッター(HWND)
 	HWND GetHwnd() const { return hwnd; }
 
+	//ゲッター(HINSTANCE)
 	HINSTANCE GetHInstance() const { return w.hInstance; }
 
+	//プロセスメッセージ
 	bool ProcessMessage();
 
 	// ウィンドウ横幅

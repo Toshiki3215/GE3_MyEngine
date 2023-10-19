@@ -42,26 +42,34 @@ public:
 	//初期化
 	void Initialize(DirectXInitialize* dxInit);
 
+	//ゲッター(DirectXのInitialize)
 	DirectXInitialize* GetDxInitialize() { return dxInit_; }
 
+	//ゲッター(ルートシグネチャ)
 	ID3D12RootSignature* GetRootSignature() { return rootSignature.Get(); }
 
+	//ゲッター(パイプライン)
 	ID3D12PipelineState* GetPipelineState() { return pipelineState.Get(); }
 
+	//ゲッター(SRVヒープの取得)
 	ID3D12DescriptorHeap* GetSrvHeap() { return srvHeap.Get(); }
 
+	//ゲッター(SRVハンドル)
 	D3D12_CPU_DESCRIPTOR_HANDLE GetSrvHandle() { return srvHandle; }
 
+	//ゲッター(sizeVB)
 	UINT GetSizeVB() { return sizeVB; }
 
+	//ゲッター(リソースデスク)
 	D3D12_RESOURCE_DESC& GetResourceDesc() { return resDesc; }
 
+	//リソースファイル読み込み
 	void LoadTexture(uint32_t index, const std::string& fileName);
 
+	//リソースセット
 	void SetTextureCommands(uint32_t index);
 
-	//Microsoft::WRL::ComPtr<ID3D12Resource> GetTexBuff(uint32_t index) { return texBuff[index]; }
-
+	//テクスチャバッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetTextureBuffer(uint32_t index)const { return texBuff[index].Get(); }
 
 	//SRV用デスクリプタヒープ

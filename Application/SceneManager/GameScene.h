@@ -45,6 +45,9 @@ public: // メンバ関数
 	/// </summary>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
 
+	/// <summary>
+	/// 初期化用リセット関数
+	/// </summary>
 	void Reset();
 
 	/// <summary>
@@ -72,12 +75,21 @@ public: // メンバ関数
 	/// </summary>
 	void GameStartEfe();
 
+	/// <summary>
+	/// パーティクル更新処理
+	/// </summary>
 	void EffUpdate();
-	void EffDraw();
-
 	void EffUpdate2();
+
+	/// <summary>
+	/// パーティクル描画
+	/// </summary>
+	void EffDraw();
 	void EffDraw2();
 
+	/// <summary>
+	/// 当たり判定
+	/// </summary>
 	void CheckAllCollisions();
 	
 private: // メンバ変数 (固定)
