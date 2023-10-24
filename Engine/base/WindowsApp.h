@@ -1,5 +1,5 @@
 // WindowsApp.h
-// WindowsAPI‚ğŠÇ—‚µ‚Ä‚é
+// WindowsAPIã‚’ç®¡ç†ã—ã¦ã‚‹
 
 #pragma once
 #include <Windows.h>
@@ -9,7 +9,7 @@ class WinApp
 public:
 
 	/// <summary>
-	/// ƒEƒBƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	/// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	/// </summary>
 	/// <param name="hwnd"></param>
 	/// <param name="msg"></param>
@@ -18,35 +18,35 @@ public:
 	/// <returns></returns>
 	static LRESULT WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	//ƒQƒbƒ^[(HWND)
+	//ã‚²ãƒƒã‚¿ãƒ¼(HWND)
 	HWND GetHwnd() const { return hwnd; }
 
-	//ƒQƒbƒ^[(HINSTANCE)
+	//ã‚²ãƒƒã‚¿ãƒ¼(HINSTANCE)
 	HINSTANCE GetHInstance() const { return w.hInstance; }
 
-	//ƒvƒƒZƒXƒƒbƒZ[ƒW
+	//ãƒ—ãƒ­ã‚»ã‚¹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
 	bool ProcessMessage();
 
-	// ƒEƒBƒ“ƒhƒE‰¡•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦æ¨ªå¹…
 	static const int window_width = 1280;
 
-	// ƒEƒBƒ“ƒhƒEc•
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ç¸¦å¹…
 	static const int window_height = 720;
 
-public: //ƒƒ“ƒoŠÖ”
-	//‰Šú‰»
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
+	//åˆæœŸåŒ–
 	void Initialize();
 
-	//XV
+	//æ›´æ–°
 	void Update();
 
-	//I—¹
+	//çµ‚äº†
 	void Finalize();
 private:
-	//ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
 	HWND hwnd = nullptr;
 
-	//ƒEƒBƒ“ƒhƒEƒNƒ‰ƒX‚Ìİ’è
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®š
 	WNDCLASSEX w{};
 
 };

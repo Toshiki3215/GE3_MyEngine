@@ -1,5 +1,5 @@
 // DirectXInitialize.h
-// DirectX‚Ì‰Šú‰»ˆ—‚ğŠÇ—‚µ‚Ä‚¢‚é
+// DirectXã®åˆæœŸåŒ–å‡¦ç†ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 #include <d3d12.h>
@@ -10,73 +10,73 @@
 
 class DirectXInitialize
 {
-public://ƒƒ“ƒoŠÖ”
+public://ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	// Microsoft::WRL::‚ğÈ—ª
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//-----‰Šú‰»-----//
-	
+	//-----åˆæœŸåŒ–-----//
+
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="winApp"></param>
 	void Initialize(WinApp* winApp);
 
 	/// <summary>
-	/// ƒfƒoƒCƒX‚Ì‰Šú‰»
+	/// ãƒ‡ãƒã‚¤ã‚¹ã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeDevice();
 
 	/// <summary>
-	/// ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ì‰Šú‰»
+	/// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeCommand();
 
 	/// <summary>
-	/// ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ì‰Šú‰»
+	/// ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeSwapchain();
 
 	/// <summary>
-	/// ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ì‰Šú‰»
+	/// ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeRenderTargetView();
 
 	/// <summary>
-	/// ƒfƒvƒXƒoƒbƒtƒ@‚Ì‰Šú‰»
+	/// ãƒ‡ãƒ—ã‚¹ãƒãƒƒãƒ•ã‚¡ã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeDepthBuffer();
 
 	/// <summary>
-	/// ƒtƒFƒ“ƒX‚Ì‰Šú‰»
+	/// ãƒ•ã‚§ãƒ³ã‚¹ã®åˆæœŸåŒ–
 	/// </summary>
 	void InitializeFence();
 
-	//•`‰æ‘Oˆ—
+	//æç”»å‰å‡¦ç†
 	void PreDraw();
 
-	//•`‰æŒãˆ—
+	//æç”»å¾Œå‡¦ç†
 	void PostDraw();
 
-	//ƒfƒoƒCƒXæ“¾
+	//ãƒ‡ãƒã‚¤ã‚¹å–å¾—
 	ID3D12Device* GetDevice() const { return device.Get(); }
 
-	//ƒRƒ}ƒ“ƒhƒŠƒXƒgæ“¾
+	//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆå–å¾—
 	ID3D12GraphicsCommandList* GetCommandList()const { return commandList.Get(); }
 
-	//ƒoƒbƒNƒoƒbƒtƒ@‚Ì”‚ğæ“¾
+	//ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®æ•°ã‚’å–å¾—
 	size_t GetBackBufferCount() const { return backBuffers.size(); }
 
 private:
 
-	//DirectX12ƒfƒoƒCƒX
+	//DirectX12ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<ID3D12Device> device;
 
-	//DXGIƒtƒ@ƒNƒgƒŠ
+	//DXGIãƒ•ã‚¡ã‚¯ãƒˆãƒª
 	ComPtr<IDXGIFactory7> dxgiFactory;
 
-	//ƒoƒbƒNƒoƒbƒtƒ@
+	//ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};

@@ -1,5 +1,5 @@
 // PlayerBullet.h
-// ƒvƒŒƒCƒ„[‚ÌUŒ‚(’e)‚ğŠÇ—‚µ‚Ä‚¢‚é
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ”»æ’ƒ(å¼¾)ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 #include "Model.h"
@@ -10,56 +10,56 @@ class PlayerBullet
 {
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
-	/// <param name="model">ƒ‚ƒfƒ‹</param>
-	/// <param name="position">‰ŠúÀ•W</param>
+	/// <param name="model">ãƒ¢ãƒ‡ãƒ«</param>
+	/// <param name="position">åˆæœŸåº§æ¨™</param>
 	void Initilize(Object3d* playerObj, Object3d* retObj, Vector3 scale);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update(Vector3 enemylen, Vector3 len, float shootSpeed, Object3d* playerObj, Object3d* retObj);
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	/// <param name="viewProjection"></param>
 	void Draw();
 
 	/// <summary>
-	/// ’e‚Ì¶‘¶
+	/// å¼¾ã®ç”Ÿå­˜
 	/// </summary>
 	/// <returns></returns>
 	bool IsDead() const { return isDead_; }
 
 	/// <summary>
-	/// ƒ[ƒ‹ƒhÀ•Wæ“¾
+	/// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetWorldPos();
 
 	/// <summary>
-	/// “–‚½‚è”»’è
+	/// å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
 	void OnCollision();
 
 private:
-	
-	//ƒ‚ƒfƒ‹
+
+	//ãƒ¢ãƒ‡ãƒ«
 	Object3d* bulletObj = nullptr;
 	Model* bulletModel = nullptr;
 
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	uint32_t textureHandle_ = 0;
 
-	//õ–½<frm>
+	//å¯¿å‘½<frm>
 	static const int32_t kLifeTime = 60 * 1;
 
-	//ƒfƒXƒ^ƒCƒ}[
+	//ãƒ‡ã‚¹ã‚¿ã‚¤ãƒãƒ¼
 	int32_t deathTimer_ = kLifeTime;
 
-	//ƒfƒXƒtƒ‰ƒO
+	//ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°
 	bool isDead_ = false;
 
 	Vector3 target;

@@ -1,4 +1,4 @@
-﻿// GameScene.cpp
+// GameScene.cpp
 // ゲームシーンを管理している
 
 #include "GameScene.h"
@@ -198,14 +198,14 @@ void GameScene::Update()
 		if (startT >= 150)
 		{
 			isStart = TRUE;
-			color += a = { 0,0,0,0.1f };
+			color += { 0, 0, 0, 0.1f };
 			sceneTrans->UpdateColor(color);
 			if (startT >= 300)
 			{
 				isStart2 = TRUE;
 			}
 		}
-		GameStartEfe(isStart,isStart2);
+		GameStartEfe(isStart, isStart2);
 		//CameraUpdate();
 
 		// ---------- パーティクル ---------- //
@@ -381,7 +381,7 @@ void GameScene::CameraMove()
 
 	//注視点移動
 	//camera->MoveTargetVector(cameraMoveSpeed);
-	
+
 	//視点移動 
 	//camera->MoveEyeVector(cameraMoveSpeed);
 
@@ -398,15 +398,15 @@ void GameScene::CameraUpdate()
 
 }
 
-void GameScene::GameStartEfe(bool isStart , bool isStart2)
+void GameScene::GameStartEfe(bool isStart, bool isStart2)
 {
-	
+
 	if (isStart == FALSE)
 	{
 		cameraMoveSpeed = { 0,-0.1f,0 };
 		camera->MoveEyeVector(cameraMoveSpeed);
 	}
-	else if(isStart == TRUE)
+	else if (isStart == TRUE)
 	{
 		if (isStart2 == TRUE)
 		{

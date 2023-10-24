@@ -1,5 +1,5 @@
 // ParticleManager.h
-// ƒp[ƒeƒBƒNƒ‹‚ÌŠÇ—‚ğ‚µ‚Ä‚¢‚é
+// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®ç®¡ç†ã‚’ã—ã¦ã„ã‚‹
 
 #pragma once
 
@@ -17,56 +17,56 @@
 class ParticleManager
 {
 private:
-	// Microsoft::WRL::‚ğÈ—ª
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-public: 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ìiƒ}ƒeƒŠƒAƒ‹j
-	struct ConstBufferDataMaterial 
+public:
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“ï¼ˆãƒãƒ†ãƒªã‚¢ãƒ«ï¼‰
+	struct ConstBufferDataMaterial
 	{
-		Vector4 color; // F (RGBA)
+		Vector4 color; // è‰² (RGBA)
 	};
 
-	// ’¸“_ƒf[ƒ^\‘¢‘Ì
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct VertexPos
 	{
-		Vector3 pos; // xyzÀ•W
+		Vector3 pos; // xyzåº§æ¨™
 		float scale;
 	};
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData
 	{
 		Matrix4 mat;
-		Matrix4 matBillboard;	// ƒrƒ‹ƒ{[ƒhs—ñ
+		Matrix4 matBillboard;	// ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	};
 
-	//ƒp[ƒeƒBƒNƒ‹ˆê—±
-	struct Particle 
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ä¸€ç²’
+	struct Particle
 	{
 
-		//À•W
+		//åº§æ¨™
 		Vector3 position = {};
 
-		//‘¬“x
+		//é€Ÿåº¦
 		Vector3 velocity = {};
 
-		//‰Á‘¬“x
+		//åŠ é€Ÿåº¦
 		Vector3 accel = {};
 
-		//Œ»İƒtƒŒ[ƒ€
+		//ç¾åœ¨ãƒ•ãƒ¬ãƒ¼ãƒ 
 		int frame = 0;
 
-		//‰ß‹ƒtƒŒ[ƒ€
+		//éå»ãƒ•ãƒ¬ãƒ¼ãƒ 
 		int num_frame = 0;
 
-		//ƒXƒP[ƒ‹
+		//ã‚¹ã‚±ãƒ¼ãƒ«
 		float scale = 1.0f;
 
-		//‰Šú’l
+		//åˆæœŸå€¤
 		float s_scale = 1.0f;
 
-		//ÅI’l
+		//æœ€çµ‚å€¤
 		float e_scale = 0.0f;
 
 		Vector4 color;
@@ -74,16 +74,16 @@ public:
 
 private:
 
-	static const int division = 50;		    // •ªŠ„”
-	static const float radius;				// ’ê–Ê‚Ì”¼Œa
-	static const float prizmHeight;			// ’Œ‚Ì‚‚³
-	static const int planeCount = division * 2 + division * 2; // –Ê‚Ì”
+	static const int division = 50;		    // åˆ†å‰²æ•°
+	static const float radius;				// åº•é¢ã®åŠå¾„
+	static const float prizmHeight;			// æŸ±ã®é«˜ã•
+	static const int planeCount = division * 2 + division * 2; // é¢ã®æ•°
 	static const int vertexCount = 1024;
 
 public:
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="device"></param>
 	/// <param name="window_width"></param>
@@ -91,18 +91,18 @@ public:
 	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
 	/// <param name="cmdList"></param>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
-	/// •`‰æŒãˆ—
+	/// æç”»å¾Œå‡¦ç†
 	/// </summary>
 	static void PostDraw();
 
 	/// <summary>
-	/// ƒp[ƒeƒBƒNƒ‹ì¬
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ä½œæˆ
 	/// </summary>
 	/// <returns></returns>
 	static ParticleManager* Create();
@@ -111,65 +111,65 @@ public:
 
 private:
 
-	// ƒfƒoƒCƒX
+	// ãƒ‡ãƒã‚¤ã‚¹
 	static ComPtr <ID3D12Device> device;
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒTƒCƒY
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã‚µã‚¤ã‚º
 	static UINT descriptorHandleIncrementSize;
 
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 	static ComPtr <ID3D12GraphicsCommandList> cmdList;
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	static ComPtr<ID3D12RootSignature> rootsignature;
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 
-	// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	static ComPtr<ID3D12DescriptorHeap> descHeap;
 
-	// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	static ComPtr<ID3D12Resource> vertBuff;
 
-	// ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	static ComPtr<ID3D12Resource> texbuff;
 
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	static CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
 
-	// ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ìƒnƒ“ƒhƒ‹(CPU)
+	// ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«(CPU)
 	static CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	static D3D12_VERTEX_BUFFER_VIEW vbView;
 
-	// ’¸“_ƒf[ƒ^”z—ñ
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿é…åˆ—
 	static VertexPos vertices[vertexCount];
 
-	//ƒrƒ‹ƒ{[ƒhs—ñ
+	//ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	static Matrix4 matBillboard;
 
-	//Y²‰ñ‚èƒrƒ‹ƒ{[ƒhs—ñ
+	//Yè»¸å›ã‚Šãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	static Matrix4 matBillboardY;
 
-	//ƒp[ƒeƒBƒNƒ‹”z—ñ
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«é…åˆ—
 	std::forward_list<Particle>particles;
 
 private:
 
 	/// <summary>
-	/// ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv‚Ì‰Šú‰»
+	/// ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ã®åˆæœŸåŒ–
 	/// </summary>
 	static void InitializeDescriptorHeap();
 
 	/// <summary>
-	/// ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“‚Ì‰Šú‰»
+	/// ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®åˆæœŸåŒ–
 	/// </summary>
 	static void InitializeGraphicsPipeline();
 
 	/// <summary>
-	/// ƒ‚ƒfƒ‹¶¬
+	/// ãƒ¢ãƒ‡ãƒ«ç”Ÿæˆ
 	/// </summary>
 	static void CreateModel();
 
@@ -177,7 +177,7 @@ private:
 public:
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	/// </summary>
 	/// <param name="fileName"></param>
 	static void LoadTexture(const std::string& fileName);
@@ -186,30 +186,30 @@ public:
 	~ParticleManager();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <returns></returns>
 	bool Initialize();
-	
-	// –ˆƒtƒŒ[ƒ€ˆ—
+
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	void Update();
 
-	// •`‰æ
+	// æç”»
 	void Draw();
 
-	// ƒp[ƒeƒBƒNƒ‹‚Ì’Ç‰Á
-	//¶‘¶ŠÔ,‰ŠúÀ•W,‘¬“x,‰Á‘¬“x
+	// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®è¿½åŠ 
+	//ç”Ÿå­˜æ™‚é–“,åˆæœŸåº§æ¨™,é€Ÿåº¦,åŠ é€Ÿåº¦
 	void Add(int life, Vector3 position, Vector3 velociy, Vector3 accel, float start_scale, float end_scale);
 
-	//ƒZƒbƒ^[(ƒJƒƒ‰)
+	//ã‚»ãƒƒã‚¿ãƒ¼(ã‚«ãƒ¡ãƒ©)
 	static void SetCamera(Camera* camera) { ParticleManager::camera = camera; }
 
 private:
 
-	ComPtr<ID3D12Resource> constBuff; // ’è”ƒoƒbƒtƒ@
+	ComPtr<ID3D12Resource> constBuff; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	static Camera* camera;
 
-	// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+	// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 scale = { 1,1,1 };
 
 	ConstBufferDataMaterial* constMapMaterial = nullptr;

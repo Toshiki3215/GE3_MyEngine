@@ -1,5 +1,5 @@
 // SceneTransition.h
-// ƒV[ƒ“‘JˆÚ‚ÌŠÇ—
+// ã‚·ãƒ¼ãƒ³é·ç§»ã®ç®¡ç†
 
 #pragma once
 
@@ -23,24 +23,24 @@ public:
 	~SceneTransition();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="dxInit"></param>
 	/// <param name="input"></param>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
 
 	/// <summary>
-	/// XVˆ—(‰‰o‚Ì‚Í‚¶‚ß•”•ª)
+	/// æ›´æ–°å‡¦ç†(æ¼”å‡ºã®ã¯ã˜ã‚éƒ¨åˆ†)
 	/// </summary>
 	void UpdateStart();
 
 	/// <summary>
-	/// XVˆ—(‰‰o‚ÌI‚í‚è•”•ª)
+	/// æ›´æ–°å‡¦ç†(æ¼”å‡ºã®çµ‚ã‚ã‚Šéƒ¨åˆ†)
 	/// </summary>
 	void UpdateEnd();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
@@ -48,7 +48,7 @@ public:
 	void Draw2();
 
 	/// <summary>
-	/// ‘JˆÚ‰‰o‚ªn‚Ü‚Á‚½‚©
+	/// é·ç§»æ¼”å‡ºãŒå§‹ã¾ã£ãŸã‹
 	/// </summary>
 	/// <returns></returns>
 	bool GetTransF() { return  isTrans; }
@@ -77,9 +77,9 @@ private:
 	Vector4 color = { 1,1,1,a };
 
 public:
-	
+
 	/// <summary>
-	/// ƒC[ƒYƒCƒ“ŠÖ”
+	/// ã‚¤ãƒ¼ã‚ºã‚¤ãƒ³é–¢æ•°
 	/// </summary>
 	/// <param name="time"></param>
 	/// <param name="startPos"></param>
@@ -89,7 +89,7 @@ public:
 	float easeIn(float time, float startPos, float endPos, float maxTime);
 
 	/// <summary>
-	/// ƒC[ƒYƒAƒEƒgŠÖ”
+	/// ã‚¤ãƒ¼ã‚ºã‚¢ã‚¦ãƒˆé–¢æ•°
 	/// </summary>
 	/// <param name="time"></param>
 	/// <param name="startPos"></param>
@@ -99,14 +99,14 @@ public:
 	float easeOut(float time, float startPos, float endPos, float maxTime);
 
 	/// <summary>
-	/// —İæ(3æ)[ƒC[ƒWƒ“ƒO—p
+	/// ç´¯ä¹—(3ä¹—)ãƒ¼ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç”¨
 	/// </summary>
 	/// <param name="x"></param>
 	/// <returns></returns>
 	float pow3(float x);
 
 	/// <summary>
-	/// —İæ(5æ)[ƒC[ƒWƒ“ƒO—p
+	/// ç´¯ä¹—(5ä¹—)ãƒ¼ã‚¤ãƒ¼ã‚¸ãƒ³ã‚°ç”¨
 	/// </summary>
 	/// <param name="x"></param>
 	/// <returns></returns>

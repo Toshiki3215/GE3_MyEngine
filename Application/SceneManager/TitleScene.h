@@ -1,5 +1,5 @@
 // TitleScene.h
-// ƒ^ƒCƒgƒ‹ƒV[ƒ“‚ğŠÇ—‚µ‚Ä‚¢‚é
+// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 
@@ -21,24 +21,24 @@ public:
 	~TitleScene();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="dxInit"></param>
 	/// <param name="input"></param>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
 
 	/// <summary>
-	/// XVˆ—
+	/// æ›´æ–°å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ƒ^ƒCƒgƒ‹ƒV[ƒ“‚©‚çƒQ[ƒ€ƒV[ƒ“‚ÉˆÚ“®‚·‚é‚©
+	/// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã‹ã‚‰ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã«ç§»å‹•ã™ã‚‹ã‹
 	/// </summary>
 	/// <returns></returns>
 	bool GetStartF() { return  startFlg; }

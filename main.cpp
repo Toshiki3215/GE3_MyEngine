@@ -1,4 +1,4 @@
-﻿#include "WindowsApp.h"
+#include "WindowsApp.h"
 #include "Input.h"
 #include "DirectXInitialize.h"
 #include "FPS.h"
@@ -34,7 +34,7 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 
 	//Imguiの初期化
 	imguiManager = new ImguiManager();
-	imguiManager->Initialize(winApp,dxInit);
+	imguiManager->Initialize(winApp, dxInit);
 
 	//FBX初期化
 	FBXLoader::GetInstance()->Initialize(dxInit->GetDevice());
@@ -117,11 +117,11 @@ int WINAPI WinMain(_In_ HINSTANCE, _In_opt_ HINSTANCE, _In_ LPSTR, _In_ int)
 		imguiManager->End();
 
 		// Imgui描画
-		#ifdef _DEBUG
+#ifdef _DEBUG
 
 		imguiManager->Draw();
 
-		#endif // DEBUG
+#endif // DEBUG
 
 		// 描画終了
 		dxInit->PostDraw();

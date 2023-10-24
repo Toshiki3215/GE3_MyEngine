@@ -1,5 +1,5 @@
 // Object3D.h
-// ƒ‚ƒfƒ‹‚Ì‰Šú‰»AXVˆ—A•`‰æ‚È‚Ç‚ÌŠÇ—
+// ãƒ¢ãƒ‡ãƒ«ã®åˆæœŸåŒ–ã€æ›´æ–°å‡¦ç†ã€æç”»ãªã©ã®ç®¡ç†
 
 #pragma once
 
@@ -21,27 +21,27 @@ class Object3d
 {
 private:
 
-	// Microsoft::WRL::‚ğÈ—ª
+	// Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	// ’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	// å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferDataB0
 	{
-		Matrix4 mat;	// ‚R‚c•ÏŠ·s—ñ
+		Matrix4 mat;	// ï¼“ï¼¤å¤‰æ›è¡Œåˆ—
 	};
 
 private:
 
-	static const int division = 50;			// •ªŠ„”
-	static const float radius;				// ’ê–Ê‚Ì”¼Œa
-	static const float prizmHeight;			// ’Œ‚Ì‚‚³
-	static const int planeCount = division * 2 + division * 2; // –Ê‚Ì”
-	static const int vertexCount = planeCount * 3;		       // ’¸“_”
+	static const int division = 50;			// åˆ†å‰²æ•°
+	static const float radius;				// åº•é¢ã®åŠå¾„
+	static const float prizmHeight;			// æŸ±ã®é«˜ã•
+	static const int planeCount = division * 2 + division * 2; // é¢ã®æ•°
+	static const int vertexCount = planeCount * 3;		       // é ‚ç‚¹æ•°
 
-public: 
+public:
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="device"></param>
 	/// <param name="window_width"></param>
@@ -49,51 +49,51 @@ public:
 	static void StaticInitialize(ID3D12Device* device, int window_width, int window_height);
 
 	/// <summary>
-	/// •`‰æ‘Oˆ—
+	/// æç”»å‰å‡¦ç†
 	/// </summary>
 	/// <param name="cmdList"></param>
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
 	/// <summary>
-	/// •`‰æŒãˆ—
+	/// æç”»å¾Œå‡¦ç†
 	/// </summary>
 	static void PostDraw();
 
 	/// <summary>
-	/// ƒIƒuƒWƒFƒNƒg¶¬
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	/// </summary>
 	/// <returns></returns>
 	static Object3d* Create();
 
 	/// <summary>
-	/// ¶‘¶‚µ‚Ä‚¢‚é‚©
+	/// ç”Ÿå­˜ã—ã¦ã„ã‚‹ã‹
 	/// </summary>
 	/// <returns></returns>
 	bool IsDead() const { return  isDead_; }
 
 private:
 
-	// ƒfƒoƒCƒX
+	// ãƒ‡ãƒã‚¤ã‚¹
 	static ComPtr<ID3D12Device> device;
 
-	// ƒRƒ}ƒ“ƒhƒŠƒXƒg
+	// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 	static ComPtr<ID3D12GraphicsCommandList> cmdList;
 
-	// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	static ComPtr<ID3D12RootSignature> rootsignature;
 
-	// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+	// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 
-	// ƒrƒ…[s—ñ
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 	static Matrix4 matView;
-	// Ë‰es—ñ
+	// å°„å½±è¡Œåˆ—
 	static Matrix4 matProjection;
-	// ‹“_À•W
+	// è¦–ç‚¹åº§æ¨™
 	static Vector3 eye;
-	// ’‹“_À•W
+	// æ³¨è¦–ç‚¹åº§æ¨™
 	static Vector3 target;
-	// ã•ûŒüƒxƒNƒgƒ‹
+	// ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	static Vector3 up;
 
 	static float focalLengs;
@@ -104,7 +104,7 @@ private:
 
 	static void InitializeGraphicsPipeline();
 
-	// ƒrƒ…[s—ñ‚ğXV
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
 	static void UpdateViewMatrix();
 
 public:
@@ -112,59 +112,59 @@ public:
 	Object3d();
 	~Object3d();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	bool Initialize();
 
-	// –ˆƒtƒŒ[ƒ€ˆ—
+	// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	void Update();
 	void Update(Transform* parentWtf);
 
-	//s—ñ‚ÌXV
+	//è¡Œåˆ—ã®æ›´æ–°
 	void UpdateMat();
 
-	// •`‰æ
+	// æç”»
 	void Draw();
 
 	/// <summary>
-	/// ƒQƒbƒ^[(eqŠÖŒW)
+	/// ã‚²ãƒƒã‚¿ãƒ¼(è¦ªå­é–¢ä¿‚)
 	/// </summary>
 	/// <returns></returns>
 	Object3d* GetParent() const { return parent; }
 
 	/// <summary>
-	/// ƒZƒbƒ^[(eqŠÖŒW)
+	/// ã‚»ãƒƒã‚¿ãƒ¼(è¦ªå­é–¢ä¿‚)
 	/// </summary>
 	/// <param name="parent_"></param>
 	void SetParent(Object3d* parent_) { this->parent = parent_; }
 
 	/// <summary>
-	/// ƒZƒbƒ^[(ƒJƒƒ‰)
+	/// ã‚»ãƒƒã‚¿ãƒ¼(ã‚«ãƒ¡ãƒ©)
 	/// </summary>
 	/// <param name="camera_"></param>
 	static void SetCamera(Camera* camera_) { Object3d::camera = camera_; }
 
 	/// <summary>
-	/// ƒZƒbƒ^[(ƒ‚ƒfƒ‹)
+	/// ã‚»ãƒƒã‚¿ãƒ¼(ãƒ¢ãƒ‡ãƒ«)
 	/// </summary>
 	/// <param name="model_"></param>
 	void SetModel(Model* model_) { this->model = model_; }
 
-private: 
-	// ƒƒ“ƒo•Ï”
+private:
+	// ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 public:
 
-	ComPtr<ID3D12Resource> constBuffB0; // ’è”ƒoƒbƒtƒ@
+	ComPtr<ID3D12Resource> constBuffB0; // å®šæ•°ãƒãƒƒãƒ•ã‚¡
 
 	bool isDead_ = false;
 
-	// F
+	// è‰²
 	Vector4 color = { 1,1,1,1 };
 
-	// eƒIƒuƒWƒFƒNƒg
+	// è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	Object3d* parent = nullptr;
 
-	//ƒ‚ƒfƒ‹
+	//ãƒ¢ãƒ‡ãƒ«
 	Model* model = nullptr;
 	static Camera* camera;
 

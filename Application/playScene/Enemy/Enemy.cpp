@@ -1,5 +1,5 @@
 // Enemy.cpp
-// Enemy‚ğŠÇ—‚µ‚Ä‚¢‚é
+// Enemyã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #include "Enemy.h"
 #include "Matrix4.h"
@@ -7,7 +7,7 @@
 
 void Enemy::Initilize(Vector3 pos)
 {
-	//©‹@
+	//è‡ªæ©Ÿ
 	enemyMD = Model::LoadFromOBJ("obj3");
 	enemyObj = Object3d::Create();
 	enemyObj->SetModel(enemyMD);
@@ -28,13 +28,13 @@ void Enemy::Update(Vector3 pos)
 	len = pos - enemyObj->wtf.position;
 	len.nomalize();
 
-	switch (phase_) 
+	switch (phase_)
 	{
 	case Phase::Approch:
 
 		//enemyObj->wtf.position -= enemySpeed;
 
-		//ƒfƒXƒtƒ‰ƒO‚Ì—§‚Á‚½’e‚ğíœ
+		//ãƒ‡ã‚¹ãƒ•ãƒ©ã‚°ã®ç«‹ã£ãŸå¼¾ã‚’å‰Šé™¤
 		bullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 
 		if (shootFlg == true)
@@ -48,11 +48,11 @@ void Enemy::Update(Vector3 pos)
 
 			if (shotCool == false)
 			{
-				//’e¶¬‚µA‰Šú‰»
+				//å¼¾ç”Ÿæˆã—ã€åˆæœŸåŒ–
 				std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 				newBullet->Initilize(enemyObj);
 
-				//’e‚ğ“o˜^‚·‚é
+				//å¼¾ã‚’ç™»éŒ²ã™ã‚‹
 				bullets_.push_back(std::move(newBullet));
 
 				shotCool = true;
@@ -60,21 +60,21 @@ void Enemy::Update(Vector3 pos)
 			}
 		}
 
-		//’eXV
+		//å¼¾æ›´æ–°
 		for (std::unique_ptr<EnemyBullet>& bullet : bullets_)
 		{
 			bullet->Update(len, bulletSpeed, enemyObj);
 		}
-		
+
 		break;
 
 	case Phase::Leave:
-		
+
 		break;
 
 	case Phase::Death:
 		isDead = true;
-		
+
 		break;
 	}
 

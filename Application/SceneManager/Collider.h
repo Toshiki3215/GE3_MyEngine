@@ -1,5 +1,5 @@
 // Collider.h
-// ƒQ[ƒ€ƒV[ƒ“‚Ì“–‚½‚è”»’è‚ğŠÇ—‚µ‚Ä‚¢‚é
+// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®å½“ãŸã‚Šåˆ¤å®šã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 
@@ -7,18 +7,18 @@ class Collider
 {
 private:
 
-	//Õ“Ë”¼Œa
+	//è¡çªåŠå¾„
 	float radius = 10;
 
 public:
 
-	//”¼Œa‚ğæ“¾
+	//åŠå¾„ã‚’å–å¾—
 	float GetRadius() { return radius; }
 
-	// ”¼Œa‚ğİ’è
+	// åŠå¾„ã‚’è¨­å®š
 	void SetRadius(float r) { radius = r; }
 
-	//Õ“Ë‚ÉŒÄ‚Î‚ê‚éŠÖ”
+	//è¡çªæ™‚ã«å‘¼ã°ã‚Œã‚‹é–¢æ•°
 	void OnCollision();
 
 };

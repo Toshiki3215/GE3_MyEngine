@@ -1,5 +1,5 @@
 // Input.h
-// ƒL[“ü—Í‚Ìæ“¾‚È‚Ç‚ÌŠÇ—
+// ã‚­ãƒ¼å…¥åŠ›ã®å–å¾—ãªã©ã®ç®¡ç†
 
 #pragma once
 #include <windows.h>
@@ -13,35 +13,35 @@ public:
 
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Initialize(WinApp* winApp);
 
-	// XV
+	// æ›´æ–°
 	void Update();
 
-	// ƒL[‚ğ‰Ÿ‚µ‚½‚©
+	// ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸã‹
 	bool PushKey(BYTE keyNumber);
 
-	//ƒgƒŠƒK[
+	//ãƒˆãƒªã‚¬ãƒ¼
 	bool TriggerKey(BYTE keyNumber);
 
-	//ƒL[‚ğ—£‚µ‚½‚©
+	//ã‚­ãƒ¼ã‚’é›¢ã—ãŸã‹
 	bool ReleaseKey(BYTE keyNumber);
 
-private: // ƒƒ“ƒo•Ï”
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	// ƒL[ƒ{[ƒh‚ÌƒfƒoƒCƒX
+	// ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ãƒ‡ãƒã‚¤ã‚¹
 	ComPtr<IDirectInputDevice8> keyboard;
 
-	// DirectInput‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	// DirectInputã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	ComPtr<IDirectInput8> directInput;
 
-	// ‘SƒL[‚Ìó‘Ô
+	// å…¨ã‚­ãƒ¼ã®çŠ¶æ…‹
 	BYTE key[256] = {};
 
-	// ‘O‰ñ‚Ì‘SƒL[‚Ìó‘Ô
+	// å‰å›ã®å…¨ã‚­ãƒ¼ã®çŠ¶æ…‹
 	BYTE keyPre[256] = {};
 
 	//windwsAPI

@@ -1,5 +1,5 @@
 // Enemy.h
-// Enemy‚ğŠÇ—‚µ‚Ä‚¢‚é
+// Enemyã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 #include "DirectXInitialize.h"
@@ -8,47 +8,47 @@
 #include "Model.h"
 #include "EnemyBullet.h"
 
-class Enemy 
+class Enemy
 {
 public:
 
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	void Initilize(Vector3 pos);
 
-	// XV
+	// æ›´æ–°
 	void Update(Vector3 pos);
 
-	// •`‰æ
+	// æç”»
 	void Draw();
 
-	//“–‚½‚è”»’è
+	//å½“ãŸã‚Šåˆ¤å®š
 	void OnCollision();
 
 private:
-	
-	//©‹@
+
+	//è‡ªæ©Ÿ
 	Object3d* enemyObj = nullptr;
 	Model* enemyMD = nullptr;
 
 	Vector3 enemySpeed = { 0.0f,0.0f,0.05f };
 
-	//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«
 	uint32_t textureHandle_ = 0;
 
 	bool isDead = false;
 
-	enum class Phase 
+	enum class Phase
 	{
 		Approch,
 		Leave,
 		Death,
 	};
 
-	//ƒtƒF[ƒY
+	//ãƒ•ã‚§ãƒ¼ã‚º
 	Phase phase_ = Phase::Approch;
 	//Phase phase_ = Phase::Death;
 
-	//’e”­Ë
+	//å¼¾ç™ºå°„
 	Object3d* shootObj_ = nullptr;
 	Model* shootModel_ = nullptr;
 	bool isShootFlag = false;
@@ -68,13 +68,13 @@ private:
 
 public:
 
-	//eqŠÖŒW
+	//è¦ªå­é–¢ä¿‚
 	void SetParent(Transform* parent) { enemyObj->wtf.parent_ = parent; }
 
-	//ƒJƒƒ‰‚Æ‚ÌeqŠÖŒW
+	//ã‚«ãƒ¡ãƒ©ã¨ã®è¦ªå­é–¢ä¿‚
 	void SetParentCamera(Vector3 cameraWtf);
 
-	//“G‚Ì’eƒŠƒXƒg
+	//æ•µã®å¼¾ãƒªã‚¹ãƒˆ
 	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
 
 };

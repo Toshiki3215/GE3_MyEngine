@@ -1,11 +1,11 @@
 // EnemyBullet.cpp
-// Enemy‚ÌUŒ‚(’e)‚ðŠÇ—‚µ‚Ä‚¢‚é
+// Enemyã®æ”»æ’ƒ(å¼¾)ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #include "EnemyBullet.h"
 
 void EnemyBullet::Initilize(Object3d* enemyObj)
 {
-	//Ž©‹@‚Ì’e
+	//è‡ªæ©Ÿã®å¼¾
 	bulletModel = Model::LoadFromOBJ("obj");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);

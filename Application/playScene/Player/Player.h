@@ -1,4 +1,4 @@
-﻿// Player.h
+// Player.h
 // Playerの処理を管理している
 
 #pragma once
@@ -81,7 +81,7 @@ public:
 	/// </summary>
 	/// <param name="parent"></param>
 	void SetParent(Transform* parent) { playerObj->wtf.parent_ = parent; }
-	
+
 	/// <summary>
 	/// 当たり判定
 	/// </summary>
@@ -91,7 +91,7 @@ private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
 	DirectXInitialize* dxInit = nullptr;
-	
+
 	//自機
 	Object3d* playerObj = nullptr;
 	Model* playerMD = nullptr;

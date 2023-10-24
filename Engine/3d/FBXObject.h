@@ -1,5 +1,5 @@
 // FBXObject.h
-// FBXModelƒNƒ‰ƒX‚©‚çƒ‚ƒfƒ‹î•ñ‚ð‚à‚ç‚¢‰Šú‰»A¶¬
+// FBXModelã‚¯ãƒ©ã‚¹ã‹ã‚‰ãƒ¢ãƒ‡ãƒ«æƒ…å ±ã‚’ã‚‚ã‚‰ã„åˆæœŸåŒ–ã€ç”Ÿæˆ
 
 #pragma once
 
@@ -18,7 +18,7 @@ class FBXObject
 {
 protected:
 
-	//Microsoft::WRL::‚ðÈ—ª
+	//Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
@@ -29,61 +29,61 @@ public:
 
 private:
 
-	//ƒfƒoƒCƒX
+	//ãƒ‡ãƒã‚¤ã‚¹
 	static ID3D12Device* device;
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	static Camera* camera;
 
 public:
 
-	//ƒTƒuƒNƒ‰ƒX
+	//ã‚µãƒ–ã‚¯ãƒ©ã‚¹
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(À•W•ÏŠ·s—ñ—p)
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(åº§æ¨™å¤‰æ›è¡Œåˆ—ç”¨)
 	struct ConstBufferDataTransform
 	{
-		Matrix4 viewproj;	//ƒrƒ…[ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
-		Matrix4 world;		//ƒ[ƒ‹ƒhÀ•W
-		Vector3 cameraPos;	//ƒJƒƒ‰À•W(ƒ[ƒ‹ƒhÀ•W)
+		Matrix4 viewproj;	//ãƒ“ãƒ¥ãƒ¼ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
+		Matrix4 world;		//ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
+		Vector3 cameraPos;	//ã‚«ãƒ¡ãƒ©åº§æ¨™(ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™)
 	};
 
 public:
-	//ƒƒ“ƒoŠÖ”
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
 
-	//ƒOƒ‰ƒtƒBƒbƒNƒpƒCƒvƒ‰ƒCƒ“‚Ì¶¬
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã®ç”Ÿæˆ
 	static void CreateGraphicsPipeline();
 
 protected:
-	//ƒƒ“ƒo•Ï”
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> constBuffTrans;
 
-	//ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+	//ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 scale = { 1,1,1 };
 
-	//X,Y,ZŽ²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+	//X,Y,Zè»¸å›žã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›žè»¢è§’
 	Vector3 rotation = { 0,0,0 };
 
-	//ƒ[ƒJƒ‹À•W
+	//ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 	Vector3 position = { 0,0,0 };
 
-	//ƒ[ƒJƒ‹ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	//ãƒ­ãƒ¼ã‚«ãƒ«ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	Matrix4 matWorld;
 
-	//’è”ƒoƒbƒtƒ@(ƒXƒLƒ“)
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡(ã‚¹ã‚­ãƒ³)
 	ComPtr<ID3D12Resource> constBuffSkin;
 
 
 private:
 
-	//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+	//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 	static ComPtr<ID3D12RootSignature> rootsignature;
 
-	//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒIƒuƒWƒFƒNƒg
+	//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 
 	CD3DX12_HEAP_PROPERTIES cbheapprop{};
@@ -91,50 +91,50 @@ private:
 	CD3DX12_RESOURCE_DESC cbresdesc{};
 	CD3DX12_RESOURCE_DESC cbresdesc2{};
 
-	//ƒ‚ƒfƒ‹
+	//ãƒ¢ãƒ‡ãƒ«
 	FBXModel* fbxModel = nullptr;
- 
+
 public:
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯Žãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update();
 
-	//•`‰æ
+	//æç”»
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
-	//ƒ‚ƒfƒ‹‚ÌƒZƒbƒg
+	//ãƒ¢ãƒ‡ãƒ«ã®ã‚»ãƒƒãƒˆ
 	void SetModel(FBXModel* fbxModel) { this->fbxModel = fbxModel; }
 
-	//’è”
-	//ƒ{[ƒ“‚ÌÅ‘å”
+	//å®šæ•°
+	//ãƒœãƒ¼ãƒ³ã®æœ€å¤§æ•°
 	static const int MAX_BONES = 32;
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(ƒXƒLƒjƒ“ƒO)
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(ã‚¹ã‚­ãƒ‹ãƒ³ã‚°)
 	struct ConstBufferDataSkin
 	{
 		Matrix4 bones[MAX_BONES];
 	};
 
 private:
-	
-	//1ƒtƒŒ[ƒ€‚ÌŽžŠÔ
+
+	//1ãƒ•ãƒ¬ãƒ¼ãƒ ã®æ™‚é–“
 	FbxTime frameTime;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“ŠJŽnŽžŠÔ
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚é–“
 	FbxTime startTime;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“I—¹ŽžŠÔ
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚é–“
 	FbxTime endTime;
 
-	//Œ»ÝŽžŠÔ(ƒAƒjƒ[ƒVƒ‡ƒ“)
+	//ç¾åœ¨æ™‚é–“(ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³)
 	FbxTime currentTime;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“Ä¶’†
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†ç”Ÿä¸­
 	bool isPlay = false;
 
 public:
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“ŠJŽn
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹
 	void PlayAnimation();
 
 };

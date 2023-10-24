@@ -1,40 +1,40 @@
 // Vector4.h
-// ©ì‚Ì”Šw—pƒwƒbƒ_[(lŸŒ³ƒxƒNƒgƒ‹)
+// è‡ªä½œã®æ•°å­¦ç”¨ãƒ˜ãƒƒãƒ€ãƒ¼(å››æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«)
 
 #pragma once
 
 class Vector4
 {
 public:
-	float x;//x¬•ª
-	float y;//y¬•ª
-	float z;//z¬•ª
+	float x;//xæˆåˆ†
+	float y;//yæˆåˆ†
+	float z;//zæˆåˆ†
 	float w;//w
 
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector4();//—ëƒxƒNƒgƒ‹
-	Vector4(float x, float y, float z, float w);//¬•ª‚ğw’è‚µ‚Ä¶¬
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Vector4();//é›¶ãƒ™ã‚¯ãƒˆãƒ«
+	Vector4(float x, float y, float z, float w);//æˆåˆ†ã‚’æŒ‡å®šã—ã¦ç”Ÿæˆ
 
-	float Length()const;//ƒmƒ‹ƒ€‚ğ‹‚ß‚é
+	float Length()const;//ãƒãƒ«ãƒ ã‚’æ±‚ã‚ã‚‹
 	float LengthSquared()const;
-	Vector4 Normalization()const;//³‹K‰»‚·‚é
-	Vector4& Normal();//³‹K‰»‚·‚é
-	float Dot(const Vector4& v)const;//“àÏ‚ğ‹‚ß‚é
-	Vector4 Cross(const Vector4& v)const;//ŠOÏ‚ğ‹‚ß‚é
+	Vector4 Normalization()const;//æ­£è¦åŒ–ã™ã‚‹
+	Vector4& Normal();//æ­£è¦åŒ–ã™ã‚‹
+	float Dot(const Vector4& v)const;//å†…ç©ã‚’æ±‚ã‚ã‚‹
+	Vector4 Cross(const Vector4& v)const;//å¤–ç©ã‚’æ±‚ã‚ã‚‹
 
-	//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector4 operator+() const;
 	Vector4 operator-() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector4& operator+=(const Vector4& v);
 	Vector4& operator-=(const Vector4& v);
 	Vector4& operator*=(float s);
 	Vector4& operator/=(float s);
 };
 
-//2€‰‰ZqƒI[ƒo[ƒ[ƒh
+//2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 const Vector4 operator+(const Vector4& v1, const Vector4& v2);
 
 const Vector4 operator-(const Vector4& v1, const Vector4& v2);

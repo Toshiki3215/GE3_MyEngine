@@ -1,14 +1,14 @@
 // Affin.cpp
-// ƒAƒtƒBƒ“s—ñ—pƒwƒbƒ_[ƒtƒ@ƒCƒ‹
+// ã‚¢ãƒ•ã‚£ãƒ³è¡Œåˆ—ç”¨ãƒ˜ãƒƒãƒ€ãƒ¼ãƒ•ã‚¡ã‚¤ãƒ«
 
 #include "Affin.h"
 #include "math.h"
 #include <cmath>
 
 /// <summary>
-/// ’PˆÊs—ñİ’è
+/// å˜ä½è¡Œåˆ—è¨­å®š
 /// </summary>
-Matrix4 Affin::matUnit() 
+Matrix4 Affin::matUnit()
 {
 	Matrix4 matUnit;
 
@@ -18,8 +18,8 @@ Matrix4 Affin::matUnit()
 	return matUnit;
 }
 
-// •½sˆÚ“®
-Matrix4 Affin::matTrans(float moveX, float moveY, float moveZ) 
+// å¹³è¡Œç§»å‹•
+Matrix4 Affin::matTrans(float moveX, float moveY, float moveZ)
 {
 	Matrix4 matTrans;
 
@@ -29,8 +29,8 @@ Matrix4 Affin::matTrans(float moveX, float moveY, float moveZ)
 	return matTrans;
 }
 
-// •½sˆÚ“®
-Matrix4 Affin::matTrans(Vector3 move) 
+// å¹³è¡Œç§»å‹•
+Matrix4 Affin::matTrans(Vector3 move)
 {
 	Matrix4 matTrans;
 
@@ -40,8 +40,8 @@ Matrix4 Affin::matTrans(Vector3 move)
 	return matTrans;
 }
 
-// “x”–@ -> ƒ‰ƒWƒAƒ“
-float Affin::radConvert(float value) 
+// åº¦æ•°æ³• -> ãƒ©ã‚¸ã‚¢ãƒ³
+float Affin::radConvert(float value)
 {
 	float radValue;
 
@@ -50,8 +50,8 @@ float Affin::radConvert(float value)
 	return radValue;
 }
 
-// ƒ‰ƒWƒAƒ“ -> “x”–@
-float Affin::degConvert(float value) 
+// ãƒ©ã‚¸ã‚¢ãƒ³ -> åº¦æ•°æ³•
+float Affin::degConvert(float value)
 {
 	float degValue;
 
@@ -60,8 +60,8 @@ float Affin::degConvert(float value)
 	return degValue;
 }
 
-// ‰ñ“] X•ûŒü
-Matrix4 Affin::matRotateX(float rotationX) 
+// å›è»¢ Xæ–¹å‘
+Matrix4 Affin::matRotateX(float rotationX)
 {
 	float cosRad = cos(rotationX);
 	float sinRad = sin(rotationX);
@@ -73,8 +73,8 @@ Matrix4 Affin::matRotateX(float rotationX)
 	return matRotX;
 }
 
-// ‰ñ“] Y•ûŒü
-Matrix4 Affin::matRotateY(float rotationY) 
+// å›è»¢ Yæ–¹å‘
+Matrix4 Affin::matRotateY(float rotationY)
 {
 	float cosRad = cos(rotationY);
 	float sinRad = sin(rotationY);
@@ -86,8 +86,8 @@ Matrix4 Affin::matRotateY(float rotationY)
 	return matRotY;
 }
 
-// ‰ñ“] Z•ûŒü
-Matrix4 Affin::matRotateZ(float rotationZ) 
+// å›è»¢ Zæ–¹å‘
+Matrix4 Affin::matRotateZ(float rotationZ)
 {
 	float cosRad = cos(rotationZ);
 	float sinRad = sin(rotationZ);
@@ -99,8 +99,8 @@ Matrix4 Affin::matRotateZ(float rotationZ)
 	return matRotZ;
 }
 
-// ‰ñ“] Z->X->Y
-Matrix4 Affin::matRotation(float rotateX, float rotateY, float rotateZ) 
+// å›è»¢ Z->X->Y
+Matrix4 Affin::matRotation(float rotateX, float rotateY, float rotateZ)
 {
 
 	Matrix4 x = matRotateX(rotateX);
@@ -115,8 +115,8 @@ Matrix4 Affin::matRotation(float rotateX, float rotateY, float rotateZ)
 	return matRot;
 }
 
-// ‰ñ“] Z->X->Y
-Matrix4 Affin::matRotation(Vector3 rotate) 
+// å›è»¢ Z->X->Y
+Matrix4 Affin::matRotation(Vector3 rotate)
 {
 
 	Matrix4 x = matRotateX(rotate.x);
@@ -131,8 +131,8 @@ Matrix4 Affin::matRotation(Vector3 rotate)
 	return matRot;
 }
 
-// Šgk
-Matrix4 Affin::matScale(float scaleX, float scaleY, float scaleZ) 
+// æ‹¡ç¸®
+Matrix4 Affin::matScale(float scaleX, float scaleY, float scaleZ)
 {
 
 	Matrix4 matScale = { scaleX, 0.0f, 0.0f,   0.0f, 0.0f, scaleY, 0.0f, 0.0f,
@@ -141,8 +141,8 @@ Matrix4 Affin::matScale(float scaleX, float scaleY, float scaleZ)
 	return matScale;
 }
 
-// Šgk
-Matrix4 Affin::matScale(Vector3 scale) 
+// æ‹¡ç¸®
+Matrix4 Affin::matScale(Vector3 scale)
 {
 
 	Matrix4 matScale = { scale.x, 0.0f, 0.0f,    0.0f, 0.0f, scale.y, 0.0f, 0.0f,
@@ -151,8 +151,8 @@ Matrix4 Affin::matScale(Vector3 scale)
 	return matScale;
 }
 
-// Šgk*‰ñ“]*ˆÚ“®
-Matrix4 Affin::matWorld(Vector3 move, Vector3 rotate, Vector3 scale) 
+// æ‹¡ç¸®*å›è»¢*ç§»å‹•
+Matrix4 Affin::matWorld(Vector3 move, Vector3 rotate, Vector3 scale)
 {
 	Matrix4 scaleM = matScale(scale);
 	Matrix4 rotateM = matRotation(rotate);
@@ -166,8 +166,8 @@ Matrix4 Affin::matWorld(Vector3 move, Vector3 rotate, Vector3 scale)
 	return matWorld;
 }
 
-//	ƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z
-Vector3 Affin::VecMat(Vector3 vec, Matrix4 mat) 
+//	ãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—
+Vector3 Affin::VecMat(Vector3 vec, Matrix4 mat)
 {
 
 	float x = vec.x * mat.m[0][0] + vec.y * mat.m[1][0] + vec.z * mat.m[2][0] + 0 * mat.m[3][0];
@@ -181,7 +181,7 @@ Vector3 Affin::VecMat(Vector3 vec, Matrix4 mat)
 	return re;
 }
 
-Vector3 Affin::VecMat3D(Vector3 vec, Matrix4 mat) 
+Vector3 Affin::VecMat3D(Vector3 vec, Matrix4 mat)
 {
 	Vector3 Result = { 0, 0, 0 };
 
@@ -194,8 +194,8 @@ Vector3 Affin::VecMat3D(Vector3 vec, Matrix4 mat)
 	return Result;
 }
 
-//	ƒ[ƒ‹ƒhÀ•Wæ“¾
-Vector3 Affin::GetWorldTrans(Matrix4 matrix) 
+//	ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™å–å¾—
+Vector3 Affin::GetWorldTrans(Matrix4 matrix)
 {
 	Vector3 mat;
 
@@ -206,8 +206,8 @@ Vector3 Affin::GetWorldTrans(Matrix4 matrix)
 	return mat;
 }
 
-//	W œZ
-Vector3 Affin::wDivision(Vector3 vector, Matrix4 matrix) 
+//	W é™¤ç®—
+Vector3 Affin::wDivision(Vector3 vector, Matrix4 matrix)
 {
 	Vector3 result;
 	float w;
@@ -215,7 +215,7 @@ Vector3 Affin::wDivision(Vector3 vector, Matrix4 matrix)
 	w = vector.x * matrix.m[0][3] + vector.y * matrix.m[1][3] + vector.z * matrix.m[2][3] +
 		matrix.m[3][3];
 
-	result = 
+	result =
 	{
 	  (vector.x * matrix.m[0][0] + vector.y * matrix.m[1][0] + vector.z * matrix.m[2][0] +
 	   matrix.m[3][0]) /
@@ -230,7 +230,7 @@ Vector3 Affin::wDivision(Vector3 vector, Matrix4 matrix)
 	return result;
 }
 
-//sinAcos‚ğ—¼•ûo‚·
+//sinã€cosã‚’ä¸¡æ–¹å‡ºã™
 void Affin::SinCos(float& sin_, float& cos_, float angle)
 {
 	sin_ = sin(angle);

@@ -1,5 +1,5 @@
 // GameScene.h
-// ƒQ[ƒ€ƒV[ƒ“‚ğŠÇ—‚µ‚Ä‚¢‚é
+// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #pragma once
 
@@ -21,115 +21,115 @@
 #include "SceneTransition.h"
 
 /// <summary>
-/// ƒQ[ƒ€ƒV[ƒ“
+/// ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 /// </summary>
 class GameScene
 {
-private: // Ã“Iƒƒ“ƒo•Ï”
+private: // é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 	//static const int debugTextTexNumber = 0;
 
-public: // ƒƒ“ƒoŠÖ”
+public: // ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒNƒ‰ƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆã‚¯ãƒ©ã‚¿
 	/// </summary>
 	GameScene();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~GameScene();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize(DirectXInitialize* dxInit, Input* input);
 
 	/// <summary>
-	/// ‰Šú‰»—pƒŠƒZƒbƒgŠÖ”
+	/// åˆæœŸåŒ–ç”¨ãƒªã‚»ãƒƒãƒˆé–¢æ•°
 	/// </summary>
 	void Reset();
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 	/// <summary>
-	/// ƒfƒoƒbƒOƒJƒƒ‰
+	/// ãƒ‡ãƒãƒƒã‚°ã‚«ãƒ¡ãƒ©
 	/// </summary>
 	void CameraMove();
 
 	/// <summary>
-	/// ƒJƒƒ‰‚ÌXVˆ—
+	/// ã‚«ãƒ¡ãƒ©ã®æ›´æ–°å‡¦ç†
 	/// </summary>
 	void CameraUpdate();
 
 	/// <summary>
-	/// ƒXƒ^[ƒg‰‰o
+	/// ã‚¹ã‚¿ãƒ¼ãƒˆæ¼”å‡º
 	/// </summary>
 	void GameStartEfe(bool isStart, bool isStart2);
 
 	/// <summary>
-	/// ƒp[ƒeƒBƒNƒ‹XVˆ—
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æ›´æ–°å‡¦ç†
 	/// </summary>
 	void EffUpdate();
 	void EffUpdate2();
 
 	/// <summary>
-	/// ƒp[ƒeƒBƒNƒ‹•`‰æ
+	/// ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»
 	/// </summary>
 	void EffDraw();
 	void EffDraw2();
 
 	/// <summary>
-	/// “–‚½‚è”»’è
+	/// å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
 	void CheckAllCollisions();
-	
-private: // ƒƒ“ƒo•Ï” (ŒÅ’è)
+
+private: // ãƒ¡ãƒ³ãƒå¤‰æ•° (å›ºå®š)
 	DirectXInitialize* dxInit = nullptr;
 	Input* input = nullptr;
 
 	SpriteCommon* spriteCommon = nullptr;
 
-	//ƒp[ƒeƒBƒNƒ‹ƒNƒ‰ƒX‚Ì‰Šú‰» 
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ– 
 	ParticleManager* particleManager = nullptr;
 
-private:	//ƒƒ“ƒo•Ï”
+private:	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 	const float PI = 3.141592f;
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	Camera* camera = nullptr;
 	Transform camWtf;
 	Transform targetWtf;
 	float targetTheta = 0.0f;
 	float targetDistance = 10;
 	float camMoveSpeed = 0.1f;
-	float camRotaSpeed = PI/180;
+	float camRotaSpeed = PI / 180;
 
 	RailCamera* railCamera = nullptr;
 
-	//ƒ‚ƒfƒ‹
+	//ãƒ¢ãƒ‡ãƒ«
 	Object3d* skydome = nullptr;
 	Model* skydomeMD = nullptr;
 
 	Object3d* targetObj = nullptr;
 	Model* targetMD = nullptr;
 
-	//ƒQ[ƒ€ƒtƒ[
+	//ã‚²ãƒ¼ãƒ ãƒ•ãƒ­ãƒ¼
 	enum class Scene
 	{
-			Title,
-			Select,
-			Play,
-			Clear,
-			Gameover,
+		Title,
+		Select,
+		Play,
+		Clear,
+		Gameover,
 	};
 
 	Scene scene = Scene::Title;
@@ -139,7 +139,7 @@ private:	//ƒƒ“ƒo•Ï”
 	FBXModel* fbxModel1 = nullptr;
 
 	FBXObject* fbxObject1 = nullptr;
-	
+
 	FBXModel* fbxModel2 = nullptr;
 
 	FBXObject* fbxObject2 = nullptr;
@@ -166,7 +166,7 @@ private:	//ƒƒ“ƒo•Ï”
 	bool isStart = FALSE;
 	bool isStart2 = FALSE;
 
-	Vector4 a = { 0,0,0,0.1f};
+	Vector4 a = { 0,0,0,0.1f };
 	Vector4 color = { 1,1,1,1 };
 
 };

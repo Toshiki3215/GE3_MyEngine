@@ -1,5 +1,5 @@
 // ImguiManager.h
-// Imgui‚Ì‰Šú‰»ˆ—‚È‚Ç‚ÌŠÇ—
+// Imguiã®åˆæœŸåŒ–å‡¦ç†ãªã©ã®ç®¡ç†
 
 #pragma once
 #include "WindowsApp.h"
@@ -10,29 +10,29 @@ class ImguiManager
 public:
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="winApp"></param>
 	/// <param name="dxInit"></param>
 	void Initialize(WinApp* winApp, DirectXInitialize* dxInit);
 
 	/// <summary>
-	/// I—¹
+	/// çµ‚äº†
 	/// </summary>
 	void Finalize();
 
 	/// <summary>
-	/// ImguiƒtƒŒ[ƒ€ŠJn
+	/// Imguiãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	/// </summary>
 	void Begin();
 
 	/// <summary>
-	/// •`‰æ‘O€”õ
+	/// æç”»å‰æº–å‚™
 	/// </summary>
 	void End();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
@@ -42,7 +42,7 @@ private:
 
 	DirectXInitialize* dxInit_;
 
-	//SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	//SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap;
 
 };

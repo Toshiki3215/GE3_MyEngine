@@ -1,13 +1,13 @@
 // ConvertXM.cpp
-// DirectXMath‚Æ©ì‚Ì”ŠwƒNƒ‰ƒX‚Ì•ÏŠ·
+// DirectXMathã¨è‡ªä½œã®æ•°å­¦ã‚¯ãƒ©ã‚¹ã®å¤‰æ›
 
 #include "ConvertXM.h"
 
-Matrix4 ConvertXM::ConvertXMMATtoMat4(XMMATRIX XMMat) 
+Matrix4 ConvertXM::ConvertXMMATtoMat4(XMMATRIX XMMat)
 {
 	Matrix4 result;
 
-	for (int i = 0; i < 4; i++) 
+	for (int i = 0; i < 4; i++)
 	{
 
 		result.m[i][0] = XMVectorGetX(XMMat.r[i]);
@@ -19,7 +19,7 @@ Matrix4 ConvertXM::ConvertXMMATtoMat4(XMMATRIX XMMat)
 	return result;
 }
 
-XMMATRIX ConvertXM::ConvertMat4toXMMAT(Matrix4 m) 
+XMMATRIX ConvertXM::ConvertMat4toXMMAT(Matrix4 m)
 {
 	XMMATRIX result;
 	result = XMMatrixSet(
@@ -31,7 +31,7 @@ XMMATRIX ConvertXM::ConvertMat4toXMMAT(Matrix4 m)
 	return result;
 }
 
-Vector3 ConvertXM::ConvertXMFlo3toVec3(XMFLOAT3 XMFlo3) 
+Vector3 ConvertXM::ConvertXMFlo3toVec3(XMFLOAT3 XMFlo3)
 {
 	Vector3 result;
 	result.x = XMFlo3.x;
@@ -41,7 +41,7 @@ Vector3 ConvertXM::ConvertXMFlo3toVec3(XMFLOAT3 XMFlo3)
 	return result;
 }
 
-XMFLOAT3 ConvertXM::ConvertVec3toXMFlo3(Vector3 vec3) 
+XMFLOAT3 ConvertXM::ConvertVec3toXMFlo3(Vector3 vec3)
 {
 	XMFLOAT3 result;
 	result.x = vec3.x;

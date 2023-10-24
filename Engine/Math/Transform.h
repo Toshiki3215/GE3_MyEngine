@@ -1,5 +1,5 @@
 // Transform.h
-// ƒ[ƒ‹ƒhÀ•W(WorldTransform)‚Ìì¬
+// ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™(WorldTransform)ã®ä½œæˆ
 
 #pragma once
 
@@ -13,25 +13,25 @@ public:
 	~Transform();
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize();
 
 	/// <summary>
-	/// s—ñXV
+	/// è¡Œåˆ—æ›´æ–°
 	/// </summary>
 	void UpdateMat();
 
 public:
-	// ƒ[ƒJƒ‹ƒXƒP[ƒ‹
+	// ãƒ­ãƒ¼ã‚«ãƒ«ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 scale = { 1,1,1 };
-	// X,Y,ZŽ²‰ñ‚è‚Ìƒ[ƒJƒ‹‰ñ“]Šp
+	// X,Y,Zè»¸å›žã‚Šã®ãƒ­ãƒ¼ã‚«ãƒ«å›žè»¢è§’
 	Vector3 rotation = { 0,0,0 };
-	// ƒ[ƒJƒ‹À•W
+	// ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™
 	Vector3 position = { 0,0,-1.0 };
-	// ƒ[ƒJƒ‹ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	// ãƒ­ãƒ¼ã‚«ãƒ«ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	Matrix4 matWorld = Affin::matUnit();
-	//e‚Æ‚È‚éƒ[ƒ‹ƒh•ÏŠ·‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	//è¦ªã¨ãªã‚‹ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›ã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	Transform* parent_ = nullptr;
 
 };

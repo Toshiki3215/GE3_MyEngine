@@ -1,5 +1,5 @@
 // Quatenion.h
-// ƒNƒH[ƒ^ƒjƒIƒ“—pƒwƒbƒ_[
+// ã‚¯ã‚©ãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ç”¨ãƒ˜ãƒƒãƒ€ãƒ¼
 
 #pragma once
 #include"vector3.h"
@@ -15,35 +15,35 @@ public:
 	Quaternion();
 	Quaternion(float x, float y, float z, float w);
 
-	//Quaternion‚ÌÏ
+	//Quaternionã®ç©
 	Quaternion Multiply(Quaternion quaternion);
 
-	//’PˆÊQuaternion‚ğ•Ô‚·
+	//å˜ä½Quaternionã‚’è¿”ã™
 	Quaternion IdentityQuaternion();
 
-	//‹¤–ğQuaternion‚ğ•Ô‚·
+	//å…±å½¹Quaternionã‚’è¿”ã™
 	Quaternion Conjugate();
 
-	//Quaternion‚Ìnorm‚ğ•Ô‚·
+	//Quaternionã®normã‚’è¿”ã™
 	float Norm() const;
 
-	//³‹K‰»‚µ‚½Quaternion‚ğ•Ô‚·
+	//æ­£è¦åŒ–ã—ãŸQuaternionã‚’è¿”ã™
 	Quaternion Normalize();
 
-	//‹tQuaternion‚ğ•Ô‚·
+	//é€†Quaternionã‚’è¿”ã™
 	Quaternion Inverse();
 
-	//ƒxƒNƒgƒ‹‚ğQuaternion‚Å‰ñ“]‚³‚¹‚½Œ‹‰Ê‚ÌƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’Quaternionã§å›è»¢ã•ã›ãŸçµæœã®ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 	Vector3 RotateVector(const Vector3& vector);
 
-	//Quaternion‚©‚ç‰ñ“]s—ñ‚ğ‹‚ß‚é
+	//Quaternionã‹ã‚‰å›è»¢è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 	Matrix4 MakeRotateMatrix();
 
-	//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Quaternion operator+() const;
 	Quaternion operator-() const;
 
-	//‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	//ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Quaternion& operator+=(const Quaternion& v);
 	Quaternion& operator-=(const Quaternion& v);
 	Quaternion& operator*=(float s);
@@ -53,14 +53,14 @@ public:
 
 Vector3 MatVector(const Vector3& vector, const Matrix4& matrix);
 
-//”CˆÓ²‰ñ“]‚ğ•\‚·Quaternion‚Ì¶¬
+//ä»»æ„è»¸å›è»¢ã‚’è¡¨ã™Quaternionã®ç”Ÿæˆ
 Quaternion MakeAxisAngle(const Vector3& axis, float radian);
 
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t);
 
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v);
 
-//2€‰‰ZqƒI[ƒo[ƒ[ƒh
+//2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 const Quaternion operator+(const Quaternion& v1, const Quaternion& v2);
 const Quaternion operator-(const Quaternion& v1, const Quaternion& v2);
 const Quaternion operator*(const Quaternion& v, float s);

@@ -1,5 +1,5 @@
 // SceneTransition.cpp
-// ƒV[ƒ“‘JˆÚ‚ÌŠÇ—
+// ã‚·ãƒ¼ãƒ³é·ç§»ã®ç®¡ç†
 
 #include "SceneTransition.h"
 
@@ -12,16 +12,17 @@ SceneTransition::~SceneTransition()
 {
 	delete transTex1;
 	delete transTex2;
+	delete UITex;
 }
 
 void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 {
-	// nullptrƒ`ƒFƒbƒN
+	// nullptrãƒã‚§ãƒƒã‚¯
 	assert(input);
 
 	input_ = input;
 
-	//ƒXƒvƒ‰ƒCƒg‹¤’Ê•”•ª‚Ì‰Šú‰»
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šéƒ¨åˆ†ã®åˆæœŸåŒ–
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxInit);
 
@@ -35,17 +36,18 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 	transTex2->SetPozition({ rightTransPos,defaultPos });
 	transTex2->SetSize({ 1280.0f, 720.0f });
 
+	UITex = new Sprite();
+	UITex->Initialize(spriteCommon);
+	UITex->SetPozition({ 0,0 });
+	UITex->SetSize({ 1280.0f, 720.0f });
+
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­è¾¼
 	spriteCommon->LoadTexture(6, "transition1.png");
 	transTex1->SetTextureIndex(6);
 
 	spriteCommon->LoadTexture(7, "transition2.png");
 	transTex2->SetTextureIndex(7);
 
-	UITex = new Sprite();
-	UITex->Initialize(spriteCommon);
-	UITex->SetPozition({ 0,0 });
-	UITex->SetSize({ 1280.0f, 720.0f });
-	//ƒeƒNƒXƒ`ƒƒ“Çž
 	spriteCommon->LoadTexture(8, "UI.png");
 	UITex->SetTextureIndex(8);
 }
@@ -53,7 +55,6 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 void SceneTransition::UpdateStart()
 {
 	animeTimer++;
-
 
 	leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	if (leftTransPos >= defaultPos)

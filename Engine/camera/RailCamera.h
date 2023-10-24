@@ -1,5 +1,5 @@
 // RailCamera.h
-// ©ì‚ÌƒJƒƒ‰—pƒwƒbƒ_[(ƒŒ[ƒ‹ƒJƒƒ‰)
+// è‡ªä½œã®ã‚«ãƒ¡ãƒ©ç”¨ãƒ˜ãƒƒãƒ€ãƒ¼(ãƒ¬ãƒ¼ãƒ«ã‚«ãƒ¡ãƒ©)
 
 #pragma once
 #include "Vector3.h"
@@ -14,30 +14,30 @@ public:
 	RailCamera(int window_width, int window_height);
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="wtf"></param>
 	void Initialize(Transform wtf);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	/// <param name="wtf"></param>
 	void Update(Transform wtf);
 
 	/// <summary>
-	/// ƒrƒ…[s—ñ‚ğXV
+	/// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
 	/// </summary>
 	void UpdateViewMatrix();
 
 	/// <summary>
-	/// ƒrƒ…[s—ñ‚ğXV
+	/// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã‚’æ›´æ–°
 	/// </summary>
 	/// <param name="newEye"></param>
 	void UpdateViewMatrix(Vector3 newEye);
 
 	/// <summary>
-	/// Ë‰es—ñ‚ğXV
+	/// å°„å½±è¡Œåˆ—ã‚’æ›´æ–°
 	/// </summary>
 	void UpdateProjectionMatrix();
 
@@ -45,17 +45,17 @@ public:
 	float FieldOfViewY();
 
 	/// <summary>
-	/// ‹“_À•W‚Ìİ’è
+	/// è¦–ç‚¹åº§æ¨™ã®è¨­å®š
 	/// </summary>
 	/// <param name="eye"></param>
 	inline void SetEye(Vector3 eye)
 	{
-		this->eye = eye; 
+		this->eye = eye;
 		viewDirty = true;
 	}
 
 	/// <summary>
-	/// ’‹“_À•W‚Ìİ’è
+	/// æ³¨è¦–ç‚¹åº§æ¨™ã®è¨­å®š
 	/// </summary>
 	/// <param name="eye"></param>
 	inline void SetTarget(Vector3 target)
@@ -65,7 +65,7 @@ public:
 	}
 
 	/// <summary>
-	/// ‹“_À•W‚Ìæ“¾
+	/// è¦–ç‚¹åº§æ¨™ã®å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	Vector3 GetEye()
@@ -74,7 +74,7 @@ public:
 	}
 
 	/// <summary>
-	/// ’‹“_À•W‚Ìæ“¾
+	/// æ³¨è¦–ç‚¹åº§æ¨™ã®å–å¾—
 	/// </summary>
 	/// <returns></returns>
 	Transform GetWtf()
@@ -84,30 +84,30 @@ public:
 
 private:
 
-	// ƒrƒ…[s—ñ
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 	Matrix4 matView = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
-	// ƒrƒ‹ƒ{[ƒhs—ñ
+	// ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	Matrix4 matBillboard = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
-	// Y²‰ñ‚èƒrƒ‹ƒ{[ƒhs—ñ
+	// Yè»¸å›ã‚Šãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	Matrix4 matBillboardY = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
-	// Ë‰es—ñ
+	// å°„å½±è¡Œåˆ—
 	Matrix4 matProjection = ConvertXM::ConvertXMMATtoMat4(DirectX::XMMatrixIdentity());
-	// ƒrƒ…[Ë‰es—ñ
+	// ãƒ“ãƒ¥ãƒ¼å°„å½±è¡Œåˆ—
 	Matrix4 matViewProjection;
 
-	// ‹“_À•W
+	// è¦–ç‚¹åº§æ¨™
 	Vector3 eye = { 0, 0, -1 };
 
-	// ’‹“_À•W
+	// æ³¨è¦–ç‚¹åº§æ¨™
 	Vector3 target = { 0, 0, 0 };
 
-	// ã•ûŒüƒxƒNƒgƒ‹
+	// ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 up = { 0, 1, 0 };
 
-	// ƒAƒXƒyƒNƒg”ä
+	// ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
 	float aspectRatio = 1.0f;
 
-	// ƒrƒ…[s—ñƒ_[ƒeƒBƒtƒ‰ƒO
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°
 	bool viewDirty = false;
 
 	Transform railCameraWtf;

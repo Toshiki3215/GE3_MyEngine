@@ -1,4 +1,4 @@
-﻿// Player.cpp
+// Player.cpp
 // Playerの処理を管理している
 
 #include "Player.h"

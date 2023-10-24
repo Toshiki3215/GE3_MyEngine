@@ -1,5 +1,5 @@
 // TitleScene.cpp
-// ƒ^ƒCƒgƒ‹ƒV[ƒ“‚ðŠÇ—‚µ‚Ä‚¢‚é
+// ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #include "TitleScene.h"
 
@@ -20,12 +20,12 @@ TitleScene::~TitleScene()
 
 void TitleScene::Initialize(DirectXInitialize* dxInit, Input* input)
 {
-	// nullptrƒ`ƒFƒbƒN
+	// nullptrãƒã‚§ãƒƒã‚¯
 	assert(input);
 
 	input_ = input;
 
-	//ƒXƒvƒ‰ƒCƒg‹¤’Ê•”•ª‚Ì‰Šú‰»
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆå…±é€šéƒ¨åˆ†ã®åˆæœŸåŒ–
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxInit);
 
@@ -134,7 +134,7 @@ void TitleScene::Draw()
 	{
 		selectBar->Draw();
 	}
-	
+
 	if (selectBarPosY <= posMax)
 	{
 		text1->Draw();

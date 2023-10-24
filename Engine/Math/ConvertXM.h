@@ -1,5 +1,5 @@
 // ConvertXM.h
-// DirectXMath‚Æ©ì‚Ì”ŠwƒNƒ‰ƒX‚Ì•ÏŠ·
+// DirectXMathã¨è‡ªä½œã®æ•°å­¦ã‚¯ãƒ©ã‚¹ã®å¤‰æ›
 
 #pragma once
 #include <DirectXMath.h>
@@ -13,35 +13,35 @@ class ConvertXM
 public:
 
 	/// <summary>
-	/// XMMatrix‚©‚çMatrix4‚É•ÏŠ·
+	/// XMMatrixã‹ã‚‰Matrix4ã«å¤‰æ›
 	/// </summary>
 	/// <param name="XMMat"></param>
 	/// <returns></returns>
-	static Matrix4 ConvertXMMATtoMat4( XMMATRIX XMMat);
+	static Matrix4 ConvertXMMATtoMat4(XMMATRIX XMMat);
 
 	/// <summary>
-	/// Matrix4‚©‚çXMMatrix‚É•ÏŠ·
+	/// Matrix4ã‹ã‚‰XMMatrixã«å¤‰æ›
 	/// </summary>
 	/// <param name="XMMat"></param>
 	/// <returns></returns>
 	static XMMATRIX ConvertMat4toXMMAT(Matrix4 Mat4);
 
 	/// <summary>
-	/// XMFLOAT3‚ğVector3‚É•ÏŠ·
+	/// XMFLOAT3ã‚’Vector3ã«å¤‰æ›
 	/// </summary>
 	/// <param name="XMFlo3"></param>
 	/// <returns></returns>
 	static Vector3 ConvertXMFlo3toVec3(XMFLOAT3 XMFlo3);
 
 	/// <summary>
-	/// Vector3‚ğXMFLOAT3‚É•ÏŠ·
+	/// Vector3ã‚’XMFLOAT3ã«å¤‰æ›
 	/// </summary>
 	/// <param name="vec3"></param>
 	/// <returns></returns>
 	static XMFLOAT3 ConvertVec3toXMFlo3(Vector3 vec3);
 
 private:
-	
+
 	XMMATRIX xmMat;
 	Matrix4 mat4;
 

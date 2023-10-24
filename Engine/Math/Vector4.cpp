@@ -1,5 +1,5 @@
 // Vector4.cpp
-// 自作の数学用ヘッダー(四次元ベクトル)
+// 閾ｪ菴懊�ｮ謨ｰ蟄ｦ逕ｨ繝倥ャ繝繝ｼ(蝗帶ｬ｡蜈�繝吶け繝医Ν)
 
 #include "Vector4.h"
 #include "Vector3.h"

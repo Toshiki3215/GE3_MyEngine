@@ -1,11 +1,11 @@
 // PlayerBullet.cpp
-// ƒvƒŒƒCƒ„[‚ÌUŒ‚(’e)‚ðŠÇ—‚µ‚Ä‚¢‚é
+// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ”»æ’ƒ(å¼¾)ã‚’ç®¡ç†ã—ã¦ã„ã‚‹
 
 #include "PlayerBullet.h"
 
-void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj,Vector3 scale)
+void PlayerBullet::Initilize(Object3d* playerObj, Object3d* retObj, Vector3 scale)
 {
-	//Ž©‹@‚Ì’e
+	//è‡ªæ©Ÿã®å¼¾
 	bulletModel = Model::LoadFromOBJ("obj4");
 	bulletObj = Object3d::Create();
 	bulletObj->SetModel(bulletModel);

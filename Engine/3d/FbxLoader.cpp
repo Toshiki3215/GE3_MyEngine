@@ -1,4 +1,4 @@
-﻿// FBXLoader.cpp
+// FBXLoader.cpp
 // FBXファイルの読み込みを管理している
 
 #include "FbxLoader.h"

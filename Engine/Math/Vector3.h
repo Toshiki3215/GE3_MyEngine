@@ -1,5 +1,5 @@
 // Vector3.h
-// ©ì‚Ì”Šw—pƒwƒbƒ_[(OŸŒ³ƒxƒNƒgƒ‹)
+// è‡ªä½œã®æ•°å­¦ç”¨ãƒ˜ãƒƒãƒ€ãƒ¼(ä¸‰æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«)
 
 #pragma once
 #include <DirectXMath.h>
@@ -23,18 +23,18 @@ public:
 	Vector3 cross(const Vector3& v) const;
 	static const Vector3 lerp(const Vector3& start, const Vector3& end, const float t);
 
-	//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3 operator+() const;
 	Vector3 operator-() const;
 
-	// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3& operator+=(const Vector3& v);
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
 	Vector3& operator/=(float s);
 };
 
-//2€‰‰ZqƒI[ƒo[ƒ[ƒh
+//2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 const Vector3 operator+(const Vector3& v1, const Vector3& v2);
 const Vector3 operator-(const Vector3& v1, const Vector3& v2);
 const Vector3 operator*(const Vector3& v, float s);

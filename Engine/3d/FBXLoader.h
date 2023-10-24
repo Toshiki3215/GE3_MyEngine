@@ -1,4 +1,4 @@
-﻿// FBXLoader.h
+// FBXLoader.h
 // FBXファイルの読み込みを管理している
 
 #pragma once
