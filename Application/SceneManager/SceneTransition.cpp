@@ -40,6 +40,14 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	spriteCommon->LoadTexture(7, "transition2.png");
 	transTex2->SetTextureIndex(7);
+
+	UITex = new Sprite();
+	UITex->Initialize(spriteCommon);
+	UITex->SetPozition({ 0,0 });
+	UITex->SetSize({ 1280.0f, 720.0f });
+	//テクスチャ読込
+	spriteCommon->LoadTexture(8, "UI.png");
+	UITex->SetTextureIndex(8);
 }
 
 void SceneTransition::UpdateStart()
@@ -98,6 +106,11 @@ void SceneTransition::UpdateEnd()
 		}
 	}
 
+	if (leftTransPos >= defaultPos2 && rightTransPos <= defaultPos2)
+	{
+		isTrans = TRUE;
+	}
+
 	transTex1->SetPozition({ leftTransPos,defaultPos });
 	transTex2->SetPozition({ rightTransPos,defaultPos });
 }
@@ -106,6 +119,16 @@ void SceneTransition::Draw()
 {
 	transTex1->Draw();
 	transTex2->Draw();
+}
+
+void SceneTransition::UpdateColor(Vector4 color)
+{
+	UITex->SetColor(color);
+}
+
+void SceneTransition::Draw2()
+{
+	UITex->Draw();
 }
 
 float SceneTransition::easeIn(float time, float startPos, float endPos, float maxTime)

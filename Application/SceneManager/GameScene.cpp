@@ -70,8 +70,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	// ---------- テクスチャ ---------- //
 	//テクスチャ生成
-
-	//テクスチャ読込
+	//スプライト共通部分の初期化
 
 	// ---------- パーティクル ---------- //
 
@@ -141,6 +140,8 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 void GameScene::Reset()
 {
 	camWtf.Initialize();
+	Vector3 eyePos = { 0,20,0 };
+	camera->SetEye(eyePos);
 	camWtf.position = camera->GetEye();
 
 	railCamera->Initialize(camWtf);
@@ -193,7 +194,19 @@ void GameScene::Update()
 	case Scene::Play:
 
 		sceneTrans->UpdateEnd();
-		CameraUpdate();
+		startT++;
+		if (startT >= 150)
+		{
+			isStart = TRUE;
+			color += a = { 0,0,0,0.1f };
+			sceneTrans->UpdateColor(color);
+			if (startT >= 300)
+			{
+				isStart2 = TRUE;
+			}
+		}
+		GameStartEfe(isStart,isStart2);
+		//CameraUpdate();
 
 		// ---------- パーティクル ---------- //
 		isEffFlag = 0;
@@ -270,6 +283,10 @@ void GameScene::Draw()
 		// ---------- 3Dオブジェクト ---------- //
 
 		player_->Draw();
+		if (isStart == TRUE)
+		{
+			sceneTrans->Draw2();
+		}
 		//targetObj->Draw();
 
 		/*enemy_->Draw();
@@ -349,6 +366,14 @@ void GameScene::CameraMove()
 	{
 		cameraMoveSpeed = { 0,0,-1 };
 	}
+	else if (input->PushKey(DIK_U))
+	{
+		cameraMoveSpeed = { 0,1,0 };
+	}
+	else if (input->PushKey(DIK_J))
+	{
+		cameraMoveSpeed = { 0,-1,0 };
+	}
 	else
 	{
 		cameraMoveSpeed = { 0,0,0 };
@@ -361,7 +386,7 @@ void GameScene::CameraMove()
 	//camera->MoveEyeVector(cameraMoveSpeed);
 
 	//注視点、視点両方移動
-	camera->MoveVector(cameraMoveSpeed);
+	//camera->MoveVector(cameraMoveSpeed);
 
 }
 
@@ -373,13 +398,22 @@ void GameScene::CameraUpdate()
 
 }
 
-void GameScene::GameStartEfe()
+void GameScene::GameStartEfe(bool isStart , bool isStart2)
 {
-	Vector3 targetPos = { 0,0,0 };
-	camera->SetTarget(targetPos);
-
-	Vector3 eyePos = { 0,30,0 };
-	camera->SetEye(eyePos);
+	
+	if (isStart == FALSE)
+	{
+		cameraMoveSpeed = { 0,-0.1f,0 };
+		camera->MoveEyeVector(cameraMoveSpeed);
+	}
+	else if(isStart == TRUE)
+	{
+		if (isStart2 == TRUE)
+		{
+			cameraMoveSpeed = { 0,0,0.5f };
+			camera->MoveVector(cameraMoveSpeed);
+		}
+	}
 
 	camera->Update();
 }

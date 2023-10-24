@@ -73,7 +73,7 @@ public: // メンバ関数
 	/// <summary>
 	/// スタート演出
 	/// </summary>
-	void GameStartEfe();
+	void GameStartEfe(bool isStart, bool isStart2);
 
 	/// <summary>
 	/// パーティクル更新処理
@@ -160,5 +160,13 @@ private:	//メンバ変数
 	float rSpeed = 0.0f;
 
 	Vector3 cameraMoveSpeed = { 0,0,0 };
+
+	float startT = 0;
+
+	bool isStart = FALSE;
+	bool isStart2 = FALSE;
+
+	Vector4 a = { 0,0,0,0.1f};
+	Vector4 color = { 1,1,1,1 };
 
 };

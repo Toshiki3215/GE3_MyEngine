@@ -13,6 +13,7 @@
 #include "Model.h"
 #include "SpriteCommon.h"
 #include "Sprite.h"
+#include "Vector4.h"
 
 class SceneTransition
 {
@@ -43,6 +44,9 @@ public:
 	/// </summary>
 	void Draw();
 
+	void UpdateColor(Vector4 color);
+	void Draw2();
+
 	/// <summary>
 	/// ‘JˆÚ‰‰o‚ªn‚Ü‚Á‚½‚©
 	/// </summary>
@@ -55,6 +59,8 @@ private:
 	Sprite* transTex1 = nullptr;
 	Sprite* transTex2 = nullptr;
 
+	Sprite* UITex = nullptr;
+
 	float leftTransPos = -1000.0f;
 	float rightTransPos = 1000.0f;
 	float defaultPos = 0.0f;
@@ -65,6 +71,10 @@ private:
 	float startTimer = 60.0f;
 	float animeTimer = 0.0f;
 	float maxTime = 1200.0f;
+
+	float a = 0;
+
+	Vector4 color = { 1,1,1,a };
 
 public:
 	

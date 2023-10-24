@@ -123,7 +123,7 @@ private:
 	Vector3 targetPos;
 	Vector3 eyePos;
 	Vector3 centerPos;
-	//float targetTheta;
+
 	float targetDistance = 10;
 	float camMoveSpeed = 0.2f;
 
@@ -131,9 +131,9 @@ private:
 
 	Vector3 ret = { -1.5f,1.0f,10.0f };
 
-	bool isAliveFlag = true;
+	bool isAlive = true;
 
-	bool modeChange = false;
+	bool modeChange = TRUE;
 
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;
