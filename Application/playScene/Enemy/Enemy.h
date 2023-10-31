@@ -53,7 +53,7 @@ private:
 	Model* shootModel_ = nullptr;
 	bool isShootFlag = false;
 
-	std::list<std::unique_ptr<EnemyBullet>> bullets_;
+	std::list<EnemyBullet*> enemyBullets_;
 
 	float bulletSpeed = 0.0f;
 
@@ -75,6 +75,6 @@ public:
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//敵の弾リスト
-	const std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return bullets_; }
+	const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
 
 };

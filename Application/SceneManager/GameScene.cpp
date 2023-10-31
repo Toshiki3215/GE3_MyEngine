@@ -41,7 +41,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxInit);
 
-	playerPos = { 0,0,0 };
+	//playerPos = { 0,0,0 };
 
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
@@ -124,16 +124,16 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	player_->Initialize(dxInit, input);
 
 	player_->SetParent(&camWtf);
-	player_->SetPos(Vector3{ 0, 0, 20 });
+	player_->SetPos(Vector3{ 0, 0, 15 });
 
 	//エネミー
 	enemy_ = new Enemy();
 	enemy_->Initilize(Vector3{ -10, 10, 70 });
 	enemy_->SetParent(&camWtf);
 
-	enemy2_ = new Enemy();
+	/*enemy2_ = new Enemy();
 	enemy2_->Initilize(Vector3{ 10, 0, 80 });
-	enemy2_->SetParent(&camWtf);
+	enemy2_->SetParent(&camWtf);*/
 
 }
 
@@ -154,11 +154,11 @@ void GameScene::Reset()
 	player_->Initialize(dxInit, input);
 
 	//player_->SetParent(&camWtf);
-	player_->SetPos(Vector3{ 0, 0, 20 });
+	player_->SetPos(Vector3{ 0, 0, 15 });
 
 	enemy_->Initilize(Vector3{ -10, 10, 70 });
 
-	enemy2_->Initilize(Vector3{ 10, 0, 80 });
+	//enemy2_->Initilize(Vector3{ 10, 0, 80 });
 }
 
 // ----- 毎フレーム処理 ----- //
@@ -208,11 +208,6 @@ void GameScene::Update()
 		GameStartEfe(isStart, isStart2);
 		//CameraUpdate();
 
-		// ---------- パーティクル ---------- //
-		isEffFlag = 0;
-		GameScene::EffUpdate();
-		GameScene::EffUpdate2();
-
 		// ---------- 3Dオブジェクト ---------- //
 		skydome->Update();
 		targetObj->wtf.position = camera->GetTarget();
@@ -224,9 +219,25 @@ void GameScene::Update()
 		player_->Update();
 
 		enemy_->SetParentCamera(camera->GetEye());
-		enemy2_->SetParentCamera(camera->GetEye());
 		enemy_->Update(player_->GetPos());
-		enemy2_->Update(player_->GetPos());
+		//enemy2_->SetParentCamera(camera->GetEye());
+		//enemy2_->Update(player_->GetPos());
+
+		// ---------- パーティクル ---------- //
+		if (player_->GetAlive() == FALSE)
+		{
+			isEffect = TRUE;
+			GameScene::EffUpdate(player_->GetPos());
+			changeT++;
+
+			if (changeT >= 60)
+			{
+				scene = Scene::Gameover;
+			}
+		}
+		/*isEffect = TRUE;
+		GameScene::EffUpdate(player_->GetPos());*/
+		//GameScene::EffUpdate(player_->GetWorldPosition());
 
 		if (input->PushKey(DIK_R))
 		{
@@ -245,6 +256,8 @@ void GameScene::Update()
 		break;
 
 	case Scene::Gameover:
+
+		sceneTrans->endText();
 
 		break;
 	}
@@ -282,15 +295,20 @@ void GameScene::Draw()
 
 		// ---------- 3Dオブジェクト ---------- //
 
-		player_->Draw();
+		if (player_->GetAlive() == TRUE)
+		{
+			player_->Draw();
+		}
+		
 		if (isStart == TRUE)
 		{
 			sceneTrans->Draw2();
 		}
 		//targetObj->Draw();
 
-		/*enemy_->Draw();
-		enemy2_->Draw();*/
+		//enemy_->Draw();
+		//enemy2_->Draw();
+		//sceneTrans->endDraw();
 
 		// ---------- FBX ---------- //
 
@@ -305,6 +323,8 @@ void GameScene::Draw()
 		break;
 
 	case Scene::Gameover:
+
+		sceneTrans->endDraw();
 
 		break;
 	}
@@ -330,7 +350,7 @@ void GameScene::Draw()
 		// パーティクル描画前処理
 		ParticleManager::PreDraw(dxInit->GetCommandList());
 		GameScene::EffDraw();
-		GameScene::EffDraw2();
+		//GameScene::EffDraw2();
 
 		// パーティクル描画後処理
 		ParticleManager::PostDraw();
@@ -386,7 +406,7 @@ void GameScene::CameraMove()
 	//camera->MoveEyeVector(cameraMoveSpeed);
 
 	//注視点、視点両方移動
-	//camera->MoveVector(cameraMoveSpeed);
+	camera->MoveVector(cameraMoveSpeed);
 
 }
 
@@ -400,18 +420,21 @@ void GameScene::CameraUpdate()
 
 void GameScene::GameStartEfe(bool isStart, bool isStart2)
 {
-
-	if (isStart == FALSE)
+	if (player_->GetAlive() == TRUE)
 	{
-		cameraMoveSpeed = { 0,-0.1f,0 };
-		camera->MoveEyeVector(cameraMoveSpeed);
-	}
-	else if (isStart == TRUE)
-	{
-		if (isStart2 == TRUE)
+		if (isStart == FALSE)
 		{
-			cameraMoveSpeed = { 0,0,0.5f };
-			camera->MoveVector(cameraMoveSpeed);
+			cameraMoveSpeed = { 0,-0.1f,0 };
+			camera->MoveEyeVector(cameraMoveSpeed);
+		}
+		else if (isStart == TRUE)
+		{
+			if (isStart2 == TRUE)
+			{
+				//cameraMoveSpeed = { 0,0,0.5f };
+				cameraMoveSpeed = { 0,0,0 };
+				camera->MoveVector(cameraMoveSpeed);
+			}
 		}
 	}
 
@@ -422,13 +445,13 @@ void GameScene::CheckAllCollisions()
 {
 	Vector3 posA, posB;
 
-	//const std::list<PlayerBullet*>& playerBullets = player_->GetBullets();
+	//const std::list<PlayerBullet>& playerBullets = player_->GetBullets();
 
 }
 
 void GameScene::EffDraw()
 {
-	if (isEffFlag == 1)
+	if (isEffect == 1)
 	{
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
@@ -441,7 +464,7 @@ void GameScene::EffDraw()
 
 void GameScene::EffDraw2()
 {
-	if (isEffFlag == 1)
+	if (isEffect == 1)
 	{
 		// 3Dオブクジェクトの描画
 		particleManager->Draw();
@@ -452,14 +475,14 @@ void GameScene::EffDraw2()
 	}
 }
 
-void GameScene::EffUpdate()
+void GameScene::EffUpdate(Vector3 pos)
 {
 	//パーティクル範囲
 	for (int i = 0; i < 20; i++)
 	{
 		//X,Y,Z全て[-5.0f,+5.0f]でランダムに分布
 		const float rnd_pos = 0.01f;
-		Vector3 pos{ 20, 20, 40 };
+		//Vector3 pos = player_->GetWorldPosition();
 		pos.x += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.y += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
 		pos.z += (float)rand() / RAND_MAX * rnd_pos - rnd_pos / 2.0f;
@@ -478,8 +501,10 @@ void GameScene::EffUpdate()
 		acc.x = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
 		acc.y = (float)rand() / RAND_MAX * rnd_acc - rnd_acc / 2.0f;
 
+		Vector3 rePos = { pos.x, pos.y + 2, pos.z };
+
 		//追加
-		particleManager->Add(60, pos, vel, acc, 1.0f, 0.0f);
+		particleManager->Add(100, rePos, vel, acc, 1.0f, 0.0f);
 
 		particleManager->Update();
 	}

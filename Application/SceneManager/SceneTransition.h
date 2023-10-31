@@ -47,11 +47,15 @@ public:
 	void UpdateColor(Vector4 color);
 	void Draw2();
 
+	void endDraw();
+
 	/// <summary>
 	/// 遷移演出が始まったか
 	/// </summary>
 	/// <returns></returns>
 	bool GetTransF() { return  isTrans; }
+
+	void endText();
 
 private:
 	Input* input_ = nullptr;
@@ -60,6 +64,8 @@ private:
 	Sprite* transTex2 = nullptr;
 
 	Sprite* UITex = nullptr;
+
+	Sprite* endTex = nullptr;
 
 	float leftTransPos = -1000.0f;
 	float rightTransPos = 1000.0f;
@@ -72,7 +78,12 @@ private:
 	float animeTimer = 0.0f;
 	float maxTime = 1200.0f;
 
-	float a = 0;
+	float animeTimer2 = 0;
+	float pos1 = -720;
+	float pos2 = 0;
+	float pos3 = -720;
+
+	float a = 0.5f;
 
 	Vector4 color = { 1,1,1,a };
 

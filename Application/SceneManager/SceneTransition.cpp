@@ -40,6 +40,12 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 	UITex->Initialize(spriteCommon);
 	UITex->SetPozition({ 0,0 });
 	UITex->SetSize({ 1280.0f, 720.0f });
+	//UITex->SetColor(Vector4{ 1,1,1,0.5f });
+
+	endTex = new Sprite();
+	endTex->Initialize(spriteCommon);
+	endTex->SetPozition({ 0,pos3 });
+	endTex->SetSize({ 1280.0f, 720.0f });
 
 	//テクスチャ読込
 	spriteCommon->LoadTexture(6, "transition1.png");
@@ -50,6 +56,9 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	spriteCommon->LoadTexture(8, "UI.png");
 	UITex->SetTextureIndex(8);
+
+	spriteCommon->LoadTexture(9, "gameover.png");
+	endTex->SetTextureIndex(9);
 }
 
 void SceneTransition::UpdateStart()
@@ -130,6 +139,25 @@ void SceneTransition::UpdateColor(Vector4 color)
 void SceneTransition::Draw2()
 {
 	UITex->Draw();
+}
+
+void SceneTransition::endDraw()
+{
+	endTex->Draw();
+}
+
+void SceneTransition::endText()
+{
+	animeTimer2++;
+
+	pos3 += easeOut(animeTimer2, -720, 0, 500);
+	if (pos3 >= 0)
+	{
+		pos3 = 0;
+		//animeTimer = 0;
+	}
+
+	endTex->SetPozition({ 0,0 });
 }
 
 float SceneTransition::easeIn(float time, float startPos, float endPos, float maxTime)

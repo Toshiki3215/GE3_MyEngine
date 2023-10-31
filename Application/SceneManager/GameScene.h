@@ -78,7 +78,7 @@ public: // メンバ関数
 	/// <summary>
 	/// パーティクル更新処理
 	/// </summary>
-	void EffUpdate();
+	void EffUpdate(Vector3 pos);
 	void EffUpdate2();
 
 	/// <summary>
@@ -134,7 +134,7 @@ private:	//メンバ変数
 
 	Scene scene = Scene::Title;
 
-	int isEffFlag = 0;
+	bool isEffect = FALSE;
 
 	FBXModel* fbxModel1 = nullptr;
 
@@ -168,5 +168,7 @@ private:	//メンバ変数
 
 	Vector4 a = { 0,0,0,0.1f };
 	Vector4 color = { 1,1,1,1 };
+
+	float changeT = 0;
 
 };
