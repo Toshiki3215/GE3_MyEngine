@@ -56,7 +56,7 @@ void Enemy::Update(Vector3 pos)
 				enemyBullets_.push_back(newBullet);
 
 				shotCool = true;
-				coolTimer = 60;
+				coolTimer = 120;
 			}
 		}
 
