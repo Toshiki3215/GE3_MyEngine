@@ -123,26 +123,37 @@ void Player::Draw()
 	{
 		playerObj->SetModel(playerMD2);
 		playerObj->Draw();
-		bitObj1->Draw();
-		bitObj2->Draw();
+		if (isBitDraw == TRUE)
+		{
+			bitObj1->Draw();
+			bitObj2->Draw();
+		}
+		
 	}
 
-	for (PlayerBullet* bullet : bullets_)
+	if (isRetDraw == TRUE)
 	{
-		bullet->Draw();
+		retObj_->Draw();
+
+		for (PlayerBullet* bullet : bullets_)
+		{
+			bullet->Draw();
+		}
 	}
 
-	for (PlayerBullet* bitBullet1 : bitBullets1)
+	if (isBitDraw == TRUE)
 	{
-		bitBullet1->Draw();
+		for (PlayerBullet* bitBullet1 : bitBullets1)
+		{
+			bitBullet1->Draw();
+		}
+
+		for (PlayerBullet* bitBullet2 : bitBullets2)
+		{
+			bitBullet2->Draw();
+		}
 	}
 
-	for (PlayerBullet* bitBullet2 : bitBullets2)
-	{
-		bitBullet2->Draw();
-	}
-
-	retObj_->Draw();
 }
 
 void Player::PlayerAction()
@@ -295,8 +306,8 @@ void Player::PlayerAction()
 			}
 		}
 
-		bitObj1->wtf.position = { playerObj->wtf.position.x + 2,playerObj->wtf.position.y,playerObj->wtf.position.z };
-		bitObj2->wtf.position = { playerObj->wtf.position.x - 2,playerObj->wtf.position.y,playerObj->wtf.position.z };
+		bitObj1->wtf.position = { playerObj->wtf.position.x + bitSpace,playerObj->wtf.position.y,playerObj->wtf.position.z };
+		bitObj2->wtf.position = { playerObj->wtf.position.x - bitSpace,playerObj->wtf.position.y,playerObj->wtf.position.z };
 
 	}
 }
@@ -351,5 +362,30 @@ void Player::SetParentCamera(Vector3 cameraWtf)
 
 void Player::OnCollision()
 {
+
+}
+
+void Player::PlayerModeChange()
+{
+	isRetDraw = FALSE;
+
+	if (bitSpace <= 0)
+	{
+		bitSpace = 0;
+		isBitDraw = FALSE;
+		clearAnimeTimer++;
+
+		startPos = playerObj->wtf.position.z - 15;
+		endPos = playerObj->wtf.position.z + 50;
+
+		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
+		playerObj->Update();
+		//playerObj->wtf.position.z += 10;
+
+	}
+	else 
+	{
+		bitSpace -= 0.01f;
+	}
 
 }

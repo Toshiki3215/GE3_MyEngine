@@ -247,6 +247,9 @@
     <ClCompile Include="Engine\3d\Object3D.cpp">
       <Filter>ソース ファイル\Engine\3d</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Math\Easing.cpp">
+      <Filter>ソース ファイル\Engine\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\2d\SpriteCommon.h">
@@ -341,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="Engine\2d\Sprite.h">
       <Filter>ヘッダー ファイル\Engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Math\Easing.h">
+      <Filter>ヘッダー ファイル\Engine\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

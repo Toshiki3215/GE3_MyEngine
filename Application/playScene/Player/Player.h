@@ -14,6 +14,8 @@
 #include "Object3D.h"
 #include "Model.h"
 
+#include "Easing.h"
+
 class Player
 {
 public:
@@ -89,10 +91,13 @@ public:
 
 	bool GetAlive() { return isAlive; }
 
+	void PlayerModeChange();
+
 private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
 	DirectXInitialize* dxInit = nullptr;
+	Easing* easing = nullptr;
 
 	//自機
 	Object3d* playerObj = nullptr;
@@ -159,5 +164,16 @@ private:
 
 	float playerHp = 5.0f;
 
+	float bitSpace = 2.0f;
+
+	float clearAnimeTimer = 0;
+	float animeTimerEnd = 300;
+
+	float startPos = 0;
+	float endPos = 300;
+
+	bool isBitDraw = TRUE;
+
+	bool isRetDraw = TRUE;
 	
 };

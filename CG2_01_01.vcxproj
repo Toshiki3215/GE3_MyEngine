@@ -63,6 +63,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)External\Imgui;$(ProjectDir)Resources\shaders;$(ProjectDir)Resources;$(ProjectDir)Application\SceneManager;$(ProjectDir)Application\PlayScene\Player;$(ProjectDir)Application\PlayScene\Enemy;$(ProjectDir)Application\PlayScene;$(ProjectDir)Application;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\ImGui;$(ProjectDir)Engine\camera;$(ProjectDir)Engine\base;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\2d;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -91,6 +92,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)External\Imgui;$(ProjectDir)Resources\shaders;$(ProjectDir)Resources;$(ProjectDir)Application\SceneManager;$(ProjectDir)Application\PlayScene\Player;$(ProjectDir)Application\PlayScene\Enemy;$(ProjectDir)Application\PlayScene;$(ProjectDir)Application;$(ProjectDir)Engine\Math;$(ProjectDir)Engine\ImGui;$(ProjectDir)Engine\camera;$(ProjectDir)Engine\base;$(ProjectDir)Engine\3d;$(ProjectDir)Engine\2d;$(ProjectDir)Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +165,7 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Math\Easing.cpp" />
     <ClCompile Include="Engine\3d\Object3D.cpp" />
     <ClCompile Include="Engine\Math\Affin.cpp" />
     <ClCompile Include="Engine\camera\Camera.cpp" />
@@ -203,6 +206,7 @@
     <ClCompile Include="Engine\base\WindowsApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Math\Easing.h" />
     <ClInclude Include="Engine\2d\Sprite.h" />
     <ClInclude Include="Engine\Math\Affin.h" />
     <ClInclude Include="Engine\camera\Camera.h" />

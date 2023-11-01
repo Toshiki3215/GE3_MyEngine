@@ -171,4 +171,6 @@ private:	//メンバ変数
 
 	float changeT = 0;
 
+	bool isClear = FALSE;
+
 };

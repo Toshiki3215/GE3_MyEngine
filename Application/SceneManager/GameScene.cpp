@@ -198,8 +198,8 @@ void GameScene::Update()
 		if (startT >= 150)
 		{
 			isStart = TRUE;
-			color += { 0, 0, 0, 0.1f };
-			sceneTrans->UpdateColor(color);
+			//color += { 0, 0, 0, 0.1f };
+			//sceneTrans->UpdateColor(color);
 			if (startT >= 300)
 			{
 				isStart2 = TRUE;
@@ -230,7 +230,7 @@ void GameScene::Update()
 			GameScene::EffUpdate(player_->GetPos());
 			changeT++;
 
-			if (changeT >= 60)
+			if (changeT >= 30)
 			{
 				scene = Scene::Gameover;
 			}
@@ -241,7 +241,12 @@ void GameScene::Update()
 
 		if (input->PushKey(DIK_R))
 		{
-			scene = Scene::Title;
+			isClear = TRUE;
+		}
+
+		if (isClear == TRUE)
+		{
+			player_->PlayerModeChange();
 		}
 
 		break;
@@ -422,6 +427,11 @@ void GameScene::GameStartEfe(bool isStart, bool isStart2)
 {
 	if (player_->GetAlive() == TRUE)
 	{
+		if (isClear == TRUE)
+		{
+			cameraMoveSpeed = { 0,0,0 };
+			camera->MoveVector(cameraMoveSpeed);
+		}
 		if (isStart == FALSE)
 		{
 			cameraMoveSpeed = { 0,-0.1f,0 };

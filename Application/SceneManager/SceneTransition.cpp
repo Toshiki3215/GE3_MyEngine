@@ -157,6 +157,7 @@ void SceneTransition::endText()
 		//animeTimer = 0;
 	}
 
+	//endTex->SetPozition({ 0,pos3 });
 	endTex->SetPozition({ 0,0 });
 }
 
