@@ -128,7 +128,6 @@ void Player::Draw()
 			bitObj1->Draw();
 			bitObj2->Draw();
 		}
-		
 	}
 
 	if (isRetDraw == TRUE)
@@ -153,7 +152,6 @@ void Player::Draw()
 			bitBullet2->Draw();
 		}
 	}
-
 }
 
 void Player::PlayerAction()
@@ -380,7 +378,6 @@ void Player::PlayerModeChange()
 
 		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
-		//playerObj->wtf.position.z += 10;
 
 	}
 	else 
