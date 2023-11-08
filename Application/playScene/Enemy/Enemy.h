@@ -49,8 +49,8 @@ private:
 	//Phase phase_ = Phase::Death;
 
 	//弾発射
-	Object3d* shootObj_ = nullptr;
-	Model* shootModel_ = nullptr;
+	Object3d* enemyBulletObj_ = nullptr;
+	Model* enemyBulletModel_ = nullptr;
 	bool isShootFlag = false;
 
 	std::list<EnemyBullet*> enemyBullets_;

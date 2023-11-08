@@ -112,8 +112,8 @@ private:
 	Model* bitModel2 = nullptr;
 
 	//弾発射
-	Object3d* shootObj_ = nullptr;
-	Model* shootModel_ = nullptr;
+	Object3d* bulletObj_ = nullptr;
+	Model* bulletModel_ = nullptr;
 	bool isShootFlag = false;
 
 	//レティクル

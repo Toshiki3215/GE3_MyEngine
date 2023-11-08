@@ -13,8 +13,8 @@ Player::~Player()
 	//FBXオブジェクト解放
 	delete playerObj;
 	delete playerMD;
-	delete shootObj_;
-	delete shootModel_;
+	delete bulletObj_;
+	delete bulletModel_;
 	delete retObj_;
 	delete retModel_;
 }
@@ -50,11 +50,11 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input)
 	bitObj2->wtf.position = playerObj->wtf.position;
 
 	//自機の弾
-	shootModel_ = Model::LoadFromOBJ("obj4");
-	shootObj_ = Object3d::Create();
-	shootObj_->SetModel(shootModel_);
-	shootObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
-	shootObj_->wtf.scale = { 0.5f,0.5f,0.5f };
+	bulletModel_ = Model::LoadFromOBJ("obj4");
+	bulletObj_ = Object3d::Create();
+	bulletObj_->SetModel(bulletModel_);
+	bulletObj_->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
+	bulletObj_->wtf.scale = { 0.5f,0.5f,0.5f };
 
 	//レティクル
 	retModel_ = Model::LoadFromOBJ("obj2");
@@ -72,7 +72,7 @@ void Player::Update()
 	bitObj2->Update();
 
 	retObj_->Update();
-	enemylen = retObj_->wtf.position - shootObj_->wtf.position;
+	enemylen = retObj_->wtf.position - bulletObj_->wtf.position;
 	enemylen.nomalize();
 
 	//デスフラグの立った弾を削除
@@ -329,11 +329,11 @@ Vector3 Player::GetBulletWorldPosition()
 	//ワールド座標を入れる変数
 	Vector3 BulletWorldPos;
 
-	shootObj_->wtf.UpdateMat();
+	bulletObj_->wtf.UpdateMat();
 	//ワールド行列の平行移動成分
-	BulletWorldPos.x = shootObj_->wtf.matWorld.m[3][0];
-	BulletWorldPos.y = shootObj_->wtf.matWorld.m[3][1];
-	BulletWorldPos.z = shootObj_->wtf.matWorld.m[3][2];
+	BulletWorldPos.x = bulletObj_->wtf.matWorld.m[3][0];
+	BulletWorldPos.y = bulletObj_->wtf.matWorld.m[3][1];
+	BulletWorldPos.z = bulletObj_->wtf.matWorld.m[3][2];
 
 	return BulletWorldPos;
 }
@@ -343,7 +343,7 @@ Vector3 Player::GetRetWorldPosition()
 	//ワールド座標を入れる変数
 	Vector3 RetWorldPos;
 
-	shootObj_->wtf.UpdateMat();
+	bulletObj_->wtf.UpdateMat();
 	//ワールド行列の平行移動成分
 	RetWorldPos.x = retObj_->wtf.matWorld.m[3][0];
 	RetWorldPos.y = retObj_->wtf.matWorld.m[3][1];
@@ -376,7 +376,8 @@ void Player::PlayerModeChange()
 		startPos = playerObj->wtf.position.z - 15;
 		endPos = playerObj->wtf.position.z + 50;
 
-		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
+		//playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
+		playerObj->wtf.position.z += easing->easeIn(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
 
 	}

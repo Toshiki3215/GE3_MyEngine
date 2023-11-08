@@ -14,11 +14,11 @@ void Enemy::Initilize(Vector3 pos)
 	enemyObj->wtf.position = pos;
 	enemyObj->wtf.scale = { 1.0f,1.0f,1.0f };
 
-	shootModel_ = Model::LoadFromOBJ("obj4");
-	shootObj_ = Object3d::Create();
-	shootObj_->SetModel(shootModel_);
-	shootObj_->wtf.position = { enemyObj->wtf.position.x,enemyObj->wtf.position.y + 0.07f, enemyObj->wtf.position.z };
-	shootObj_->wtf.scale = { 0.5f,0.5f,0.5f };
+	enemyBulletModel_ = Model::LoadFromOBJ("obj4");
+	enemyBulletObj_ = Object3d::Create();
+	enemyBulletObj_->SetModel(enemyBulletModel_);
+	enemyBulletObj_->wtf.position = { enemyObj->wtf.position.x,enemyObj->wtf.position.y + 0.07f, enemyObj->wtf.position.z };
+	enemyBulletObj_->wtf.scale = { 0.5f,0.5f,0.5f };
 }
 
 void Enemy::Update(Vector3 pos)

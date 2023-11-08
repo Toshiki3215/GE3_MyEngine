@@ -296,8 +296,6 @@ void GameScene::Draw()
 
 	case Scene::Play:
 
-		// ---------- テクスチャ ---------- //
-
 		// ---------- 3Dオブジェクト ---------- //
 
 		if (player_->GetAlive() == TRUE)
@@ -305,13 +303,9 @@ void GameScene::Draw()
 			player_->Draw();
 		}
 		
-		if (isStart == TRUE)
-		{
-			sceneTrans->Draw2();
-		}
+		enemy_->Draw();
 		//targetObj->Draw();
 
-		//enemy_->Draw();
 		//enemy2_->Draw();
 		//sceneTrans->endDraw();
 
@@ -320,6 +314,13 @@ void GameScene::Draw()
 		//fbxObject1->Draw(dxInit->GetCommandList());
 		//fbxObject2->Draw(dxInit->GetCommandList());
 		//playerFbx->Draw(dxInit->GetCommandList());
+
+		// ---------- テクスチャ ---------- //
+
+		if (isStart == TRUE)
+		{
+			sceneTrans->Draw2();
+		}
 
 		break;
 

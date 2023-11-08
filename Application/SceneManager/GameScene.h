@@ -132,7 +132,7 @@ private:	//メンバ変数
 		Gameover,
 	};
 
-	Scene scene = Scene::Title;
+	Scene scene = Scene::Play;
 
 	bool isEffect = FALSE;
 
