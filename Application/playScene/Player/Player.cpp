@@ -376,8 +376,8 @@ void Player::PlayerModeChange()
 		startPos = playerObj->wtf.position.z - 15;
 		endPos = playerObj->wtf.position.z + 50;
 
-		//playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
-		playerObj->wtf.position.z += easing->easeIn(clearAnimeTimer, startPos, endPos, animeTimerEnd);
+		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
+		//playerObj->wtf.position.z += easing->easeIn(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
 
 	}
