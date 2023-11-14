@@ -13,8 +13,9 @@
 
 #include "Object3D.h"
 #include "Model.h"
-
 #include "Easing.h"
+
+#include <memory>
 
 class Player
 {
@@ -76,7 +77,10 @@ public:
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//弾リストを取得
-	const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+	//const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets1() { return bitBullets1; }
+	const std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets2() { return bitBullets2; }
 
 	/// <summary>
 	/// 親子化
@@ -143,10 +147,14 @@ private:
 	bool modeChange = TRUE;
 
 	//弾
-	std::list<PlayerBullet*> bullets_;
-
+	/*std::list<PlayerBullet*> bullets_;
 	std::list<PlayerBullet*> bitBullets1;
-	std::list<PlayerBullet*> bitBullets2;
+	std::list<PlayerBullet*> bitBullets2;*/
+
+	//弾
+	std::list<std::unique_ptr<PlayerBullet>> bullets_;
+	std::list<std::unique_ptr<PlayerBullet>> bitBullets1;
+	std::list<std::unique_ptr<PlayerBullet>> bitBullets2;
 
 	float bulletSpeed = 0.05f;
 

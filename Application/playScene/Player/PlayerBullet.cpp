@@ -27,7 +27,7 @@ void PlayerBullet::Update(Vector3 enemylen, Vector3 len, float shootSpeed, Objec
 
 	if (isDead_ == true)
 	{
-		bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
+		//bulletObj->wtf.position = { playerObj->wtf.position.x,playerObj->wtf.position.y + 0.07f, playerObj->wtf.position.z };
 	}
 	else
 	{

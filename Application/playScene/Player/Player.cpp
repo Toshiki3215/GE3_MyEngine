@@ -66,7 +66,6 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input)
 
 void Player::Update()
 {
-	//playerObj->wtf.position = { 0.0f,0.0f,10.0f };
 	playerObj->Update();
 	bitObj1->Update();
 	bitObj2->Update();
@@ -76,9 +75,9 @@ void Player::Update()
 	enemylen.nomalize();
 
 	//デスフラグの立った弾を削除
-	bullets_.remove_if([](PlayerBullet* bullet) {return bullet->IsDead(); });
-	bullets_.remove_if([](PlayerBullet* bitBullet1) {return bitBullet1->IsDead(); });
-	bullets_.remove_if([](PlayerBullet* bitBullet2) {return bitBullet2->IsDead(); });
+	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->IsDead(); });
+	bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
+	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });
 
 	if (input_->PushKey(DIK_K))
 	{
@@ -90,23 +89,19 @@ void Player::Update()
 		isAlive = FALSE;
 	}
 
-	/*bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) { return bullet->IsDead(); });
-	bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) { return bitBullet1->IsDead(); });
-	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) { return bitBullet2->IsDead(); });*/
-
 	//プレイヤーの行動一覧
 	PlayerAction();
 
 	//弾更新
-	for (PlayerBullet* bullet : bullets_)
+	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
 	{
 		bullet->Update(enemylen, len, bulletSpeed, playerObj, retObj_);
 	}
-	for (PlayerBullet* bitBullet1 : bitBullets1)
+	for (std::unique_ptr<PlayerBullet>& bitBullet1 : bitBullets1)
 	{
 		bitBullet1->Update(enemylen, len, bulletSpeed, bitObj1, retObj_);
 	}
-	for (PlayerBullet* bitBullet2 : bitBullets2)
+	for (std::unique_ptr<PlayerBullet>& bitBullet2 : bitBullets2)
 	{
 		bitBullet2->Update(enemylen, len, bulletSpeed, bitObj2, retObj_);
 	}
@@ -134,7 +129,7 @@ void Player::Draw()
 	{
 		retObj_->Draw();
 
-		for (PlayerBullet* bullet : bullets_)
+		for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
 		{
 			bullet->Draw();
 		}
@@ -142,12 +137,12 @@ void Player::Draw()
 
 	if (isBitDraw == TRUE)
 	{
-		for (PlayerBullet* bitBullet1 : bitBullets1)
+		for (std::unique_ptr<PlayerBullet>& bitBullet1 : bitBullets1)
 		{
 			bitBullet1->Draw();
 		}
 
-		for (PlayerBullet* bitBullet2 : bitBullets2)
+		for (std::unique_ptr<PlayerBullet>& bitBullet2 : bitBullets2)
 		{
 			bitBullet2->Draw();
 		}
@@ -257,11 +252,11 @@ void Player::PlayerAction()
 			if (shotCool == false)
 			{
 				//弾生成し、初期化
-				PlayerBullet* newBullet = new PlayerBullet();
+				std::unique_ptr<PlayerBullet> newBullet = std::make_unique<PlayerBullet>();
 				newBullet->Initilize(playerObj, retObj_, bulletScale);
 
 				//弾を登録する
-				bullets_.push_back(newBullet);
+				bullets_.push_back(std::move(newBullet));
 
 				shotCool = true;
 				coolTimer = 10;
@@ -270,14 +265,14 @@ void Player::PlayerAction()
 		else if (modeChange == true)
 		{
 			//弾生成し、初期化
-			PlayerBullet* newBitBullet1 = new PlayerBullet();
-			PlayerBullet* newBitBullet2 = new PlayerBullet();
+			std::unique_ptr<PlayerBullet> newBitBullet1 = std::make_unique<PlayerBullet>();
+			std::unique_ptr<PlayerBullet> newBitBullet2 = std::make_unique<PlayerBullet>();
 			newBitBullet1->Initilize(bitObj1, retObj_, bulletScale);
 			newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
 
 			//弾を登録する
-			bitBullets1.push_back(newBitBullet1);
-			bitBullets2.push_back(newBitBullet2);
+			bitBullets1.push_back(std::move(newBitBullet1));
+			bitBullets2.push_back(std::move(newBitBullet2));
 		}
 	}
 
@@ -377,7 +372,6 @@ void Player::PlayerModeChange()
 		endPos = playerObj->wtf.position.z + 50;
 
 		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
-		//playerObj->wtf.position.z += easing->easeIn(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
 
 	}

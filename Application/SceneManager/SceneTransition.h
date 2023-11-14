@@ -14,6 +14,7 @@
 #include "SpriteCommon.h"
 #include "Sprite.h"
 #include "Vector4.h"
+#include "Easing.h"
 
 class SceneTransition
 {
@@ -59,12 +60,11 @@ public:
 
 private:
 	Input* input_ = nullptr;
+	Easing* easing_ = nullptr;
 	SpriteCommon* spriteCommon = nullptr;
 	Sprite* transTex1 = nullptr;
 	Sprite* transTex2 = nullptr;
-
 	Sprite* UITex = nullptr;
-
 	Sprite* endTex = nullptr;
 
 	float leftTransPos = -1000.0f;

@@ -31,6 +31,13 @@ public:
 	/// </summary>
 	/// <param name="x"></param>
 	/// <returns></returns>
+	float pow2(float x);
+
+	/// <summary>
+	/// 累乗(3乗):イージング用
+	/// </summary>
+	/// <param name="x"></param>
+	/// <returns></returns>
 	float pow3(float x);
 
 	/// <summary>

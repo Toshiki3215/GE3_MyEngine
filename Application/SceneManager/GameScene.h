@@ -19,6 +19,7 @@
 #include "Enemy.h"
 #include "TitleScene.h"
 #include "SceneTransition.h"
+#include "Easing.h"
 
 /// <summary>
 /// ゲームシーン
@@ -92,6 +93,8 @@ public: // メンバ関数
 	/// </summary>
 	void CheckAllCollisions();
 
+	bool isHitDistanceAtoB(Vector3 A, Vector3 B, float Ar, float Br);
+
 private: // メンバ変数 (固定)
 	DirectXInitialize* dxInit = nullptr;
 	Input* input = nullptr;
@@ -132,7 +135,7 @@ private:	//メンバ変数
 		Gameover,
 	};
 
-	Scene scene = Scene::Play;
+	Scene scene = Scene::Title;
 
 	bool isEffect = FALSE;
 
@@ -172,5 +175,11 @@ private:	//メンバ変数
 	float changeT = 0;
 
 	bool isClear = FALSE;
+
+	float playerR = 2.0f;
+	float playerBulletR = 2.0f;
+
+	float enemyR = 2.0f;
+	float enemyBulletR = 2.0f;
 
 };

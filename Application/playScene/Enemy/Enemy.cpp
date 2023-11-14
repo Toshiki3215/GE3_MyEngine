@@ -56,7 +56,7 @@ void Enemy::Update(Vector3 pos)
 				enemyBullets_.push_back(newBullet);
 
 				shotCool = true;
-				coolTimer = 120;
+				coolTimer = 300;
 			}
 		}
 
@@ -84,17 +84,34 @@ void Enemy::Update(Vector3 pos)
 
 void Enemy::Draw()
 {
-	enemyObj->Draw();
-
-	for (EnemyBullet* bullet : enemyBullets_)
+	if (phase_ == Phase::Approch)
 	{
-		bullet->Draw();
+		enemyObj->Draw();
+
+		for (EnemyBullet* bullet : enemyBullets_)
+		{
+			bullet->Draw();
+		}
 	}
 }
 
 void Enemy::OnCollision()
 {
 	phase_ = Phase::Death;
+}
+
+Vector3 Enemy::GetWorldPosition()
+{
+	//ワールド座標を入れる変数
+	Vector3 worldPos;
+
+	enemyObj->wtf.UpdateMat();
+	//ワールド行列の平行移動成分
+	worldPos.x = enemyObj->wtf.matWorld.m[3][0];
+	worldPos.y = enemyObj->wtf.matWorld.m[3][1];
+	worldPos.z = enemyObj->wtf.matWorld.m[3][2];
+
+	return worldPos;
 }
 
 void Enemy::SetParentCamera(Vector3 cameraWtf)

@@ -65,13 +65,15 @@ void SceneTransition::UpdateStart()
 {
 	animeTimer++;
 
-	leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	//leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	leftTransPos += easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	if (leftTransPos >= defaultPos)
 	{
 		leftTransPos = defaultPos;
 	}
 
-	rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	//rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+	rightTransPos -= easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	if (rightTransPos <= defaultPos)
 	{
 		rightTransPos = defaultPos;
@@ -99,7 +101,8 @@ void SceneTransition::UpdateEnd()
 		startTimer = 0.0f;
 		if (leftTransPos >= -defaultPos2)
 		{
-			leftTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+			//leftTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+			leftTransPos -= easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (leftTransPos <= -defaultPos2)
 			{
 				leftTransPos = -defaultPos2;
@@ -108,7 +111,8 @@ void SceneTransition::UpdateEnd()
 
 		if (rightTransPos <= defaultPos2)
 		{
-			rightTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+			//rightTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
+			rightTransPos += easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (rightTransPos >= defaultPos2)
 			{
 				rightTransPos = defaultPos2;
@@ -150,7 +154,8 @@ void SceneTransition::endText()
 {
 	animeTimer2++;
 
-	pos3 += easeOut(animeTimer2, -720, 0, 500);
+	//pos3 += easeOut(animeTimer2, -720, 0, 500);
+	pos3 += easing_->easeOut(animeTimer2, -720, 0, 500);
 	if (pos3 >= 0)
 	{
 		pos3 = 0;

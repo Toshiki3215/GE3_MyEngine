@@ -37,6 +37,11 @@ float Easing::easeInBack(float time, float startPos, float endPos, float maxTime
 	return ret;
 }
 
+float Easing::pow2(float x)
+{
+	return x * x;
+}
+
 float Easing::pow3(float x)
 {
 	return x * x * x;

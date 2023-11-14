@@ -205,6 +205,7 @@ void GameScene::Update()
 				isStart2 = TRUE;
 			}
 		}
+
 		GameStartEfe(isStart, isStart2);
 		//CameraUpdate();
 
@@ -308,6 +309,8 @@ void GameScene::Draw()
 
 		//enemy2_->Draw();
 		//sceneTrans->endDraw();
+
+		CheckAllCollisions();
 
 		// ---------- FBX ---------- //
 
@@ -456,8 +459,63 @@ void GameScene::CheckAllCollisions()
 {
 	Vector3 posA, posB;
 
-	//const std::list<PlayerBullet>& playerBullets = player_->GetBullets();
+	//自機の弾リストを取得
+	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
 
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+
+#pragma region
+	//自機と敵の弾
+
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets)
+	{
+		posB = bullet->GetWorldPos();
+
+		if (isHitDistanceAtoB(posA, posB, playerR, enemyBulletR))
+		{
+			player_->OnCollision();
+
+			bullet->OnCollision();
+		}
+
+	}
+
+#pragma endregion
+
+#pragma region
+	//敵と自機の弾
+
+	posA = enemy_->GetWorldPosition();
+
+	/*for (std::unique_ptr<PlayerBullet>& bullet : player_->GetBullets())
+	{
+		posB = bullet->GetWorldPos();
+
+		if (isHitDistanceAtoB(posA, posB, enemyR, playerBulletR))
+		{
+			enemy_->OnCollision();
+
+			bullet->OnCollision();
+		}
+
+	}*/
+
+#pragma endregion
+
+}
+
+bool GameScene::isHitDistanceAtoB(Vector3 A, Vector3 B, float Ar, float Br)
+{
+	if (((B.x - A.x) * (B.x - A.x)) + ((B.y - A.y) * (B.y - A.y)) + ((B.z - A.z) * (B.z - A.z)) <= (Ar + Br) * (Ar + Br))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 void GameScene::EffDraw()
