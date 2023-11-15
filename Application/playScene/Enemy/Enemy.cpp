@@ -33,9 +33,8 @@ void Enemy::Update(Vector3 pos)
 	case Phase::Approch:
 
 		//enemyObj->wtf.position -= enemySpeed;
-
 		//デスフラグの立った弾を削除
-		enemyBullets_.remove_if([](EnemyBullet* bullet) { return bullet->IsDead(); });
+		enemyBullets_.remove_if([](std::unique_ptr<EnemyBullet>& bullet) { return bullet->IsDead(); });
 
 		if (shootFlg == true)
 		{
@@ -49,11 +48,11 @@ void Enemy::Update(Vector3 pos)
 			if (shotCool == false)
 			{
 				//弾生成し、初期化
-				EnemyBullet* newBullet = new EnemyBullet();
+				std::unique_ptr<EnemyBullet> newBullet = std::make_unique<EnemyBullet>();
 				newBullet->Initilize(enemyObj);
 
 				//弾を登録する
-				enemyBullets_.push_back(newBullet);
+				enemyBullets_.push_back(std::move(newBullet));
 
 				shotCool = true;
 				coolTimer = 300;
@@ -61,7 +60,7 @@ void Enemy::Update(Vector3 pos)
 		}
 
 		//弾更新
-		for (EnemyBullet* bullet : enemyBullets_)
+		for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets_)
 		{
 			bullet->Update(len, bulletSpeed, enemyObj);
 		}
@@ -88,7 +87,7 @@ void Enemy::Draw()
 	{
 		enemyObj->Draw();
 
-		for (EnemyBullet* bullet : enemyBullets_)
+		for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets_)
 		{
 			bullet->Draw();
 		}

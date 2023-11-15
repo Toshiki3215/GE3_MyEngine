@@ -78,9 +78,9 @@ public:
 
 	//弾リストを取得
 	//const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets1() { return bitBullets1; }
-	const std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets2() { return bitBullets2; }
+	std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
+	std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets1() { return bitBullets1; }
+	std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets2() { return bitBullets2; }
 
 	/// <summary>
 	/// 親子化

@@ -65,14 +65,12 @@ void SceneTransition::UpdateStart()
 {
 	animeTimer++;
 
-	//leftTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	leftTransPos += easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	if (leftTransPos >= defaultPos)
 	{
 		leftTransPos = defaultPos;
 	}
 
-	//rightTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	rightTransPos -= easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 	if (rightTransPos <= defaultPos)
 	{
@@ -101,7 +99,6 @@ void SceneTransition::UpdateEnd()
 		startTimer = 0.0f;
 		if (leftTransPos >= -defaultPos2)
 		{
-			//leftTransPos -= easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			leftTransPos -= easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (leftTransPos <= -defaultPos2)
 			{
@@ -111,7 +108,6 @@ void SceneTransition::UpdateEnd()
 
 		if (rightTransPos <= defaultPos2)
 		{
-			//rightTransPos += easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			rightTransPos += easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
 			if (rightTransPos >= defaultPos2)
 			{
@@ -150,7 +146,7 @@ void SceneTransition::endDraw()
 	endTex->Draw();
 }
 
-void SceneTransition::endText()
+void SceneTransition::EndText()
 {
 	animeTimer2++;
 
@@ -166,32 +162,7 @@ void SceneTransition::endText()
 	endTex->SetPozition({ 0,0 });
 }
 
-float SceneTransition::easeIn(float time, float startPos, float endPos, float maxTime)
+void SceneTransition::Reset()
 {
-	float x = time / maxTime;
-	float v = pow3(x);
-	float z = endPos - startPos;
-	float ret = z * v + startPos;
 
-	return ret;
-}
-
-float SceneTransition::easeOut(float time, float startPos, float endPos, float maxTime)
-{
-	float x = time / maxTime;
-	float v = 1 - pow3(1 - x);
-	float z = endPos - startPos;
-	float ret = z * v + startPos;
-
-	return ret;
-}
-
-float SceneTransition::pow3(float x)
-{
-	return x * x * x;
-}
-
-float SceneTransition::pow5(float x)
-{
-	return x * x * x * x * x;
 }

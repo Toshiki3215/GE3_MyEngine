@@ -8,6 +8,8 @@
 #include "Model.h"
 #include "EnemyBullet.h"
 
+#include <memory>
+
 class Enemy
 {
 public:
@@ -56,7 +58,8 @@ private:
 	Model* enemyBulletModel_ = nullptr;
 	bool isShootFlag = false;
 
-	std::list<EnemyBullet*> enemyBullets_;
+	//std::list<EnemyBullet*> enemyBullets_;
+	std::list<std::unique_ptr<EnemyBullet>> enemyBullets_;
 
 	float bulletSpeed = 0.0f;
 
@@ -78,6 +81,7 @@ public:
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//敵の弾リスト
-	const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
+	//const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
+	std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets_; }
 
 };

@@ -198,9 +198,7 @@ void GameScene::Update()
 		if (startT >= 150)
 		{
 			isStart = TRUE;
-			//color += { 0, 0, 0, 0.1f };
-			//sceneTrans->UpdateColor(color);
-			if (startT >= 300)
+			if (startT >= 250)
 			{
 				isStart2 = TRUE;
 			}
@@ -263,7 +261,7 @@ void GameScene::Update()
 
 	case Scene::Gameover:
 
-		sceneTrans->endText();
+		sceneTrans->EndText();
 
 		break;
 	}
@@ -460,16 +458,16 @@ void GameScene::CheckAllCollisions()
 	Vector3 posA, posB;
 
 	//自機の弾リストを取得
-	const std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
+	std::list<std::unique_ptr<PlayerBullet>>& playerBullets = player_->GetBullets();
 
-	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullets();
+	std::list<std::unique_ptr<EnemyBullet>>& enemyBullets = enemy_->GetBullets();
 
 #pragma region
 	//自機と敵の弾
 
 	posA = player_->GetWorldPosition();
 
-	for (EnemyBullet* bullet : enemyBullets)
+	for (std::unique_ptr<EnemyBullet>& bullet : enemyBullets)
 	{
 		posB = bullet->GetWorldPos();
 
@@ -479,17 +477,16 @@ void GameScene::CheckAllCollisions()
 
 			bullet->OnCollision();
 		}
-
 	}
 
 #pragma endregion
-
+	
 #pragma region
 	//敵と自機の弾
 
 	posA = enemy_->GetWorldPosition();
 
-	/*for (std::unique_ptr<PlayerBullet>& bullet : player_->GetBullets())
+	for (std::unique_ptr<PlayerBullet>& bullet : player_->GetBullets())
 	{
 		posB = bullet->GetWorldPos();
 
@@ -500,7 +497,7 @@ void GameScene::CheckAllCollisions()
 			bullet->OnCollision();
 		}
 
-	}*/
+	}
 
 #pragma endregion
 

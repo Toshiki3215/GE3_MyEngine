@@ -76,8 +76,8 @@ void Player::Update()
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->IsDead(); });
-	bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
-	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });
+	/*bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
+	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });*/
 
 	if (input_->PushKey(DIK_K))
 	{
@@ -137,7 +137,11 @@ void Player::Draw()
 
 	if (isBitDraw == TRUE)
 	{
-		for (std::unique_ptr<PlayerBullet>& bitBullet1 : bitBullets1)
+		for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
+		{
+			bullet->Draw();
+		}
+		/*for (std::unique_ptr<PlayerBullet>& bitBullet1 : bitBullets1)
 		{
 			bitBullet1->Draw();
 		}
@@ -145,7 +149,7 @@ void Player::Draw()
 		for (std::unique_ptr<PlayerBullet>& bitBullet2 : bitBullets2)
 		{
 			bitBullet2->Draw();
-		}
+		}*/
 	}
 }
 
@@ -271,8 +275,8 @@ void Player::PlayerAction()
 			newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
 
 			//弾を登録する
-			bitBullets1.push_back(std::move(newBitBullet1));
-			bitBullets2.push_back(std::move(newBitBullet2));
+			bullets_.push_back(std::move(newBitBullet1));
+			bullets_.push_back(std::move(newBitBullet2));
 		}
 	}
 
