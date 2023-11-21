@@ -62,6 +62,20 @@ void Player::Initialize(DirectXInitialize* dxInit, Input* input)
 	retObj_->SetModel(retModel_);
 	retObj_->wtf.scale = { 0.5f,0.5f,0.5f };
 	retObj_->wtf.position = { -1.5f,1.0f,10.0f };
+
+	//スプライト共通部分の初期化
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Initialize(dxInit);
+
+	reticle = new Sprite();
+	reticle->Initialize(spriteCommon);
+	reticle->SetPozition({ retObj_->wtf.position.x,retObj_->wtf.position.y });
+	reticle->SetSize({ 64.0f, 64.0f });
+
+	//テクスチャ読込
+	spriteCommon->LoadTexture(10, "reticle.png");
+	reticle->SetTextureIndex(10);
+
 }
 
 void Player::Update()
@@ -79,11 +93,6 @@ void Player::Update()
 	/*bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
 	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });*/
 
-	if (input_->PushKey(DIK_K))
-	{
-		playerHp = 0;
-	}
-
 	if (playerHp == 0)
 	{
 		isAlive = FALSE;
@@ -91,6 +100,20 @@ void Player::Update()
 
 	//プレイヤーの行動一覧
 	PlayerAction();
+
+	//自機のワールド座標から3Dレティクルのワールド座標を計算(レティクルの途中)
+	{
+		////自機から3Dレティクルへの距離
+		//const float distancePlayerToReticle = 10.0f;
+
+		////自機から3Dレティクルへのオフセット(Z+向き)
+		//Vector3 offset = { 0,0,1.0f };
+
+		////自機のワールド行列の回転を反映
+		//offset = offset * playerObj->wtf.position
+
+	}
+
 
 	//弾更新
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
@@ -151,38 +174,54 @@ void Player::Draw()
 			bitBullet2->Draw();
 		}*/
 	}
+
+	if (isRetDraw == TRUE)
+	{
+		reticle->Draw();
+	}
 }
 
 void Player::PlayerAction()
 {
-	//移動(自機)
-	if (input_->PushKey(DIK_W))
+	if (isUpdateStop == FALSE)
 	{
-		playerObj->wtf.position.y += 0.1f;
-	}
-	else if (input_->PushKey(DIK_S))
-	{
-		playerObj->wtf.position.y -= 0.1f;
-	}
-	else if (input_->PushKey(DIK_A))
-	{
-		playerObj->wtf.position.x -= 0.1f;
-	}
-	else if (input_->PushKey(DIK_D))
-	{
-		playerObj->wtf.position.x += 0.1f;
-	}
-	else if (input_->PushKey(DIK_Q))
-	{
-		playerObj->wtf.position.z += 0.1f;
-	}
-	else if (input_->PushKey(DIK_E))
-	{
-		playerObj->wtf.position.z -= 0.1f;
+		//移動(自機)
+		if (input_->PushKey(DIK_W))
+		{
+			playerObj->wtf.position.y += 0.1f;
+		}
+		else if (input_->PushKey(DIK_S))
+		{
+			playerObj->wtf.position.y -= 0.1f;
+		}
+		else if (input_->PushKey(DIK_A))
+		{
+			playerObj->wtf.position.x -= 0.1f;
+		}
+		else if (input_->PushKey(DIK_D))
+		{
+			playerObj->wtf.position.x += 0.1f;
+		}
+
+		if (input_->PushKey(DIK_M))
+		{
+			modeChange = true;
+		}
+		else if (input_->PushKey(DIK_N))
+		{
+			modeChange = false;
+		}
 	}
 
 	//移動(レティクル)
-	if (input_->PushKey(DIK_T))
+
+	retObj_->wtf.position.x = playerObj->wtf.position.x;
+	retObj_->wtf.position.y = playerObj->wtf.position.y;
+	retObj_->wtf.position.z = playerObj->wtf.position.z + 10;
+
+	//retObj_->wtf.matWorld.MakeInverse(retObj_->wtf.matWorld);
+
+	/*if (input_->PushKey(DIK_T))
 	{
 		retObj_->wtf.position.y += 0.08f;
 	}
@@ -197,7 +236,9 @@ void Player::PlayerAction()
 	else if (input_->PushKey(DIK_H))
 	{
 		retObj_->wtf.position.x += 0.08f;
-	}
+	}*/
+
+	reticle->SetPozition({ retObj_->wtf.position.x,retObj_->wtf.position.y });
 	//移動制限(自機とレティクル)
 	/*if (playerObj->wtf.position.x >= 0.6f)
 	{
@@ -268,25 +309,38 @@ void Player::PlayerAction()
 		}
 		else if (modeChange == true)
 		{
-			//弾生成し、初期化
-			std::unique_ptr<PlayerBullet> newBitBullet1 = std::make_unique<PlayerBullet>();
-			std::unique_ptr<PlayerBullet> newBitBullet2 = std::make_unique<PlayerBullet>();
-			newBitBullet1->Initilize(bitObj1, retObj_, bulletScale);
-			newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
+			bulletSpeed = 0.05f;
 
-			//弾を登録する
-			bullets_.push_back(std::move(newBitBullet1));
-			bullets_.push_back(std::move(newBitBullet2));
+			if (--coolTimer <= 0)
+			{
+				shotCool = false;
+			}
+
+			if (shotCool == false)
+			{
+				//弾生成し、初期化
+				std::unique_ptr<PlayerBullet> newBitBullet1 = std::make_unique<PlayerBullet>();
+				std::unique_ptr<PlayerBullet> newBitBullet2 = std::make_unique<PlayerBullet>();
+				newBitBullet1->Initilize(bitObj1, retObj_, bulletScale);
+				newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
+
+				//弾を登録する
+				bullets_.push_back(std::move(newBitBullet1));
+				bullets_.push_back(std::move(newBitBullet2));
+
+				shotCool = true;
+				coolTimer = 10;
+			}
+			////弾生成し、初期化
+			//std::unique_ptr<PlayerBullet> newBitBullet1 = std::make_unique<PlayerBullet>();
+			//std::unique_ptr<PlayerBullet> newBitBullet2 = std::make_unique<PlayerBullet>();
+			//newBitBullet1->Initilize(bitObj1, retObj_, bulletScale);
+			//newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
+
+			////弾を登録する
+			//bullets_.push_back(std::move(newBitBullet1));
+			//bullets_.push_back(std::move(newBitBullet2));
 		}
-	}
-
-	if (input_->PushKey(DIK_M))
-	{
-		modeChange = true;
-	}
-	else if (input_->PushKey(DIK_N))
-	{
-		modeChange = false;
 	}
 
 	if (modeChange == TRUE)
@@ -354,16 +408,18 @@ Vector3 Player::GetRetWorldPosition()
 void Player::SetParentCamera(Vector3 cameraWtf)
 {
 	playerObj->wtf.position.z = cameraWtf.z + 15;
-	retObj_->wtf.position.z = cameraWtf.z + 25;
+	//retObj_->wtf.position.z = cameraWtf.z + 25;
 }
 
 void Player::OnCollision()
 {
-
+	playerHp--;
+	
 }
 
 void Player::PlayerModeChange()
 {
+	isUpdateStop = TRUE;
 	isRetDraw = FALSE;
 
 	if (bitSpace <= 0)

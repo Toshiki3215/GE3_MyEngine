@@ -8,7 +8,8 @@
 #include "Input.h"
 #include "Camera.h"
 #include "PlayerBullet.h"
-
+#include "SpriteCommon.h"
+#include "Sprite.h"
 #include "ParticleManager.h"
 
 #include "Object3D.h"
@@ -97,6 +98,10 @@ public:
 
 	void PlayerModeChange();
 
+	bool GetUpdateStop() { return isUpdateStop; }
+
+	bool SetUpdateStop(bool flg) { isUpdateStop = flg; }
+
 private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
@@ -121,6 +126,8 @@ private:
 	bool isShootFlag = false;
 
 	//レティクル
+	SpriteCommon* spriteCommon = nullptr;
+	Sprite* reticle = nullptr;
 	Object3d* retObj_ = nullptr;
 	Model* retModel_ = nullptr;
 	Vector3 enemylen;
@@ -184,4 +191,5 @@ private:
 
 	bool isRetDraw = TRUE;
 	
+	bool isUpdateStop = FALSE;
 };

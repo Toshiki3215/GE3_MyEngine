@@ -60,6 +60,7 @@ public:
 
 	//描画座標セット
 	void SetPozition(const Vector2& position_);
+	void SetPozition(const Vector3& position_);
 
 	//ポジションの取得(ゲッター)
 	const Vector2& GetPosition() const { return position; }

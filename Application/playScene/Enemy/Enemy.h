@@ -72,6 +72,10 @@ private:
 
 	bool shootFlg = true;
 
+	float enemyHp = 3;
+
+	bool isClear = false;
+
 public:
 
 	//親子関係
@@ -83,5 +87,7 @@ public:
 	//敵の弾リスト
 	//const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
 	std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets_; }
+
+	bool GetClear() { return isClear; }
 
 };

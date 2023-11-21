@@ -37,11 +37,6 @@ void PlayerBullet::Update(Vector3 enemylen, Vector3 len, float shootSpeed, Objec
 		len *= shootSpeed;
 	}
 
-	if (bulletObj->wtf.position.z >= retObj->wtf.position.z)
-	{
-		//isDead_ = true;
-	}
-
 	bulletObj->Update();
 
 }

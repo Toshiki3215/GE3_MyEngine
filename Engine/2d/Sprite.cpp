@@ -264,6 +264,13 @@ void Sprite::SetPozition(const Vector2& position_)
 	Update();
 }
 
+void Sprite::SetPozition(const Vector3& position_)
+{
+	position.x = position_.x;
+	position.y = position_.y;
+	Update();
+}
+
 void Sprite::SetRotation(float rotation_)
 {
 	rotation = rotation_;

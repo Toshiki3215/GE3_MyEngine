@@ -19,11 +19,12 @@ void Enemy::Initilize(Vector3 pos)
 	enemyBulletObj_->SetModel(enemyBulletModel_);
 	enemyBulletObj_->wtf.position = { enemyObj->wtf.position.x,enemyObj->wtf.position.y + 0.07f, enemyObj->wtf.position.z };
 	enemyBulletObj_->wtf.scale = { 0.5f,0.5f,0.5f };
+
+	phase_ = Phase::Approch;
 }
 
 void Enemy::Update(Vector3 pos)
 {
-	phase_ = Phase::Approch;
 
 	len = pos - enemyObj->wtf.position;
 	len.nomalize();
@@ -73,6 +74,7 @@ void Enemy::Update(Vector3 pos)
 
 	case Phase::Death:
 		isDead = true;
+		isClear = TRUE;
 
 		break;
 	}

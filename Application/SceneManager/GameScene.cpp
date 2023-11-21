@@ -208,17 +208,21 @@ void GameScene::Update()
 		//CameraUpdate();
 
 		// ---------- 3Dオブジェクト ---------- //
+		player_->SetParentCamera(camera->GetEye());
+		enemy_->SetParentCamera(camera->GetEye());
+
+		player_->Update();
+
+		if (isStart2 == TRUE)
+		{
+			enemy_->Update(player_->GetPos());
+		}
+
 		skydome->Update();
 		targetObj->wtf.position = camera->GetTarget();
 		targetObj->Update();
 
 		// ---------- FBX ---------- //
-
-		player_->SetParentCamera(camera->GetEye());
-		player_->Update();
-
-		enemy_->SetParentCamera(camera->GetEye());
-		enemy_->Update(player_->GetPos());
 		//enemy2_->SetParentCamera(camera->GetEye());
 		//enemy2_->Update(player_->GetPos());
 
@@ -238,7 +242,7 @@ void GameScene::Update()
 		GameScene::EffUpdate(player_->GetPos());*/
 		//GameScene::EffUpdate(player_->GetWorldPosition());
 
-		if (input->PushKey(DIK_R))
+		if (enemy_->GetClear() == TRUE)
 		{
 			isClear = TRUE;
 		}
@@ -247,6 +251,8 @@ void GameScene::Update()
 		{
 			player_->PlayerModeChange();
 		}
+
+		CheckAllCollisions();
 
 		break;
 
@@ -297,18 +303,16 @@ void GameScene::Draw()
 
 		// ---------- 3Dオブジェクト ---------- //
 
+		
+		enemy_->Draw();
 		if (player_->GetAlive() == TRUE)
 		{
 			player_->Draw();
 		}
-		
-		enemy_->Draw();
 		//targetObj->Draw();
 
 		//enemy2_->Draw();
 		//sceneTrans->endDraw();
-
-		CheckAllCollisions();
 
 		// ---------- FBX ---------- //
 
