@@ -90,4 +90,6 @@ public:
 
 	bool GetClear() { return isClear; }
 
+	void reset();
+
 };

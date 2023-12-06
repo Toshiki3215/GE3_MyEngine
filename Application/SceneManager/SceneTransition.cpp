@@ -40,12 +40,16 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 	UITex->Initialize(spriteCommon);
 	UITex->SetPozition({ 0,0 });
 	UITex->SetSize({ 1280.0f, 720.0f });
-	//UITex->SetColor(Vector4{ 1,1,1,0.5f });
 
-	endTex = new Sprite();
-	endTex->Initialize(spriteCommon);
-	endTex->SetPozition({ 0,pos3 });
-	endTex->SetSize({ 1280.0f, 720.0f });
+	gameOverTex = new Sprite();
+	gameOverTex->Initialize(spriteCommon);
+	gameOverTex->SetPozition({ 0,0 });
+	gameOverTex->SetSize({ 1280.0f, 720.0f });
+
+	gameClearTex = new Sprite();
+	gameClearTex->Initialize(spriteCommon);
+	gameClearTex->SetPozition({ 0,0 });
+	gameClearTex->SetSize({ 1280.0f, 720.0f });
 
 	//テクスチャ読込
 	spriteCommon->LoadTexture(6, "transition1.png");
@@ -58,7 +62,11 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 	UITex->SetTextureIndex(8);
 
 	spriteCommon->LoadTexture(9, "gameover.png");
-	endTex->SetTextureIndex(9);
+	gameOverTex->SetTextureIndex(9);
+
+	spriteCommon->LoadTexture(11, "gameclear.png");
+	gameClearTex->SetTextureIndex(11);
+
 }
 
 void SceneTransition::UpdateStart()
@@ -79,7 +87,7 @@ void SceneTransition::UpdateStart()
 
 	if (leftTransPos >= defaultPos && rightTransPos <= defaultPos)
 	{
-		startTimer = 60.0f;
+		waitTimer = 60.0f;
 		animeTimer = 0;
 		isTrans = FALSE;
 	}
@@ -92,11 +100,10 @@ void SceneTransition::UpdateStart()
 void SceneTransition::UpdateEnd()
 {
 
-	startTimer--;
-	if (startTimer <= 0.0f)
+	waitTimer--;
+	if (waitTimer <= 0.0f)
 	{
 		animeTimer++;
-		startTimer = 0.0f;
 		if (leftTransPos >= -defaultPos2)
 		{
 			leftTransPos -= easing_->easeOut(animeTimer, defaultPos, defaultPos2, maxTime);
@@ -114,11 +121,13 @@ void SceneTransition::UpdateEnd()
 				rightTransPos = defaultPos2;
 			}
 		}
-	}
 
-	if (leftTransPos >= defaultPos2 && rightTransPos <= defaultPos2)
-	{
-		isTrans = TRUE;
+		if (leftTransPos >= defaultPos2 && rightTransPos <= defaultPos2)
+		{
+			animeTimer = 0;
+			waitTimer = 60.0f;
+			isTrans = TRUE;
+		}
 	}
 
 	transTex1->SetPozition({ leftTransPos,defaultPos });
@@ -131,38 +140,54 @@ void SceneTransition::Draw()
 	transTex2->Draw();
 }
 
-void SceneTransition::UpdateColor(Vector4 color)
-{
-	UITex->SetColor(color);
-}
-
 void SceneTransition::Draw2()
 {
 	UITex->Draw();
 }
 
-void SceneTransition::endDraw()
+void SceneTransition::gameoverDraw()
 {
-	endTex->Draw();
+	gameOverTex->Draw();
+}
+
+void SceneTransition::gameclearDraw()
+{
+	gameClearTex->Draw();
 }
 
 void SceneTransition::EndText()
 {
-	animeTimer2++;
+	//animeTimer2++;
 
 	//pos3 += easeOut(animeTimer2, -720, 0, 500);
-	pos3 += easing_->easeOut(animeTimer2, -720, 0, 500);
-	if (pos3 >= 0)
-	{
-		pos3 = 0;
-		//animeTimer = 0;
-	}
+	//pos3 += easing_->easeOut(animeTimer2, -720, 0, 500);
+	//if (pos3 >= 0)
+	//{
+	//	pos3 = 0;
+	//	//animeTimer = 0;
+	//}
 
 	//endTex->SetPozition({ 0,pos3 });
-	endTex->SetPozition({ 0,0 });
+	gameOverTex->SetPozition({ 0,0 });
 }
 
 void SceneTransition::Reset()
 {
+	waitTimer = 60.0f;
+	animeTimer = 0.0f;
+	maxTime = 1200.0f;
+
+	isTrans = TRUE;
+
+	/*animeTimer2 = 0;
+	pos1 = -720;
+	pos2 = 0;
+	pos3 = -720;*/
+
+	leftTransPos = -defaultPos2;
+	rightTransPos = defaultPos2;
+
+	transTex1->SetPozition({ leftTransPos,defaultPos });
+	transTex2->SetPozition({ rightTransPos,defaultPos });
 
 }

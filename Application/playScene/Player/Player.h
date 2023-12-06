@@ -102,6 +102,10 @@ public:
 
 	bool SetUpdateStop(bool flg) { isUpdateStop = flg; }
 
+	bool GetShiftClearScene() { return shiftClearScene; }
+
+	void Reset();
+
 private:
 	const float PI = 3.141592f;
 	Input* input_ = nullptr;
@@ -192,4 +196,7 @@ private:
 	bool isRetDraw = TRUE;
 	
 	bool isUpdateStop = FALSE;
+
+	bool shiftClearScene = FALSE;
+
 };

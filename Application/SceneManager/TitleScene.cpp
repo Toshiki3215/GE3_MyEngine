@@ -144,3 +144,10 @@ void TitleScene::Draw()
 		text2->Draw();
 	}
 }
+
+void TitleScene::Reset()
+{
+	startFlg = FALSE;
+
+	animeTimer = 0;
+}

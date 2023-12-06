@@ -93,7 +93,7 @@ void Player::Update()
 	/*bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
 	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });*/
 
-	if (playerHp == 0)
+	if (playerHp == 0 || input_->PushKey(DIK_K))
 	{
 		isAlive = FALSE;
 	}
@@ -177,7 +177,7 @@ void Player::Draw()
 
 	if (isRetDraw == TRUE)
 	{
-		reticle->Draw();
+		//reticle->Draw();
 	}
 }
 
@@ -434,10 +434,43 @@ void Player::PlayerModeChange()
 		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
 
+		if (clearAnimeTimer >= 500)
+		{
+			shiftClearScene = TRUE;
+		}
+
 	}
 	else 
 	{
 		bitSpace -= 0.01f;
 	}
 
+}
+
+void Player::Reset()
+{
+	isAlive = true;
+
+	modeChange = TRUE;
+
+	shiftClearScene = FALSE;
+
+	isBitDraw = TRUE;
+	isUpdateStop = FALSE;
+	isRetDraw = TRUE;
+
+	rotaTime = 0.0f;
+	bitRotaTime = 20.0f;
+
+	rSpeed = 0.0f;
+
+	playerHp = 5.0f;
+
+	bitSpace = 2.0f;
+
+	clearAnimeTimer = 0;
+	animeTimerEnd = 300;
+
+	startPos = 0;
+	endPos = 300;
 }

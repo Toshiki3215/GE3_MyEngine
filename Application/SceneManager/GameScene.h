@@ -177,9 +177,9 @@ private:	//メンバ変数
 	bool isClear = FALSE;
 
 	float playerR = 2.0f;
-	float playerBulletR = 2.0f;
+	float playerBulletR = 1.0f;
 
 	float enemyR = 2.0f;
-	float enemyBulletR = 2.0f;
+	float enemyBulletR = 1.0f;
 
 };

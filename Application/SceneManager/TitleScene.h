@@ -43,6 +43,8 @@ public:
 	/// <returns></returns>
 	bool GetStartF() { return  startFlg; }
 
+	void Reset();
+
 private:
 	Input* input_ = nullptr;
 	SpriteCommon* spriteCommon = nullptr;

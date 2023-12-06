@@ -128,7 +128,7 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	//エネミー
 	enemy_ = new Enemy();
-	enemy_->Initilize(Vector3{ -10, 10, 70 });
+	enemy_->Initilize(Vector3{ 0, 0, 100 });
 	enemy_->SetParent(&camWtf);
 
 	/*enemy2_ = new Enemy();
@@ -156,9 +156,19 @@ void GameScene::Reset()
 	//player_->SetParent(&camWtf);
 	player_->SetPos(Vector3{ 0, 0, 15 });
 
-	enemy_->Initilize(Vector3{ -10, 10, 70 });
+	enemy_->Initilize(Vector3{ 0, 5, 100 });
 
-	//enemy2_->Initilize(Vector3{ 10, 0, 80 });
+	player_->Reset();
+	enemy_->reset();
+
+	isClear = FALSE;
+
+	changeT = 0;
+
+	startT = 0;
+	isStart = FALSE;
+	isStart2 = FALSE;
+
 }
 
 // ----- 毎フレーム処理 ----- //
@@ -180,8 +190,8 @@ void GameScene::Update()
 			sceneTrans->UpdateStart();
 			if (sceneTrans->GetTransF() == FALSE)
 			{
-				scene = Scene::Play;
 				Reset();
+				scene = Scene::Play;
 			}
 		}
 
@@ -193,7 +203,10 @@ void GameScene::Update()
 
 	case Scene::Play:
 
-		sceneTrans->UpdateEnd();
+		if (isStart2 == FALSE)
+		{
+			sceneTrans->UpdateEnd();
+		}
 		startT++;
 		if (startT >= 150)
 		{
@@ -201,6 +214,7 @@ void GameScene::Update()
 			if (startT >= 250)
 			{
 				isStart2 = TRUE;
+				//sceneTrans->Reset();
 			}
 		}
 
@@ -245,11 +259,16 @@ void GameScene::Update()
 		if (enemy_->GetClear() == TRUE)
 		{
 			isClear = TRUE;
-		}
 
-		if (isClear == TRUE)
-		{
-			player_->PlayerModeChange();
+
+			if (isClear == TRUE)
+			{
+				player_->PlayerModeChange();
+				if (player_->GetShiftClearScene() == TRUE)
+				{
+					scene = Scene::Clear;
+				}
+			}
 		}
 
 		CheckAllCollisions();
@@ -258,8 +277,12 @@ void GameScene::Update()
 
 	case Scene::Clear:
 
-		if (input->PushKey(DIK_SPACE))
+		titleScene->Reset();
+		/*isStart = FALSE;
+		isStart2 = FALSE;*/
+		if (input->PushKey(DIK_R))
 		{
+			sceneTrans->Reset();
 			scene = Scene::Title;
 		}
 
@@ -267,7 +290,15 @@ void GameScene::Update()
 
 	case Scene::Gameover:
 
-		sceneTrans->EndText();
+		//sceneTrans->EndText();
+		titleScene->Reset();
+		/*isStart = FALSE;
+		isStart2 = FALSE;*/
+		if (input->PushKey(DIK_R))
+		{
+			sceneTrans->Reset();
+			scene = Scene::Title;
+		}
 
 		break;
 	}
@@ -331,11 +362,13 @@ void GameScene::Draw()
 
 	case Scene::Clear:
 
+		sceneTrans->gameclearDraw();
+
 		break;
 
 	case Scene::Gameover:
 
-		sceneTrans->endDraw();
+		sceneTrans->gameoverDraw();
 
 		break;
 	}
@@ -360,7 +393,10 @@ void GameScene::Draw()
 
 		// パーティクル描画前処理
 		ParticleManager::PreDraw(dxInit->GetCommandList());
-		GameScene::EffDraw();
+		if (player_->GetAlive() == FALSE)
+		{
+			GameScene::EffDraw();
+		}
 		//GameScene::EffDraw2();
 
 		// パーティクル描画後処理

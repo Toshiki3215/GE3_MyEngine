@@ -119,3 +119,8 @@ void Enemy::SetParentCamera(Vector3 cameraWtf)
 {
 	enemyObj->wtf.position.z = cameraWtf.z + 45;
 }
+
+void Enemy::reset()
+{
+	isClear = FALSE;
+}
