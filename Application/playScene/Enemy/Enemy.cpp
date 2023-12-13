@@ -73,8 +73,17 @@ void Enemy::Update(Vector3 pos)
 		break;
 
 	case Phase::Death:
-		isDead = true;
-		isClear = TRUE;
+
+		deathTimer--;
+		float rSpeed = 3.14f / 10;
+		enemyObj->wtf.rotation.y -= rSpeed;
+
+		if (deathTimer <= 0)
+		{
+			deathTimer = 20;
+			isDead = true;
+			isClear = TRUE;
+		}
 
 		break;
 	}
@@ -98,7 +107,9 @@ void Enemy::Draw()
 
 void Enemy::OnCollision()
 {
+
 	phase_ = Phase::Death;
+
 }
 
 Vector3 Enemy::GetWorldPosition()

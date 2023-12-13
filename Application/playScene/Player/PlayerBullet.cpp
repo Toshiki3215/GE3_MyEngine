@@ -32,7 +32,6 @@ void PlayerBullet::Update(Vector3 enemylen, Vector3 len, float shootSpeed, Objec
 	else
 	{
 		bulletObj->wtf.position += target;
-		//bulletObj->wtf.position += len;
 		len = target;
 		len *= shootSpeed;
 	}

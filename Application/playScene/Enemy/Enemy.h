@@ -51,14 +51,12 @@ private:
 
 	//フェーズ
 	Phase phase_ = Phase::Approch;
-	//Phase phase_ = Phase::Death;
 
 	//弾発射
 	Object3d* enemyBulletObj_ = nullptr;
 	Model* enemyBulletModel_ = nullptr;
 	bool isShootFlag = false;
 
-	//std::list<EnemyBullet*> enemyBullets_;
 	std::list<std::unique_ptr<EnemyBullet>> enemyBullets_;
 
 	float bulletSpeed = 0.0f;
@@ -76,6 +74,8 @@ private:
 
 	bool isClear = false;
 
+	float deathTimer = 20;
+
 public:
 
 	//親子関係
@@ -85,7 +85,6 @@ public:
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//敵の弾リスト
-	//const std::list<EnemyBullet*>& GetBullets() { return enemyBullets_; }
 	std::list<std::unique_ptr<EnemyBullet>>& GetBullets() { return enemyBullets_; }
 
 	bool GetClear() { return isClear; }

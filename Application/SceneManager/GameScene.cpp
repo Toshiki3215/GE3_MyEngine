@@ -41,8 +41,6 @@ void GameScene::Initialize(DirectXInitialize* dxInit, Input* input)
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(dxInit);
 
-	//playerPos = { 0,0,0 };
-
 	// カメラ生成
 	camera = new Camera(WinApp::window_width, WinApp::window_height);
 	railCamera = new RailCamera(WinApp::window_width, WinApp::window_height);
@@ -147,7 +145,6 @@ void GameScene::Reset()
 	railCamera->Initialize(camWtf);
 
 	targetWtf.Initialize();
-	//targetWtf.position = { playerPos.x,playerPos.y,targetDistance };
 
 	//自キャラの生成
 	//プレイヤー
@@ -276,16 +273,12 @@ void GameScene::Update()
 			sceneTrans->UpdateUI(player_->GetPlayerHP());
 		}
 
-		/*CheckAllCollisions();
-		sceneTrans->UpdateUI(player_->GetPlayerHP());*/
-
 		break;
 
 	case Scene::Clear:
 
 		titleScene->Reset();
-		/*isStart = FALSE;
-		isStart2 = FALSE;*/
+
 		if (input->PushKey(DIK_R))
 		{
 			sceneTrans->Reset();
@@ -298,8 +291,7 @@ void GameScene::Update()
 
 		//sceneTrans->EndText();
 		titleScene->Reset();
-		/*isStart = FALSE;
-		isStart2 = FALSE;*/
+
 		if (input->PushKey(DIK_R))
 		{
 			sceneTrans->Reset();
@@ -339,17 +331,14 @@ void GameScene::Draw()
 	case Scene::Play:
 
 		// ---------- 3Dオブジェクト ---------- //
-
 		
 		enemy_->Draw();
 		if (player_->GetAlive() == TRUE)
 		{
 			player_->Draw();
 		}
-		//targetObj->Draw();
 
 		//enemy2_->Draw();
-		//sceneTrans->endDraw();
 
 		// ---------- FBX ---------- //
 
@@ -542,11 +531,8 @@ void GameScene::CheckAllCollisions()
 
 			bullet->OnCollision();
 		}
-
 	}
-
 #pragma endregion
-
 }
 
 bool GameScene::isHitDistanceAtoB(Vector3 A, Vector3 B, float Ar, float Br)
@@ -620,7 +606,6 @@ void GameScene::EffUpdate(Vector3 pos)
 
 		particleManager->Update();
 	}
-
 }
 
 void GameScene::EffUpdate2()

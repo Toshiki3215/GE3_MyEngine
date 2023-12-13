@@ -13,6 +13,9 @@ SceneTransition::~SceneTransition()
 	delete transTex1;
 	delete transTex2;
 	delete UITex;
+	delete gameOverTex;
+	delete gameClearTex;
+	delete playerHPTex;
 }
 
 void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
@@ -177,6 +180,7 @@ void SceneTransition::EndText()
 	//}
 
 	//endTex->SetPozition({ 0,pos3 });
+
 	gameOverTex->SetPozition({ 0,0 });
 }
 

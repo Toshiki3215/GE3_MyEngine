@@ -78,7 +78,6 @@ public:
 	void SetParentCamera(Vector3 cameraWtf);
 
 	//弾リストを取得
-	//const std::list<PlayerBullet*>& GetBullets() { return bullets_; }
 	std::list<std::unique_ptr<PlayerBullet>>& GetBullets() { return bullets_; }
 	std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets1() { return bitBullets1; }
 	std::list<std::unique_ptr<PlayerBullet>>& GetBitBullets2() { return bitBullets2; }
@@ -158,11 +157,6 @@ private:
 	bool isAlive = true;
 
 	bool modeChange = TRUE;
-
-	//弾
-	/*std::list<PlayerBullet*> bullets_;
-	std::list<PlayerBullet*> bitBullets1;
-	std::list<PlayerBullet*> bitBullets2;*/
 
 	//弾
 	std::list<std::unique_ptr<PlayerBullet>> bullets_;

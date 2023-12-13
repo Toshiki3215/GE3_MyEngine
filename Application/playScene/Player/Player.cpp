@@ -90,9 +90,7 @@ void Player::Update()
 
 	//デスフラグの立った弾を削除
 	bullets_.remove_if([](std::unique_ptr<PlayerBullet>& bullet) {return bullet->IsDead(); });
-	/*bitBullets1.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet1) {return bitBullet1->IsDead(); });
-	bitBullets2.remove_if([](std::unique_ptr<PlayerBullet>& bitBullet2) {return bitBullet2->IsDead(); });*/
-
+	
 	if (playerHp == 0 || input_->PushKey(DIK_K))
 	{
 		isAlive = FALSE;
@@ -113,7 +111,6 @@ void Player::Update()
 		//offset = offset * playerObj->wtf.position
 
 	}
-
 
 	//弾更新
 	for (std::unique_ptr<PlayerBullet>& bullet : bullets_)
@@ -164,15 +161,6 @@ void Player::Draw()
 		{
 			bullet->Draw();
 		}
-		/*for (std::unique_ptr<PlayerBullet>& bitBullet1 : bitBullets1)
-		{
-			bitBullet1->Draw();
-		}
-
-		for (std::unique_ptr<PlayerBullet>& bitBullet2 : bitBullets2)
-		{
-			bitBullet2->Draw();
-		}*/
 	}
 
 	if (isRetDraw == TRUE)
@@ -217,72 +205,14 @@ void Player::PlayerAction()
 
 	retObj_->wtf.position.x = playerObj->wtf.position.x;
 	retObj_->wtf.position.y = playerObj->wtf.position.y;
-	retObj_->wtf.position.z = playerObj->wtf.position.z + 10;
+	retObj_->wtf.position.z = playerObj->wtf.position.z + 20;
 
 	//retObj_->wtf.matWorld.MakeInverse(retObj_->wtf.matWorld);
 
-	/*if (input_->PushKey(DIK_T))
-	{
-		retObj_->wtf.position.y += 0.08f;
-	}
-	else if (input_->PushKey(DIK_G))
-	{
-		retObj_->wtf.position.y -= 0.08f;
-	}
-	else if (input_->PushKey(DIK_F))
-	{
-		retObj_->wtf.position.x -= 0.08f;
-	}
-	else if (input_->PushKey(DIK_H))
-	{
-		retObj_->wtf.position.x += 0.08f;
-	}*/
-
 	reticle->SetPozition({ retObj_->wtf.position.x,retObj_->wtf.position.y });
-	//移動制限(自機とレティクル)
-	/*if (playerObj->wtf.position.x >= 2.0f)
-	{
-		playerObj->wtf.position.x = 2.0f;
-	}
-	else if (playerObj->wtf.position.x <= -2.0f)
-	{
-		playerObj->wtf.position.x = -2.0f;
-	}
-	else if (playerObj->wtf.position.y >= 2.0f)
-	{
-		playerObj->wtf.position.y = 2.0f;
-	}
-	else if (playerObj->wtf.position.y <= -2.0f)
-	{
-		playerObj->wtf.position.y = -2.0f;
-	}*/
 
 	//弾発射
-	/*if (modeChange == true)
-	{
-		if (input_->PushKey(DIK_SPACE))
-		{
-			rotaTime = 20;
-		}
-
-		if (rotaTime > 0)
-		{
-			rotaTime--;
-			rSpeed = 3.14f / 10;
-			playerObj->wtf.rotation.z -= rSpeed;
-			if (rotaTime <= 0)
-			{
-				rSpeed = 0;
-				playerObj->wtf.rotation.z = 0;
-				rotaTime = 0;
-			}
-		}
-	}
-	else
-	{
-
-	}*/
-
+	
 	if (input_->PushKey(DIK_SPACE))
 	{
 		if (modeChange == false)
@@ -331,15 +261,6 @@ void Player::PlayerAction()
 				shotCool = true;
 				coolTimer = 10;
 			}
-			////弾生成し、初期化
-			//std::unique_ptr<PlayerBullet> newBitBullet1 = std::make_unique<PlayerBullet>();
-			//std::unique_ptr<PlayerBullet> newBitBullet2 = std::make_unique<PlayerBullet>();
-			//newBitBullet1->Initilize(bitObj1, retObj_, bulletScale);
-			//newBitBullet2->Initilize(bitObj2, retObj_, bulletScale);
-
-			////弾を登録する
-			//bullets_.push_back(std::move(newBitBullet1));
-			//bullets_.push_back(std::move(newBitBullet2));
 		}
 	}
 
@@ -408,13 +329,11 @@ Vector3 Player::GetRetWorldPosition()
 void Player::SetParentCamera(Vector3 cameraWtf)
 {
 	playerObj->wtf.position.z = cameraWtf.z + 15;
-	//retObj_->wtf.position.z = cameraWtf.z + 25;
 }
 
 void Player::OnCollision()
 {
 	playerHp--;
-	
 }
 
 void Player::PlayerModeChange(Vector3 cameraWtf)
@@ -439,13 +358,11 @@ void Player::PlayerModeChange(Vector3 cameraWtf)
 		{
 			shiftClearScene = TRUE;
 		}
-
 	}
 	else 
 	{
 		bitSpace -= 0.02f;
 	}
-
 }
 
 void Player::Reset()

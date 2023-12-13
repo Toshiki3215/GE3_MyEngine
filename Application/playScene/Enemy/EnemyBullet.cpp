@@ -12,7 +12,6 @@ void EnemyBullet::Initilize(Object3d* enemyObj)
 	bulletObj->wtf.position = { enemyObj->wtf.position.x,enemyObj->wtf.position.y + 0.07f, enemyObj->wtf.position.z };
 	bulletObj->wtf.scale = { 0.5f,0.5f,0.5f };
 
-	//target = retObj->wtf.position - enemyObj->wtf.position;
 	target = bulletObj->wtf.position;
 	target.z = bulletObj->wtf.position.z + 10 - enemyObj->wtf.position.z;
 	target.nomalize();
