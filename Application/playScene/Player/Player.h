@@ -96,7 +96,7 @@ public:
 
 	bool GetAlive() { return isAlive; }
 
-	void PlayerModeChange();
+	void PlayerModeChange(Vector3 cameraWtf);
 
 	bool GetUpdateStop() { return isUpdateStop; }
 
@@ -105,6 +105,8 @@ public:
 	bool GetShiftClearScene() { return shiftClearScene; }
 
 	void Reset();
+
+	float GetPlayerHP() { return playerHp; }
 
 private:
 	const float PI = 3.141592f;

@@ -61,6 +61,8 @@ public:
 
 	void Reset();
 
+	void UpdateUI(float hp);
+
 private:
 	Input* input_ = nullptr;
 	Easing* easing_ = nullptr;
@@ -70,6 +72,7 @@ private:
 	Sprite* UITex = nullptr;
 	Sprite* gameOverTex = nullptr;
 	Sprite* gameClearTex = nullptr;
+	Sprite* playerHPTex = nullptr;
 
 	float leftTransPos = -1000.0f;
 	float rightTransPos = 1000.0f;
@@ -81,6 +84,8 @@ private:
 	float waitTimer = 60.0f;
 	float animeTimer = 0.0f;
 	float maxTime = 1200.0f;
+
+	Vector2 UIpos = { 0.0f,7.0f };
 
 	/*float animeTimer2 = 0;
 	float pos1 = -720;

@@ -51,6 +51,11 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 	gameClearTex->SetPozition({ 0,0 });
 	gameClearTex->SetSize({ 1280.0f, 720.0f });
 
+	playerHPTex = new Sprite();
+	playerHPTex->Initialize(spriteCommon);
+	playerHPTex->SetPozition(UIpos);
+	playerHPTex->SetSize({ 720.0f, 72.0f });
+
 	//テクスチャ読込
 	spriteCommon->LoadTexture(6, "transition1.png");
 	transTex1->SetTextureIndex(6);
@@ -66,6 +71,9 @@ void SceneTransition::Initialize(DirectXInitialize* dxInit, Input* input)
 
 	spriteCommon->LoadTexture(11, "gameclear.png");
 	gameClearTex->SetTextureIndex(11);
+
+	spriteCommon->LoadTexture(12, "UI_HP.png");
+	playerHPTex->SetTextureIndex(12);
 
 }
 
@@ -143,6 +151,7 @@ void SceneTransition::Draw()
 void SceneTransition::Draw2()
 {
 	UITex->Draw();
+	playerHPTex->Draw();
 }
 
 void SceneTransition::gameoverDraw()
@@ -190,4 +199,34 @@ void SceneTransition::Reset()
 	transTex1->SetPozition({ leftTransPos,defaultPos });
 	transTex2->SetPozition({ rightTransPos,defaultPos });
 
+}
+
+void SceneTransition::UpdateUI(float hp)
+{
+	if (hp == 5)
+	{
+		UIpos.x = 0.0f;
+	}
+	else if (hp ==4)
+	{
+		UIpos.x = -90.0f;
+	}
+	else if (hp == 3)
+	{
+		UIpos.x = -180.0f;
+	}
+	else if (hp == 2)
+	{
+		UIpos.x = -270.0f;
+	}
+	else if (hp == 1)
+	{
+		UIpos.x = -360.0f;
+	}
+	else if (hp == 0)
+	{
+		UIpos.x = -450.0f;
+	}
+
+	playerHPTex->SetPozition({UIpos});
 }

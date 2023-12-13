@@ -186,21 +186,21 @@ void Player::PlayerAction()
 	if (isUpdateStop == FALSE)
 	{
 		//移動(自機)
-		if (input_->PushKey(DIK_W))
+		if (input_->PushKey(DIK_W) && playerObj->wtf.position.y <= 6.0f)
 		{
 			playerObj->wtf.position.y += 0.1f;
 		}
-		else if (input_->PushKey(DIK_S))
+		else if (input_->PushKey(DIK_S) && playerObj->wtf.position.y >= -2.0f)
 		{
 			playerObj->wtf.position.y -= 0.1f;
 		}
-		else if (input_->PushKey(DIK_A))
+		else if (input_->PushKey(DIK_A) && playerObj->wtf.position.x >= -6.0f)
 		{
-			playerObj->wtf.position.x -= 0.1f;
+			playerObj->wtf.position.x -= 0.2f;
 		}
-		else if (input_->PushKey(DIK_D))
+		else if (input_->PushKey(DIK_D) && playerObj->wtf.position.x <= 6.0f)
 		{
-			playerObj->wtf.position.x += 0.1f;
+			playerObj->wtf.position.x += 0.2f;
 		}
 
 		if (input_->PushKey(DIK_M))
@@ -240,21 +240,21 @@ void Player::PlayerAction()
 
 	reticle->SetPozition({ retObj_->wtf.position.x,retObj_->wtf.position.y });
 	//移動制限(自機とレティクル)
-	/*if (playerObj->wtf.position.x >= 0.6f)
+	/*if (playerObj->wtf.position.x >= 2.0f)
 	{
-		playerObj->wtf.position.x = 0.6f;
+		playerObj->wtf.position.x = 2.0f;
 	}
-	else if (playerObj->wtf.position.x <= -0.6f)
+	else if (playerObj->wtf.position.x <= -2.0f)
 	{
-		playerObj->wtf.position.x = -0.6f;
+		playerObj->wtf.position.x = -2.0f;
 	}
-	else if (playerObj->wtf.position.y >= 0.19f)
+	else if (playerObj->wtf.position.y >= 2.0f)
 	{
-		playerObj->wtf.position.y = 0.19f;
+		playerObj->wtf.position.y = 2.0f;
 	}
-	else if (playerObj->wtf.position.y <= -0.35f)
+	else if (playerObj->wtf.position.y <= -2.0f)
 	{
-		playerObj->wtf.position.y = -0.35f;
+		playerObj->wtf.position.y = -2.0f;
 	}*/
 
 	//弾発射
@@ -417,7 +417,7 @@ void Player::OnCollision()
 	
 }
 
-void Player::PlayerModeChange()
+void Player::PlayerModeChange(Vector3 cameraWtf)
 {
 	isUpdateStop = TRUE;
 	isRetDraw = FALSE;
@@ -428,13 +428,14 @@ void Player::PlayerModeChange()
 		isBitDraw = FALSE;
 		clearAnimeTimer++;
 
+		playerObj->wtf.position.z = cameraWtf.z + 15;
 		startPos = playerObj->wtf.position.z - 15;
 		endPos = playerObj->wtf.position.z + 50;
 
 		playerObj->wtf.position.z += easing->easeInBack(clearAnimeTimer, startPos, endPos, animeTimerEnd);
 		playerObj->Update();
 
-		if (clearAnimeTimer >= 500)
+		if (clearAnimeTimer >= 350)
 		{
 			shiftClearScene = TRUE;
 		}
@@ -442,7 +443,7 @@ void Player::PlayerModeChange()
 	}
 	else 
 	{
-		bitSpace -= 0.01f;
+		bitSpace -= 0.02f;
 	}
 
 }

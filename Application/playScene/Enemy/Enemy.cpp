@@ -117,7 +117,7 @@ Vector3 Enemy::GetWorldPosition()
 
 void Enemy::SetParentCamera(Vector3 cameraWtf)
 {
-	enemyObj->wtf.position.z = cameraWtf.z + 45;
+	enemyObj->wtf.position.z = cameraWtf.z + 60;
 }
 
 void Enemy::reset()

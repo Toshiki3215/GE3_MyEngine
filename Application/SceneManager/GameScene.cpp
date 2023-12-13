@@ -260,18 +260,24 @@ void GameScene::Update()
 		{
 			isClear = TRUE;
 
-
 			if (isClear == TRUE)
 			{
-				player_->PlayerModeChange();
+				cameraMoveSpeed = { 0,0,0 };
+				player_->PlayerModeChange(camera->GetEye());
 				if (player_->GetShiftClearScene() == TRUE)
 				{
 					scene = Scene::Clear;
 				}
 			}
 		}
+		else
+		{
+			CheckAllCollisions();
+			sceneTrans->UpdateUI(player_->GetPlayerHP());
+		}
 
-		CheckAllCollisions();
+		/*CheckAllCollisions();
+		sceneTrans->UpdateUI(player_->GetPlayerHP());*/
 
 		break;
 
